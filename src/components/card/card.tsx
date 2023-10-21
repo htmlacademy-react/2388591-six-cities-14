@@ -1,4 +1,4 @@
-function Offer(): JSX.Element {
+export default function Card(): JSX.Element {
   return (
     <article className="near-places__card place-card">
       <div className="place-card__mark">
@@ -37,4 +37,3 @@ function Offer(): JSX.Element {
   );
 
 }
-export default Offer;
