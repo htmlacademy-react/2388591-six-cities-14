@@ -5,6 +5,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
