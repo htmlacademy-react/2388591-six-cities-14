@@ -3,12 +3,14 @@ import { Helmet } from 'react-helmet-async';
 import Card from '../../components/card/card';
 import Header from '../../components/header/header';
 
+import { Offer } from '../../types/offer-type';
 
 type MainPageProps = {
   rentCount: number;
+  offers: Offer[];
 }
 
-export default function Main({rentCount}: MainPageProps): JSX.Element {
+export default function Main({rentCount, offers}: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet><title>6 cities | Main</title></Helmet>
@@ -73,11 +75,14 @@ export default function Main({rentCount}: MainPageProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
+                {/* <Card offers = {offers}/>
                 <Card />
                 <Card />
                 <Card />
-                <Card />
-                <Card />
+                <Card /> */}
+                {offers.map((offer) => (
+                  <Card key={offer.id} offer={offers} />
+                ))}
               </div>
             </section>
             <div className="cities__right-section">
