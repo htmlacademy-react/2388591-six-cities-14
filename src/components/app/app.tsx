@@ -4,22 +4,24 @@ import { HelmetProvider } from 'react-helmet-async';
 import Main from '../../pages/main/main';
 import Login from '../../pages/login/login';
 import Favorites from '../../pages/favorites/favorites';
-import Offer from '../../pages/offer/offer';
+import OfferPage from '../../pages/offer/offer';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
+import { Offer } from '../../types/offer-type';
 
 type AppProps = {
-  offersCount: number;
+  offers: Offer[];
 }
-export default function App({offersCount}: AppProps): JSX.Element {
+
+export default function App({offers}: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
-            path={AppRoute.Root} element={<Main rentCount = {offersCount} />}
+            path={AppRoute.Root} element={<Main offers={offers}/>}
           />
           <Route
             path={AppRoute.Login} element={<Login />}
@@ -28,15 +30,15 @@ export default function App({offersCount}: AppProps): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
+                authorizationStatus={AuthorizationStatus.Auth}
               >
-                {<Favorites />}
+                {<Favorites favoriteOffers={offers} />}
 
               </PrivateRoute>
             }
           />
           <Route
-            path={`${AppRoute.Offer}/:offerId`} element={<Offer />}
+            path={`${AppRoute.Offer}/:offerId`} element={<OfferPage offers={offers}/>}
           />
           <Route
             path='*' element={<NotFoundPage />}
