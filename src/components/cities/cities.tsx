@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Offer } from '../../types/offer-type';
 import Card from '../card/card';
+import { Map } from '../map/map';
+import { TLocation } from '../../types/offer-type';
 
 type CitiesProps = {
   offers: Offer[];
@@ -9,11 +11,10 @@ export default function Cities({offers}: CitiesProps) {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeOffer, setActiveOffer] = useState<Offer['id'] | null>(null);
-
   const handleCardHover = (offerId: Offer['id']) => {
     setActiveOffer(offerId);
   };
-
+  const location: TLocation = offers.length > 0 ? offers[0].location : { latitude: 0, longitude: 0, zoom: 10 };
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -46,7 +47,7 @@ export default function Cities({offers}: CitiesProps) {
           </div>
         </section>
         <div className="cities__right-section">
-          <section className="cities__map map"></section>
+          <Map offers={offers} location={location} specialOfferId={activeOffer}/>
         </div>
       </div>
     </div>

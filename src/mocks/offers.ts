@@ -35,8 +35,8 @@ export const OFFERS: Offer[] = [
     'isFavorite': true,
     'isPremium': true,
     'location': {
-      'latitude': 52.35514938496378,
-      'longitude': 4.673877537499948,
+      'latitude': 52.3909553943508,
+      'longitude': 4.85309666406198,
       'zoom': 8
     },
     'maxAdults': 4,
@@ -54,9 +54,9 @@ export const OFFERS: Offer[] = [
         'longitude': 4.895168,
         'zoom': 10
       },
-      'name': CityName.Paris
+      'name': CityName.Amsterdam
     },
-    'description': 'Nice, cozy, warm big bed apartment. Paris',
+    'description': 'Nice, cozy, warm big bed apartment.',
     'goods': [
       'Heating',
       'Wi-Fi',
@@ -79,8 +79,8 @@ export const OFFERS: Offer[] = [
     'isFavorite': true,
     'isPremium': true,
     'location': {
-      'latitude': 52.35514938496378,
-      'longitude': 4.673877537499948,
+      'latitude': 52.3609553943508,
+      'longitude': 4.85309666406198,
       'zoom': 8
     },
     'maxAdults': 5,
@@ -98,9 +98,9 @@ export const OFFERS: Offer[] = [
         'longitude': 4.895168,
         'zoom': 10
       },
-      'name': CityName.Cologne
+      'name': CityName.Amsterdam
     },
-    'description': 'Nice, cozy, warm big bed apartment. Paris',
+    'description': 'Nice, cozy, warm big bed apartment.',
     'goods': [
       'Kitchen',
       'Cable TV',
@@ -123,8 +123,8 @@ export const OFFERS: Offer[] = [
     'isFavorite': true,
     'isPremium': false,
     'location': {
-      'latitude': 52.35514938496378,
-      'longitude': 4.673877537499948,
+      'latitude': 52.3909553943508,
+      'longitude': 4.929309666406198,
       'zoom': 8
     },
     'maxAdults': 5,
@@ -142,7 +142,7 @@ export const OFFERS: Offer[] = [
         'longitude': 4.895168,
         'zoom': 10
       },
-      'name': CityName.Brussels
+      'name': CityName.Amsterdam
     },
     'description': 'Nice, cozy, warm big bed apartment.',
     'goods': [
@@ -168,8 +168,8 @@ export const OFFERS: Offer[] = [
     'isFavorite': false,
     'isPremium': true,
     'location': {
-      'latitude': 52.35514938496378,
-      'longitude': 4.673877537499948,
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
       'zoom': 8
     },
     'maxAdults': 5,
@@ -177,49 +177,6 @@ export const OFFERS: Offer[] = [
     'price': 400,
     'rating': 5,
     'title': 'Beautiful & luxurious studio at great location - 4',
-    'type': 'hostel'
-  },
-  {
-    'bedrooms': 1,
-    'city': {
-      'location': {
-        'latitude': 52.370216,
-        'longitude': 4.895168,
-        'zoom': 10
-      },
-      'name': CityName.Paris
-    },
-    'description': 'Nice, cozy, warm big bed apartment. Paris',
-    'goods': [
-      'Dishwasher',
-      'Fridge'
-    ],
-    'host': {
-      'avatarUrl': 'img/3.png',
-      'id': 50,
-      'isPro': true,
-      'name': 'Sara'
-    },
-    'id': 5,
-    'images': [
-      'https://media.architecturaldigest.com/photos/61e04ed6f3d6076b395bf303/master/w_1920%2Cc_limit/G19_4416.jpg',
-      'https://media.architecturaldigest.com/photos/5e6a42b25c94700009daa7d7/16:9/w_1920%2Cc_limit/AD0420_DIRAND_7.jpg',
-      'https://media.architecturaldigest.com/photos/62d6d05f0e13d40b82bb49cf/master/w_1920%2Cc_limit/G19_4619%2520copy.jpg',
-      'https://images.unsplash.com/photo-1632323115924-666af9da3411?auto=format&fit=crop&q=80&w=1925&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-
-    ],
-    'isFavorite': true,
-    'isPremium': false,
-    'location': {
-      'latitude': 52.35514938496378,
-      'longitude': 4.673877537499948,
-      'zoom': 8
-    },
-    'maxAdults': 5,
-    'previewImage': '/img/apartment-02.jpg',
-    'price': 100,
-    'rating': 5,
-    'title': 'Beautiful & luxurious studio at great location - 5',
     'type': 'hostel'
   }
 ];
