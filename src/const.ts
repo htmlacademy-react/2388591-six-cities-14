@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+
 enum AppRoute {
   Root = '/',
   Login = '/login',
