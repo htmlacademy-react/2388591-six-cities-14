@@ -51,7 +51,7 @@ export default function Favorites({ favoriteOffers }: FavoritesProps): JSX.Eleme
                     </div>
                     <div className="favorites__places">
                       {groupedFavorites[city].map((offer) => (
-                        <Card key={offer.id} offer={offer} />
+                        <Card key={offer.id} offer={offer} block='favorites'/>
                       ))}
                     </div>
                   </li>

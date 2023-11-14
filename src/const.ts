@@ -26,5 +26,7 @@ export enum CityName {
 
 const MAX_REVIEW_lENGTH = 300;
 const MIN_REVIEW_lENGTH = 50;
+const MAX_SHOWN_REVIEWS = 10;
 
-export { AppRoute, AuthorizationStatus, MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH};
+
+export { AppRoute, AuthorizationStatus, MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, MAX_SHOWN_REVIEWS};

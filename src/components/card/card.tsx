@@ -1,13 +1,16 @@
-import { Offer } from '../../types/offer-type';
 import { Link } from 'react-router-dom';
+
+import { Offer } from '../../types/offer-type';
+
 import { AppRoute } from '../../const';
 
 type CardProps = {
   offer: Offer;
+  block: string;
   onCardHover?: (offerId: Offer['id'] | null) => void;
 };
 
-export default function Card({offer, onCardHover}: CardProps): JSX.Element { //onCardHover into props
+export default function Card({offer, block, onCardHover}: CardProps): JSX.Element {
   const {isPremium, previewImage, id, price, title, type} = offer;
 
   function handleMouseEnter() {
@@ -29,7 +32,7 @@ export default function Card({offer, onCardHover}: CardProps): JSX.Element { //o
         </div>
 
       )}
-      <div className="near-places__image-wrapper place-card__image-wrapper">
+      <div className={`${block}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Offer}/${id}`}>
           <img
             className="place-card__image"
@@ -38,6 +41,7 @@ export default function Card({offer, onCardHover}: CardProps): JSX.Element { //o
 
 
           />
+
         </Link>
 
       </div>
