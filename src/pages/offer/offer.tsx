@@ -11,11 +11,11 @@ import { Offer } from '../../types/offer-type';
 import { AppRoute } from '../../const';
 
 
-type OfferPafeProps = {
+type OfferPageProps = {
   offers: Offer[];
   block: string;
 };
-export default function OfferPage({offers, block}: OfferPafeProps) {
+export default function OfferPage({offers, block}: OfferPageProps) {
   const {offerId} = useParams();
   const offer = offers.find((item) => item.id === Number(offerId));
 
