@@ -1,15 +1,18 @@
 import { useEffect, useRef } from 'react';
-import {Icon, Marker, layerGroup} from 'leaflet';
+
+import { Offer } from '../../types/offer-type';
 import { TLocation } from '../../types/offer-type';
 import { useMap } from '../../hooks/use-map';
-import { Offer } from '../../types/offer-type';
+
+import {Icon, Marker, layerGroup} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  location: TLocation;
   offers: Offer[];
   specialOfferId: Offer['id'] | null;
+  block: string;
 };
+
 type TIcon ={
   url: string;
   width: number;
@@ -44,9 +47,13 @@ function createIcon(config: TIcon) {
 
 }
 
-function Map({offers, location, specialOfferId}: MapProps): JSX.Element {
+const DEFAULT_LOCATION: TLocation = {latitude: 0, longitude: 0, zoom: 10};
+
+function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, location);
+  const map = useMap(mapRef, DEFAULT_LOCATION);
+
+  const location: TLocation = offers.length > 0 ? offers[0].location : DEFAULT_LOCATION;
 
   useEffect(() => {
     if(map) {
@@ -57,6 +64,7 @@ function Map({offers, location, specialOfferId}: MapProps): JSX.Element {
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
+
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
@@ -70,6 +78,7 @@ function Map({offers, location, specialOfferId}: MapProps): JSX.Element {
               : createIcon(defaultIcon)
           )
           .addTo(markerLayer);
+
       });
 
       return () => {
@@ -78,7 +87,19 @@ function Map({offers, location, specialOfferId}: MapProps): JSX.Element {
     }
   }, [map, offers, specialOfferId]);
   return(
-    <section className='cities__map map' ref={mapRef}></section>
+    <section
+      className={`${block}__map map`}
+      ref={mapRef}
+      style={{
+        height: '100%',
+        minHeight:'500px',
+        width: '100%',
+        maxWidth: '1144px',
+        margin: '0 auto'
+      }}
+    >
+    </section>
+
   );
 }
 
