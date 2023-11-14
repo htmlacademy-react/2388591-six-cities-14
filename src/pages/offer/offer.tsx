@@ -13,9 +13,8 @@ import { AppRoute } from '../../const';
 
 type OfferPageProps = {
   offers: Offer[];
-  block: string;
 };
-export default function OfferPage({offers, block}: OfferPageProps) {
+export default function OfferPage({offers}: OfferPageProps) {
   const {offerId} = useParams();
   const offer = offers.find((item) => item.id === Number(offerId));
 
@@ -130,11 +129,11 @@ export default function OfferPage({offers, block}: OfferPageProps) {
               <ReviewList />
             </div>
           </div>
-          <section className={`${block}__map map`} >
+          <section className="offer__map map" >
             <Map
-              block='offer'
               offers={nearbyOffers}
               specialOfferId={activeCard}
+              block='offer'
             />
           </section>
 

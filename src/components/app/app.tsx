@@ -13,10 +13,9 @@ import { Offer } from '../../types/offer-type';
 
 type AppProps = {
   offers: Offer[];
-  block: string;
 }
 
-export default function App({offers, block}: AppProps): JSX.Element {
+export default function App({offers}: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -39,7 +38,7 @@ export default function App({offers, block}: AppProps): JSX.Element {
             }
           />
           <Route
-            path={`${AppRoute.Offer}/:offerId`} element={<OfferPage offers={offers} block={block}/>}
+            path={`${AppRoute.Offer}/:offerId`} element={<OfferPage offers={offers}/>}
           />
           <Route
             path='*' element={<NotFoundPage />}
