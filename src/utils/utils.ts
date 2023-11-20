@@ -5,4 +5,6 @@ function formatDate(date: string) {
   }).format(new Date(date));
 }
 
+
 export {formatDate};
+

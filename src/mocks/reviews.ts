@@ -1,5 +1,5 @@
 import { TReview } from '../types/review-type';
-export const REVIEWS: TReview[] = [
+const REVIEWS: TReview[] = [
   {
     'id': '1a',
     'date': '2019-04-24',
@@ -134,3 +134,5 @@ export const REVIEWS: TReview[] = [
   }
 
 ];
+
+export {REVIEWS};

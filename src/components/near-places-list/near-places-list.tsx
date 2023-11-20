@@ -1,12 +1,11 @@
 import Card from '../card/card';
-import { Offer } from '../../types/offer-type';
+import { TOffer } from '../../types/offer-type';
 
 type NearbyOffersListProps = {
-  nearbyOffers: Offer[];
-  onCardHover: (offerId: Offer['id'] | null) => void;
+  nearbyOffers: TOffer[];
 };
 
-function NearbyOffersList ({ nearbyOffers, onCardHover }:NearbyOffersListProps) {
+function NearbyOffersList ({ nearbyOffers }:NearbyOffersListProps) {
   return(
     <section className="near-places places">
       <h2 className="near-places__title">Other places in the neighbourhood</h2>
@@ -16,7 +15,6 @@ function NearbyOffersList ({ nearbyOffers, onCardHover }:NearbyOffersListProps) 
             key={nearbyOffer.id}
             offer={nearbyOffer}
             block='near-places'
-            onCardHover={() => onCardHover(nearbyOffer.id)}
           />
         ))}
       </div>
