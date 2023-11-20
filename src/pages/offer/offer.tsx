@@ -1,34 +1,41 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; //Navigate
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useEffect } from 'react';
+
 
 import {NearbyOffersList} from '../../components/near-places-list/near-places-list';
 import Header from '../../components/header/header';
 import ReviewList from '../../components/reviews-list/reviews-list';
 import { Map } from '../../components/map/map';
 
-import { Offer } from '../../types/offer-type';
-import { AppRoute } from '../../const';
+// import { AppRoute } from '../../const';
 
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchNearPlaces, fetchOffer, dropOffer } from '../../store/action';
+import { MAX_NEAR_PLACES_COUNT } from '../../const';
 
-type OfferPageProps = {
-  offers: Offer[];
-};
-export default function OfferPage({offers}: OfferPageProps) {
+function OfferPage() {
   const {offerId} = useParams();
-  const offer = offers.find((item) => item.id === Number(offerId));
+  const dispatch = useAppDispatch();
+  const offer = useAppSelector((state) => state.offer);
+  const nearPlaces = useAppSelector((state) => state.nearPlaces);
+  const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
 
-  const [activeCard, setActiveCard] = useState<Offer['id'] | null>(null);
+  useEffect(() => {
+    if (offerId) {
+      dispatch(fetchOffer(offerId));
+      dispatch(fetchNearPlaces(offerId));
+    }
 
-  const handleCardHover = (nearbyOfferId: Offer['id'] | null) => {
-    setActiveCard(nearbyOfferId);
-  };
-  if(!offer) {
-    return <Navigate to={AppRoute.NotFound} />;
-  }
-  const nearbyOffers = offers
-    .filter((item) => item.id !== offer.id)
-    .slice(0, offers.length);
+    return () => {
+      dispatch(dropOffer());
+    };
+  }, [offerId, dispatch]);
+
+
+  // if(!offer) {
+  //   return <Navigate to={AppRoute.NotFound} />;
+  // }
 
   return(
     <div className="page">
@@ -38,7 +45,7 @@ export default function OfferPage({offers}: OfferPageProps) {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offer.images.map((image) => (
+              {offer?.images.map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img
                     className="offer__image"
@@ -50,14 +57,14 @@ export default function OfferPage({offers}: OfferPageProps) {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {offer.isPremium && (
+              {offer?.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {offer.title}
+                  {offer?.title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width={31} height={33}>
@@ -71,27 +78,27 @@ export default function OfferPage({offers}: OfferPageProps) {
                   <span style={{ width: '80%' }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{offer.rating}</span>
+                <span className="offer__rating-value rating__value">{offer?.rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {offer.type}
+                  {offer?.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {offer.bedrooms} Bedrooms
+                  {offer?.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                Max {offer.maxAdults} adults
+                Max {offer?.maxAdults} adults
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">{`€${offer.price}`}</b>
+                <b className="offer__price-value">{`€${offer?.price}`}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What is inside</h2>
                 <ul className="offer__inside-list">
-                  {offer.goods.map((good) => (
+                  {offer?.goods.map((good) => (
                     <li key={good} className="offer__inside-item">
                       {good}
                     </li>
@@ -131,17 +138,20 @@ export default function OfferPage({offers}: OfferPageProps) {
           </div>
           <section className="offer__map map" >
             <Map
-              offers={nearbyOffers}
-              specialOfferId={activeCard}
+              offers={offer ? [...nearPlacesToRender, offer] : nearPlacesToRender}
+              specialOfferId={offerId || null}
               block='offer'
             />
+
           </section>
 
         </section>
         <div className="container">
-          <NearbyOffersList nearbyOffers={nearbyOffers} onCardHover={handleCardHover} />
+          <NearbyOffersList nearbyOffers={nearPlacesToRender} />
         </div>
       </main>
     </div>
   );
 }
+
+export {OfferPage};

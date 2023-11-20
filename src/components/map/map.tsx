@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { Offer } from '../../types/offer-type';
+import { TOffer } from '../../types/offer-type';
 import { TLocation } from '../../types/offer-type';
 import { useMap } from '../../hooks/use-map';
 
@@ -8,8 +8,8 @@ import {Icon, Marker, layerGroup} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  offers: Offer[];
-  specialOfferId: Offer['id'] | null;
+  offers: TOffer[];
+  specialOfferId: TOffer['id'] | null;
   block: string;
 };
 
@@ -61,6 +61,7 @@ function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
     }
   }, [map, location]);
 
+
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
@@ -71,12 +72,10 @@ function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
           lng: offer.location.longitude
         });
 
+        const markerIcon = offer.id === specialOfferId ? activeIcon : defaultIcon;
+
         marker
-          .setIcon(
-            offer.id === specialOfferId
-              ? createIcon(activeIcon)
-              : createIcon(defaultIcon)
-          )
+          .setIcon(createIcon(markerIcon))
           .addTo(markerLayer);
 
       });
@@ -86,6 +85,8 @@ function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
       };
     }
   }, [map, offers, specialOfferId]);
+
+
   return(
     <section
       className={`${block}__map map`}
@@ -104,4 +105,5 @@ function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
 }
 
 export {Map};
+
 

@@ -1,31 +1,29 @@
-import { CityName } from '../const';
-
-export type TLocation = {
+type TLocation = {
   latitude: number;
   longitude: number;
   zoom: number;
 
 };
-
-export type TCity = {
+type TCity = {
+  name: string;
   location: TLocation;
-  name: CityName;
 };
 
-export type THost = {
+
+type THost = {
   avatarUrl: string;
   id: number;
   isPro: boolean;
   name: string;
 };
 
-export type Offer = {
+ type TOffer = {
   bedrooms: number;
   city: TCity;
   description: string;
   goods: string[];
   host: THost;
-  id: number;
+  id: string;
   images: string[];
   isFavorite: boolean;
   isPremium: boolean;
@@ -39,3 +37,4 @@ export type Offer = {
 };
 
 
+export type {TOffer, THost, TCity,TLocation};

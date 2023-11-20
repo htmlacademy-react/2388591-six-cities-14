@@ -1,17 +1,17 @@
-import React from 'react';
-import { Offer } from '../../types/offer-type';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useDispatch } from 'react-redux';
+
+import { TOffer } from '../../types/offer-type';
 import Card from '../../components/card/card';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 
-type FavoritesProps = {
-  favoriteOffers: Offer[];
-};
+import { useAppSelector } from '../../hooks';
+import { fetchFavorities } from '../../store/action';
 
-const getFavoritesByCity = (favoriteOffers: Offer[]) => {
-  const groupedFavorites: { [key: string]: Offer[] } = {};
-  favoriteOffers.forEach((offer) => {
+function getFavoritesByCity(favoriteOffers: TOffer[]) {
+  return favoriteOffers.reduce<{ [key: string]: TOffer[] }>((groupedFavorites, offer) => {
     const city = offer.city.name;
 
     if (!groupedFavorites[city]) {
@@ -19,14 +19,21 @@ const getFavoritesByCity = (favoriteOffers: Offer[]) => {
     }
 
     groupedFavorites[city].push(offer);
-  });
 
-  return groupedFavorites;
-};
+    return groupedFavorites;
+  }, {});
+}
 
-export default function Favorites({ favoriteOffers }: FavoritesProps): JSX.Element {
-  const favoriteOffersList = favoriteOffers.filter((offer) => offer.isFavorite);
-  const groupedFavorites = getFavoritesByCity(favoriteOffersList);
+function Favorites() {
+  const favorities = useAppSelector((state) => state.favorities);
+  const favoritesByCity = getFavoritesByCity(favorities);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (favorities.length === 0) {
+      dispatch(fetchFavorities());
+    }
+  }, [dispatch, favorities]);
 
   return (
     <div className="page">
@@ -39,7 +46,7 @@ export default function Favorites({ favoriteOffers }: FavoritesProps): JSX.Eleme
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {Object.keys(groupedFavorites).map((city) => (
+              {Object.keys(favoritesByCity).map((city) => (
                 <React.Fragment key={city}>
                   <li className="favorites__locations-items">
                     <div className="favorites__locations locations locations--current">
@@ -50,8 +57,8 @@ export default function Favorites({ favoriteOffers }: FavoritesProps): JSX.Eleme
                       </div>
                     </div>
                     <div className="favorites__places">
-                      {groupedFavorites[city].map((offer) => (
-                        <Card key={offer.id} offer={offer} block='favorites'/>
+                      {favoritesByCity[city].map((offer) => (
+                        <Card key={offer.id} offer={offer} block="favorites" />
                       ))}
                     </div>
                   </li>
@@ -63,7 +70,8 @@ export default function Favorites({ favoriteOffers }: FavoritesProps): JSX.Eleme
       </main>
       <Footer />
     </div>
-
   );
 }
+
+export { Favorites };
 

@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 
-import { Offer } from '../../types/offer-type';
+import { TOffer } from '../../types/offer-type';
 
 import { AppRoute } from '../../const';
 
 type CardProps = {
-  offer: Offer;
+  offer: TOffer;
   block: string;
-  onCardHover?: (offerId: Offer['id'] | null) => void;
+  onCardHover?: (offerId: TOffer['id'] | null) => void;
 };
 
 export default function Card({offer, block, onCardHover}: CardProps): JSX.Element {
@@ -38,10 +38,7 @@ export default function Card({offer, block, onCardHover}: CardProps): JSX.Elemen
             className="place-card__image"
             src={previewImage}
             alt={title}
-
-
           />
-
         </Link>
 
       </div>
