@@ -7,12 +7,13 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import {Main} from '../../pages/main/main';
 import Login from '../../pages/login/login';
 import { Favorites } from '../../pages/favorites/favorites';
-import {OfferPage} from '../../pages/offer/offer';
+import {OfferPage} from '../../pages/offer-page/offer';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import { fetchOffers } from '../../store/action';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
+
 
 const App = (): JSX.Element => {
   const offers = useAppSelector((state) => state.offers);
@@ -42,7 +43,7 @@ const App = (): JSX.Element => {
             />
             <Route
               path={`${AppRoute.Offer}/:offerId`}
-              element={<OfferPage />}
+              element={<OfferPage/>}
             />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
