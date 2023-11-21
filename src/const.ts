@@ -32,6 +32,12 @@ const CityMap = {
   Dusseldorf: { name: CityName.Dusseldorf, location: { latitude: 51.2277, longitude: 6.7735, zoom: 10 } },
 } as const;
 
+const SortingMap = {
+  Popular: 'Popular',
+  LowToHigh: 'Price: low to high',
+  HighToLow: 'Price: high to low',
+  TopRated:'Top rated first'
+} as const;
 
 const MAX_REVIEW_lENGTH = 300;
 const MIN_REVIEW_lENGTH = 50;
@@ -40,4 +46,4 @@ const MAX_SHOWN_REVIEWS = 10;
 const MAX_NEAR_PLACES_COUNT = 3;
 
 
-export { AppRoute, AuthorizationStatus, MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, MAX_SHOWN_REVIEWS, MAX_NEAR_PLACES_COUNT,CityMap};
+export { AppRoute, AuthorizationStatus, MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, MAX_SHOWN_REVIEWS, MAX_NEAR_PLACES_COUNT,CityMap, SortingMap};

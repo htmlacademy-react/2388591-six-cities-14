@@ -1,16 +1,19 @@
 import { useEffect, useRef } from 'react';
 
-import { TOffer } from '../../types/offer-type';
-import { TLocation } from '../../types/offer-type';
-import { useMap } from '../../hooks/use-map';
-
 import {Icon, Marker, layerGroup} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+import { useMap } from '../../hooks/use-map';
+
+import { TOffer } from '../../types/offer-type';
+import { TCity } from '../../types/offer-type';
+import { TLocation } from '../../types/offer-type';
 
 type MapProps = {
   offers: TOffer[];
   specialOfferId: TOffer['id'] | null;
   block: string;
+  selectedCity: TCity;
 };
 
 type TIcon ={
@@ -49,18 +52,16 @@ function createIcon(config: TIcon) {
 
 const DEFAULT_LOCATION: TLocation = {latitude: 0, longitude: 0, zoom: 10};
 
-function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
+function Map({ offers, specialOfferId, block, selectedCity }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, DEFAULT_LOCATION);
 
-  const location: TLocation = offers.length > 0 ? offers[0].location : DEFAULT_LOCATION;
-
   useEffect(() => {
-    if(map) {
+    if (map) {
+      const location:TLocation = offers.length > 0 ? offers[0].location : selectedCity.location;
       map.setView([location.latitude, location.longitude], location.zoom);
     }
-  }, [map, location]);
-
+  }, [map, offers, selectedCity]);
 
   useEffect(() => {
     if (map) {
@@ -69,7 +70,7 @@ function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
-          lng: offer.location.longitude
+          lng: offer.location.longitude,
         });
 
         const markerIcon = offer.id === specialOfferId ? activeIcon : defaultIcon;
@@ -77,7 +78,6 @@ function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
         marker
           .setIcon(createIcon(markerIcon))
           .addTo(markerLayer);
-
       });
 
       return () => {
@@ -86,24 +86,21 @@ function Map({offers, specialOfferId, block}: MapProps): JSX.Element {
     }
   }, [map, offers, specialOfferId]);
 
-
-  return(
+  return (
     <section
       className={`${block}__map map`}
       ref={mapRef}
       style={{
         height: '100%',
-        minHeight:'500px',
+        minHeight: '500px',
         width: '100%',
         maxWidth: '1144px',
-        margin: '0 auto'
+        margin: '0 auto',
       }}
     >
     </section>
-
   );
 }
 
-export {Map};
-
+export { Map };
 

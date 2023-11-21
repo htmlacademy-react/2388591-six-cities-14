@@ -13,6 +13,16 @@ import { Map } from '../../components/map/map';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchNearPlaces, fetchOffer, dropOffer } from '../../store/action';
 import { MAX_NEAR_PLACES_COUNT } from '../../const';
+import { TCity } from '../../types/offer-type';
+
+const selectedCity: TCity = {
+  name: '',
+  location: {
+    latitude: 0,
+    longitude: 0,
+    zoom: 0
+  }
+};
 
 function OfferPage() {
   const {offerId} = useParams();
@@ -141,6 +151,7 @@ function OfferPage() {
               offers={offer ? [...nearPlacesToRender, offer] : nearPlacesToRender}
               specialOfferId={offerId || null}
               block='offer'
+              selectedCity={selectedCity}
             />
 
           </section>
