@@ -1,33 +1,27 @@
-import { useParams } from 'react-router-dom'; //Navigate
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
 
 
 import {NearbyOffersList} from '../../components/near-places-list/near-places-list';
-import Header from '../../components/header/header';
-import ReviewList from '../../components/reviews-list/reviews-list';
+import {Header} from '../../components/header/header';
+import {ReviewList} from '../../components/reviews-list/reviews-list';
 import { Map } from '../../components/map/map';
-
-// import { AppRoute } from '../../const';
+import { Spinner } from '../../components/spinner/spinner';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchNearPlaces, fetchOffer, dropOffer } from '../../store/action';
-import { MAX_NEAR_PLACES_COUNT } from '../../const';
-import { TCity } from '../../types/offer-type';
+import { dropOffer } from '../../store/action';
+import { fetchOffer, fetchNearPlaces } from '../../store/api-actions';
 
-const selectedCity: TCity = {
-  name: '',
-  location: {
-    latitude: 0,
-    longitude: 0,
-    zoom: 0
-  }
-};
+import { MAX_NEAR_PLACES_COUNT } from '../../const';
+
+import { RequestStatus } from '../../const';
 
 function OfferPage() {
   const {offerId} = useParams();
   const dispatch = useAppDispatch();
   const offer = useAppSelector((state) => state.offer);
+  const fetchingStatus = useAppSelector((state) => state.offerFetchingStatus);
   const nearPlaces = useAppSelector((state) => state.nearPlaces);
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
 
@@ -42,11 +36,13 @@ function OfferPage() {
     };
   }, [offerId, dispatch]);
 
+  if (fetchingStatus === RequestStatus.Loading) {
+    return <Spinner />;
+  }
 
-  // if(!offer) {
-  //   return <Navigate to={AppRoute.NotFound} />;
-  // }
-
+  if (fetchingStatus === RequestStatus.Errror) {
+    return <div>Error loading data</div>;
+  }
   return(
     <div className="page">
       <Helmet><title>{`6 cities | ${offer?.title}`}</title></Helmet>
@@ -151,7 +147,6 @@ function OfferPage() {
               offers={offer ? [...nearPlacesToRender, offer] : nearPlacesToRender}
               specialOfferId={offerId || null}
               block='offer'
-              selectedCity={selectedCity}
             />
 
           </section>

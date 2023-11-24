@@ -1,8 +1,8 @@
-import Card from '../card/card';
-import { TOffer } from '../../types/offer-type';
+import {Card} from '../card/card';
+import { TPreviewOffer } from '../../types/preview-offer';
 
 type NearbyOffersListProps = {
-  nearbyOffers: TOffer[];
+  nearbyOffers: TPreviewOffer[];
 };
 
 function NearbyOffersList ({ nearbyOffers }:NearbyOffersListProps) {

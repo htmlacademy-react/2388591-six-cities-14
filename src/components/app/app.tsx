@@ -3,20 +3,18 @@ import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { store } from '../../store';
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import {Main} from '../../pages/main/main';
-import Login from '../../pages/login/login';
+import {Login} from '../../pages/login/login';
 import { Favorites } from '../../pages/favorites/favorites';
 import {OfferPage} from '../../pages/offer-page/offer';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
-import { fetchOffers } from '../../store/action';
-
+import { fetchOffers } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../const';
 
 
 const App = (): JSX.Element => {
-  const offers = useAppSelector((state) => state.offers);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,7 +28,7 @@ const App = (): JSX.Element => {
           <Routes>
             <Route
               path={AppRoute.Root}
-              element={<Main offers={offers} />}
+              element={<Main />}
             />
             <Route path={AppRoute.Login} element={<Login />} />
             <Route

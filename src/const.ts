@@ -2,9 +2,17 @@
 enum AppRoute {
   Root = '/',
   Login = '/login',
-  Favorites = '/favorites',
+  Favorites = '/favorite',
   Offer = '/offer',
   NotFound = './pages/not-found-page'
+}
+
+enum APIRoute {
+  Offers = '/offers',
+  Favorites = '/favorite',
+  Reviews = '/reviews',
+  NearPlaces = '/nearby'
+
 }
 
 enum AuthorizationStatus {
@@ -14,6 +22,13 @@ enum AuthorizationStatus {
 
 }
 
+enum RequestStatus {
+  Loading ='Loading',
+  Idle = 'Idle',
+  Errror = 'Error',
+  Sucsess = 'Sucsess'
+
+}
 export enum CityName {
   Paris = 'Paris',
   Cologne = 'Cologne',
@@ -45,5 +60,19 @@ const MAX_SHOWN_REVIEWS = 10;
 
 const MAX_NEAR_PLACES_COUNT = 3;
 
+const API_URL = 'https://14.design.pages.academy/six-cities'; // Замените на ваш URL сервера
 
-export { AppRoute, AuthorizationStatus, MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, MAX_SHOWN_REVIEWS, MAX_NEAR_PLACES_COUNT,CityMap, SortingMap};
+
+export {
+  AppRoute,
+  AuthorizationStatus,
+  MAX_REVIEW_lENGTH,
+  MIN_REVIEW_lENGTH,
+  MAX_SHOWN_REVIEWS,
+  MAX_NEAR_PLACES_COUNT,
+  CityMap,
+  SortingMap,
+  API_URL,
+  APIRoute,
+  RequestStatus
+};

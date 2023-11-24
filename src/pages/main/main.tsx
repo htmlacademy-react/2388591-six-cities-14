@@ -1,19 +1,32 @@
 import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
+import { useEffect } from 'react';
+
+
+import {Header} from '../../components/header/header';
 import { useState } from 'react';
-import { TOffer, TCity } from '../../types/offer-type';
+import { TCity } from '../../types/offer';
 import Cities from '../../components/cities/cities';
 import { CityList } from '../../components/city-list/city-list';
 import { CityName, CityMap } from '../../const';
 
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchOffers } from '../../store/api-actions';
 
-type MainPageProps = {
-  offers: TOffer[];
-}
+import { Spinner } from '../../components/spinner/spinner';
+import { RequestStatus } from '../../const';
 
-function Main({ offers }: MainPageProps): JSX.Element {
+function Main() {
+  const dispatch = useAppDispatch();
+  const fetchingStatus = useAppSelector((state) => state.offerFetchingStatus);
+  const offers = useAppSelector((state) => state.offers);
+
   const [selectedCity, setSelectedCity] = useState<CityName>(CityName.Paris);
   const selectedCityObject: TCity = CityMap[selectedCity];
+
+  useEffect(() => {
+    dispatch(fetchOffers());
+  }, [dispatch]);
+
   return (
     <div className="page page--gray page--main">
       <Helmet><title>6 cities | Main</title></Helmet>
@@ -25,7 +38,11 @@ function Main({ offers }: MainPageProps): JSX.Element {
             <CityList activeCity={selectedCity} onSelectCity={setSelectedCity} />
           </section>
         </div>
-        <Cities offers={offers} selectedCity={selectedCityObject} />
+        {fetchingStatus === RequestStatus.Loading ? (
+          <Spinner />) : (
+          <Cities offers={offers} activeCity={selectedCityObject}/>
+
+        )}
       </main>
     </div>
   );
