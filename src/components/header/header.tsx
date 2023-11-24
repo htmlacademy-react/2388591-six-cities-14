@@ -1,8 +1,9 @@
-import Logo from '../logo/logo';
 import { Link } from 'react-router-dom';
+
+import {Logo} from '../logo/logo';
 import { AppRoute } from '../../const';
 
-export default function Header(): JSX.Element {
+function Header(): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -35,3 +36,5 @@ export default function Header(): JSX.Element {
     </header>
   );
 }
+
+export {Header};

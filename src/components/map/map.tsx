@@ -3,17 +3,15 @@ import { useEffect, useRef } from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+import { TPreviewOffer } from '../../types/preview-offer';
+import { TLocation } from '../../types/location';
+
 import { useMap } from '../../hooks/use-map';
 
-import { TOffer } from '../../types/offer-type';
-import { TCity } from '../../types/offer-type';
-import { TLocation } from '../../types/offer-type';
-
 type MapProps = {
-  offers: TOffer[];
-  specialOfferId: TOffer['id'] | null;
+  offers: TPreviewOffer[];
+  specialOfferId: TPreviewOffer['id'] | null;
   block: string;
-  selectedCity: TCity;
 };
 
 type TIcon ={
@@ -52,16 +50,16 @@ function createIcon(config: TIcon) {
 
 const DEFAULT_LOCATION: TLocation = {latitude: 0, longitude: 0, zoom: 10};
 
-function Map({ offers, specialOfferId, block, selectedCity }: MapProps): JSX.Element {
+function Map({ offers, specialOfferId, block }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, DEFAULT_LOCATION);
 
   useEffect(() => {
     if (map) {
-      const location:TLocation = offers.length > 0 ? offers[0].location : selectedCity.location;
+      const location:TLocation = offers.length > 0 ? offers[0].location : DEFAULT_LOCATION;
       map.setView([location.latitude, location.longitude], location.zoom);
     }
-  }, [map, offers, selectedCity]);
+  }, [map, offers]);
 
   useEffect(() => {
     if (map) {

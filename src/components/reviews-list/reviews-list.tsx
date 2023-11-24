@@ -1,9 +1,9 @@
-import Review from '../review/review';
+import {Review} from '../review/review';
 import ReviewForm from '../review-form/review-form';
 import { REVIEWS } from '../../mocks/reviews';
 import { MAX_SHOWN_REVIEWS } from '../../const';
 
-export default function ReviewList() {
+function ReviewList() {
   const sortedReviews = REVIEWS.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const shownReviews = sortedReviews.slice(0, MAX_SHOWN_REVIEWS);
@@ -20,4 +20,6 @@ export default function ReviewList() {
     </section>
   );
 }
+
+export {ReviewList};
 

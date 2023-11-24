@@ -28,3 +28,5 @@ function CityList({ activeCity, onSelectCity }: CityListProps): JSX.Element {
 }
 
 export { CityList };
+
+

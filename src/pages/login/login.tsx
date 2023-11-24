@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 
-import Logo from '../../components/logo/logo';
+import {Logo} from '../../components/logo/logo';
 
-export default function Login(): JSX.Element {
+function Login(): JSX.Element {
   return(
     <div className="page page--gray page--login">
       <Helmet><title>6 cities | Login</title></Helmet>
@@ -46,4 +46,4 @@ export default function Login(): JSX.Element {
   );
 }
 
-
+export {Login};

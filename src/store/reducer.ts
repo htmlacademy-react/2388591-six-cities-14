@@ -1,55 +1,94 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { fetchOffer, fetchOffers, fetchNearPlaces, fetchFavorities, fetchReviews, dropOffer, setActiveCity } from './action';
+import { dropOffer, setActiveCity } from './action';
+import { fetchOffer, fetchNearPlaces, fetchReviews, fetchOffers, fetchFavorites } from './api-actions';
 
-import { TOffer, TCity } from '../types/offer-type';
+import { TOffer } from '../types/offer';
+import { TCity } from '../types/city';
 import { TReview } from '../types/review-type';
+import { TPreviewOffer } from '../types/preview-offer';
 
-import { CityMap } from '../const';
+import { CityMap, RequestStatus } from '../const';
 
-import { OFFERS } from '../mocks/offers';
-import { REVIEWS } from '../mocks/reviews';
-
-const initialState: {
-  offers: TOffer[];
-  nearPlaces: TOffer[];
+interface State {
+  offers: TPreviewOffer[];
+  offersFetchingStatus: RequestStatus;
+  nearPlaces: TPreviewOffer[];
   reviews: TReview[];
+  reviewFetchingStatus: RequestStatus;
   offer: TOffer | null;
-  favorities: TOffer[];
+  offerFetchingStatus: RequestStatus;
+
+  favorites: TPreviewOffer[];
+  favoritesFetchingStatus: RequestStatus;
   activeCity: TCity;
-} = {
+}
+
+const initialState: State = {
   offers:[],
+  offersFetchingStatus: RequestStatus.Idle,
   nearPlaces: [],
   reviews: [],
+  reviewFetchingStatus: RequestStatus.Idle,
   offer: null,
-  favorities: [],
+  offerFetchingStatus: RequestStatus.Idle,
+  favorites: [],
+  favoritesFetchingStatus: RequestStatus.Idle,
   activeCity: CityMap.Paris,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(fetchOffers, (state) => {
-      state.offers = OFFERS;
+    .addCase(fetchOffers.pending, (state) => {
+      state.offersFetchingStatus = RequestStatus.Loading;
     })
-    .addCase(fetchOffer, (state, action) => {
-      state.offer = OFFERS.find((offer) => offer.id === action.payload) ?? null;
+    .addCase(fetchOffers.fulfilled, (state, action) => {
+      state.offersFetchingStatus = RequestStatus.Sucsess;
+      state.offers = action.payload;
+    })
+    .addCase(fetchOffers.rejected, (state) => {
+      state.offersFetchingStatus = RequestStatus.Errror;
+    })
+    .addCase(fetchOffer.pending, (state) => {
+      state.offerFetchingStatus = RequestStatus.Loading;
 
     })
-    .addCase(fetchNearPlaces, (state, action) => {
-      state.nearPlaces = OFFERS.filter((offer) => offer.id !== action.payload);
+    .addCase(fetchOffer.fulfilled, (state, action) => {
+      state.offerFetchingStatus = RequestStatus.Sucsess;
+      state.offer = action.payload;
+
     })
-    .addCase(fetchReviews, (state) => {
-      state.reviews = REVIEWS;
+    .addCase(fetchOffer.rejected, (state) => {
+      state.offerFetchingStatus = RequestStatus.Errror;
+    })
+    .addCase(fetchNearPlaces.fulfilled, (state, action) => {
+      state.nearPlaces = action.payload;
+    })
+    .addCase(fetchReviews.pending, (state) => {
+      state.reviewFetchingStatus = RequestStatus.Loading;
+    })
+    .addCase(fetchReviews.fulfilled, (state, action) => {
+      state.reviewFetchingStatus = RequestStatus.Sucsess;
+      state.reviews = action.payload;
+    })
+    .addCase(fetchReviews.rejected, (state) => {
+      state.reviewFetchingStatus = RequestStatus.Errror;
     })
     .addCase(dropOffer, (state) => {
       state.offer = null;
-      state.nearPlaces = [];
     })
     .addCase(setActiveCity, (state, action) => {
       state.activeCity = action.payload;
     })
-    .addCase(fetchFavorities, (state) => {
-      state.favorities = state.offers.filter((offer) => offer.isFavorite);
+    .addCase(fetchFavorites.pending, (state) => {
+      state.favoritesFetchingStatus = RequestStatus.Loading;
+    })
+    .addCase(fetchFavorites.fulfilled, (state, action) => {
+      state.favoritesFetchingStatus = RequestStatus.Sucsess;
+      state.favorites = action.payload;
+    })
+    .addCase(fetchFavorites.rejected, (state) => {
+      state.favoritesFetchingStatus = RequestStatus.Errror;
     });
 
 });

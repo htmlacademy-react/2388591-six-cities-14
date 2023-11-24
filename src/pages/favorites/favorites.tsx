@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useDispatch } from 'react-redux';
 
-import { TOffer } from '../../types/offer-type';
-import Card from '../../components/card/card';
-import Footer from '../../components/footer/footer';
-import Header from '../../components/header/header';
+import { TPreviewOffer } from '../../types/preview-offer';
+import {Card} from '../../components/card/card';
+import {Footer} from '../../components/footer/footer';
+import {Header} from '../../components/header/header';
 
-import { useAppSelector } from '../../hooks';
-import { fetchFavorities } from '../../store/action';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchFavorites } from '../../store/api-actions';
 
-function getFavoritesByCity(favoriteOffers: TOffer[]) {
-  return favoriteOffers.reduce<{ [key: string]: TOffer[] }>((groupedFavorites, offer) => {
+function getFavoritesByCity(favoriteOffers: TPreviewOffer[]) {
+  return favoriteOffers.reduce<{ [key: string]: TPreviewOffer[] }>((groupedFavorites, offer) => {
     const city = offer.city.name;
 
     if (!groupedFavorites[city]) {
@@ -25,15 +24,15 @@ function getFavoritesByCity(favoriteOffers: TOffer[]) {
 }
 
 function Favorites() {
-  const favorities = useAppSelector((state) => state.favorities);
-  const favoritesByCity = getFavoritesByCity(favorities);
-  const dispatch = useDispatch();
+  const favorites = useAppSelector((state) => state.favorites);
+  const favoritesByCity = getFavoritesByCity(favorites);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (favorities.length === 0) {
-      dispatch(fetchFavorities());
+    if (favorites.length === 0) {
+      dispatch(fetchFavorites());
     }
-  }, [dispatch, favorities]);
+  }, [dispatch, favorites]);
 
   return (
     <div className="page">
@@ -74,4 +73,5 @@ function Favorites() {
 }
 
 export { Favorites };
+
 

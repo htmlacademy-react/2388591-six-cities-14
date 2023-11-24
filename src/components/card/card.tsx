@@ -1,25 +1,30 @@
 import { Link } from 'react-router-dom';
 
-import { TOffer } from '../../types/offer-type';
+import { TPreviewOffer } from '../../types/preview-offer';
+
+import { useAppSelector } from '../../hooks';
 
 import { AppRoute } from '../../const';
 
 type CardProps = {
-  offer: TOffer;
+  offer: TPreviewOffer;
   block: string;
-  onCardHover?: (offerId: TOffer['id'] | null) => void;
+  onCardHover?: (offerId: TPreviewOffer['id'] | null) => void;
 };
 
-export default function Card({offer, block, onCardHover}: CardProps): JSX.Element {
-  const {isPremium, previewImage, id, price, title, type} = offer;
+function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
+  const { isPremium, previewImage, id, price, title, type } = offer;
+  const favorities = useAppSelector((state) => state.favorites);
+  const isFavorite = favorities.some((favorite) => favorite.id === id);
 
-  function handleMouseEnter() {
+  const handleMouseEnter = () => {
     onCardHover?.(id);
-  }
+  };
 
-  function handleMouseLeave() {
+  const handleMouseLeave = () => {
     onCardHover?.(null);
-  }
+  };
+
   return (
     <article
       className="near-places__card place-card"
@@ -30,17 +35,11 @@ export default function Card({offer, block, onCardHover}: CardProps): JSX.Elemen
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
-
       )}
       <div className={`${block}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Offer}/${id}`}>
-          <img
-            className="place-card__image"
-            src={previewImage}
-            alt={title}
-          />
+          <img className="place-card__image" src={previewImage} alt={title} />
         </Link>
-
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -48,16 +47,21 @@ export default function Card({offer, block, onCardHover}: CardProps): JSX.Elemen
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button
+            className={`place-card__bookmark-button button ${
+              isFavorite ? 'place-card__bookmark-button--active' : ''
+            }`}
+            type="button"
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">To bookmarks</span>
+            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
           </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '100%'}}></span>
+            <span style={{ width: '100%' }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -68,5 +72,6 @@ export default function Card({offer, block, onCardHover}: CardProps): JSX.Elemen
       </div>
     </article>
   );
-
 }
+
+export {Card};

@@ -36,5 +36,5 @@ const Review = ({review}:ReviewProps) => {
   );
 };
 
-export default Review;
+export {Review};
 
