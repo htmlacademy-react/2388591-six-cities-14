@@ -11,13 +11,14 @@ import {OfferPage} from '../../pages/offer-page/offer';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import { fetchOffers } from '../../store/api-actions';
-import { AppRoute, AuthorizationStatus } from '../../const';
-
+import { AppRoute } from '../../const';
+import { checkAuth } from '../../store/api-actions';
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(checkAuth());
     dispatch(fetchOffers());
   }, [dispatch]);
 
@@ -26,23 +27,15 @@ const App = (): JSX.Element => {
       <HelmetProvider>
         <BrowserRouter>
           <Routes>
-            <Route
-              path={AppRoute.Root}
-              element={<Main />}
+            <Route path={AppRoute.Root} element={<Main />} />
+            <Route path={AppRoute.Login} element={<Login />}/>
+            <Route path={AppRoute.Favorites} element={
+              <PrivateRoute>
+                {<Favorites />}
+              </PrivateRoute>
+            }
             />
-            <Route path={AppRoute.Login} element={<Login />} />
-            <Route
-              path={AppRoute.Favorites}
-              element={
-                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                  {<Favorites />}
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path={`${AppRoute.Offer}/:offerId`}
-              element={<OfferPage/>}
-            />
+            <Route path={`${AppRoute.Offer}/:offerId`} element={<OfferPage/>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

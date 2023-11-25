@@ -53,13 +53,15 @@ const DEFAULT_LOCATION: TLocation = {latitude: 0, longitude: 0, zoom: 10};
 function Map({ offers, specialOfferId, block }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, DEFAULT_LOCATION);
+  const location = offers.length > 0 ? offers[0].location : DEFAULT_LOCATION;
+
 
   useEffect(() => {
     if (map) {
-      const location:TLocation = offers.length > 0 ? offers[0].location : DEFAULT_LOCATION;
       map.setView([location.latitude, location.longitude], location.zoom);
     }
-  }, [map, offers]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, location.latitude, location.longitude]);
 
   useEffect(() => {
     if (map) {

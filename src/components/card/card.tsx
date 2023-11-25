@@ -5,6 +5,7 @@ import { TPreviewOffer } from '../../types/preview-offer';
 import { useAppSelector } from '../../hooks';
 
 import { AppRoute } from '../../const';
+import classNames from 'classnames';
 
 type CardProps = {
   offer: TPreviewOffer;
@@ -48,9 +49,10 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={`place-card__bookmark-button button ${
-              isFavorite ? 'place-card__bookmark-button--active' : ''
-            }`}
+            className={classNames('place-card__bookmark-button', 'button', {
+              'place-card__bookmark-button--active' :
+              isFavorite
+            })}
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
