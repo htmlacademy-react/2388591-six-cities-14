@@ -11,7 +11,9 @@ enum APIRoute {
   Offers = '/offers',
   Favorites = '/favorite',
   Reviews = '/reviews',
-  NearPlaces = '/nearby'
+  NearPlaces = '/nearby',
+  Login = '/login',
+  Logout = '/logout',
 
 }
 
@@ -25,8 +27,8 @@ enum AuthorizationStatus {
 enum RequestStatus {
   Loading ='Loading',
   Idle = 'Idle',
-  Errror = 'Error',
-  Sucsess = 'Sucsess'
+  Error = 'Error',
+  Success = 'Success'
 
 }
 export enum CityName {
@@ -60,8 +62,16 @@ const MAX_SHOWN_REVIEWS = 10;
 
 const MAX_NEAR_PLACES_COUNT = 3;
 
-const API_URL = 'https://14.design.pages.academy/six-cities'; // Замените на ваш URL сервера
+const API_URL = 'https://14.design.pages.academy/six-cities';
 
+const HttpStatus = {
+  OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+};
 
 export {
   AppRoute,
@@ -74,5 +84,6 @@ export {
   SortingMap,
   API_URL,
   APIRoute,
-  RequestStatus
+  RequestStatus,
+  HttpStatus
 };

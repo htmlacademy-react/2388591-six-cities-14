@@ -40,18 +40,23 @@ function OfferPage() {
     return <Spinner />;
   }
 
-  if (fetchingStatus === RequestStatus.Errror) {
+  if (fetchingStatus === RequestStatus.Error) {
     return <div>Error loading data</div>;
   }
+
+  if(fetchingStatus !== RequestStatus.Success || !offer) {
+    return null;
+  }
+
   return(
     <div className="page">
-      <Helmet><title>{`6 cities | ${offer?.title}`}</title></Helmet>
+      <Helmet><title>{`6 cities | ${offer.title}`}</title></Helmet>
       <Header />
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offer?.images.map((image) => (
+              {offer.images.map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img
                     className="offer__image"
@@ -88,10 +93,10 @@ function OfferPage() {
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {offer?.type}
+                  {offer.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {offer?.bedrooms} Bedrooms
+                  {offer.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
                 Max {offer?.maxAdults} adults
@@ -104,7 +109,7 @@ function OfferPage() {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What is inside</h2>
                 <ul className="offer__inside-list">
-                  {offer?.goods.map((good) => (
+                  {offer.goods.map((good) => (
                     <li key={good} className="offer__inside-item">
                       {good}
                     </li>

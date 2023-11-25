@@ -2,10 +2,10 @@ import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
 
 
-import {Header} from '../../components/header/header';
+import { Header } from '../../components/header/header';
 import { useState } from 'react';
 import { TCity } from '../../types/offer';
-import Cities from '../../components/cities/cities';
+import {Cities} from '../../components/cities/cities';
 import { CityList } from '../../components/city-list/city-list';
 import { CityName, CityMap } from '../../const';
 
@@ -17,7 +17,7 @@ import { RequestStatus } from '../../const';
 
 function Main() {
   const dispatch = useAppDispatch();
-  const fetchingStatus = useAppSelector((state) => state.offerFetchingStatus);
+  const fetchingStatus = useAppSelector((state) => state.offersFetchingStatus);
   const offers = useAppSelector((state) => state.offers);
 
   const [selectedCity, setSelectedCity] = useState<CityName>(CityName.Paris);
@@ -38,10 +38,9 @@ function Main() {
             <CityList activeCity={selectedCity} onSelectCity={setSelectedCity} />
           </section>
         </div>
-        {fetchingStatus === RequestStatus.Loading ? (
-          <Spinner />) : (
+        {fetchingStatus === RequestStatus.Loading && <Spinner />}
+        {fetchingStatus === RequestStatus.Success && (
           <Cities offers={offers} activeCity={selectedCityObject}/>
-
         )}
       </main>
     </div>

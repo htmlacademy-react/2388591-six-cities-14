@@ -1,4 +1,3 @@
-// import { TOffer } from '../types/offer';
 import { TPreviewOffer } from '../types/preview-offer';
 import { TSorting } from '../types/sorting';
 

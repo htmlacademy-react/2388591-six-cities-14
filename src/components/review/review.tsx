@@ -1,8 +1,10 @@
 import { TReview } from '../../types/review-type';
 import { formatDate } from '../../utils/utils';
+
 type ReviewProps = {
   review: TReview;
 };
+
 const Review = ({review}:ReviewProps) => {
   const { user, rating, comment, date } = review;
 
