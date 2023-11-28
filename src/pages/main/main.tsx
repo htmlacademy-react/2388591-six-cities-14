@@ -19,8 +19,8 @@ function Main() {
   const dispatch = useAppDispatch();
   const fetchingStatus = useAppSelector((state) => state.offersFetchingStatus);
   const offers = useAppSelector((state) => state.offers);
-
   const [selectedCity, setSelectedCity] = useState<CityName>(CityName.Paris);
+
   const selectedCityObject: TCity = CityMap[selectedCity];
 
   useEffect(() => {

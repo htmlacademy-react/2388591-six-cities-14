@@ -1,68 +1,83 @@
 /* eslint-disable camelcase */
-import React, {Fragment, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react'; //Fragment
 
-import { MAX_REVIEW_lENGTH,MIN_REVIEW_lENGTH } from '../../const';
+import { MAX_REVIEW_lENGTH,MIN_REVIEW_lENGTH, RequestStatus } from '../../const';
+import { TOffer } from '../../types/offer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { postReview } from '../../store/api-actions';
+import { dropReviewSendingStatus } from '../../store/action';
 
-const ratings = [5, 4, 3, 2, 1];
+import { Rating } from '../rating/rating';
 
-export default function ReviewForm(): JSX.Element {
-  const [review, setReview] = useState('');
+type TReviewsProps = {
+  offerId: TOffer['id'];
+}
+
+function ReviewForm({offerId}: TReviewsProps) {
+  const dispatch = useAppDispatch();
+  const sendingStatus = useAppSelector((state) => state.reviewFetchingStatus);
+  const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
+  const isSending = sendingStatus === RequestStatus.Loading;
 
   const isSubmitDisabled =
-    review.length >= MIN_REVIEW_lENGTH &&
-    review.length <= MAX_REVIEW_lENGTH &&
+    comment.length >= MIN_REVIEW_lENGTH &&
+    comment.length <= MAX_REVIEW_lENGTH &&
     rating !== 0;
 
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setReview(evt.target.value);
+    setComment(evt.target.value);
   };
 
   const handleRatingChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setRating(Number(evt.target.value));
   };
 
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(
+      postReview({
+        reviewData: {
+          comment,
+          rating: +rating,
+        },
+        offerId
+      })
+    );
+
+  };
+
+  useEffect(() => {
+    if(sendingStatus === RequestStatus.Success) {
+      setComment('');
+      setRating(0);
+      dispatch(dropReviewSendingStatus());
+
+    }
+  }, [sendingStatus, dispatch]);
+
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
+      {sendingStatus === RequestStatus.Error && (
+        <p>Failed to post review. Please try again! </p>
+      )}
       <label className="reviews__label form__label" htmlFor="review">
        Your review
       </label>
-      <div className="reviews__rating-form form__rating">
-        {ratings.map((star) => (
-          <Fragment key={star}>
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              value={star}
-              id={`${star}-stars`}
-              type="radio"
-              onChange={handleRatingChange}
-              checked={rating === star}
-            />
-            <label
-              htmlFor={`${star}-stars`}
-              className={`reviews__rating-label form__rating-label ${
-                rating >= star ? 'reviews__rating-label--active' : ''
-              }`}
-              title={star === 5 ? 'perfect' : ''}
-            >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
-            </label>
-          </Fragment>
-        ))}
-      </div>
+      <Rating onChange={handleRatingChange}/>
       <textarea
         onChange={handleFieldChange}
         className="reviews__textarea form__textarea"
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        defaultValue={review}
+        defaultValue={comment}
       />
       <div className="reviews__button-wrapper">
+        {isSending && <p>Sending...</p>}
+
         <p className="reviews__help">
         To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span> and describe your stay
@@ -80,3 +95,5 @@ export default function ReviewForm(): JSX.Element {
 
   );
 }
+
+export {ReviewForm};

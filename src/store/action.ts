@@ -5,3 +5,6 @@ export const setActiveCity = createAction<TCity>('offers/setCity');
 
 export const dropOffer = createAction('offer/dropOffer');
 
+export const dropReviewSendingStatus = createAction('review/dropReview');
+
+export const dropSendingStatus = createAction('sending/dropSending');

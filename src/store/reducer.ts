@@ -25,6 +25,7 @@ interface State {
   activeCity: TCity;
   authorizationStatus: AuthorizationStatus;
   user: TAuthorizedUser | null;
+  loginSendingStatus: RequestStatus;
 }
 
 const initialState: State = {
@@ -40,6 +41,7 @@ const initialState: State = {
   activeCity: CityMap.Paris,
   authorizationStatus: AuthorizationStatus.Unknown,
   user: null,
+  loginSendingStatus: RequestStatus.Idle,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -107,9 +109,18 @@ const reducer = createReducer(initialState, (builder) => {
       state.user = null;
       state.authorizationStatus = AuthorizationStatus.NoAuth;
     })
+    .addCase(login.pending, (state) => {
+      state.loginSendingStatus = RequestStatus.Loading;
+    })
     .addCase(login.fulfilled, (state, action) => {
+      state.loginSendingStatus = RequestStatus.Success;
       state.user = action.payload;
       state.authorizationStatus = AuthorizationStatus.Auth;
+    })
+    .addCase(login.rejected, (state) => {
+      state.loginSendingStatus = RequestStatus.Error;
+      state.user = null;
+      state.authorizationStatus = AuthorizationStatus.NoAuth;
     })
     .addCase(logout.pending, (state) => {
       state.user = null;

@@ -10,7 +10,7 @@ enum AppRoute {
 enum APIRoute {
   Offers = '/offers',
   Favorites = '/favorite',
-  Reviews = '/reviews',
+  Reviews = '/comments',
   NearPlaces = '/nearby',
   Login = '/login',
   Logout = '/logout',

@@ -16,6 +16,7 @@ import { fetchOffer, fetchNearPlaces } from '../../store/api-actions';
 import { MAX_NEAR_PLACES_COUNT } from '../../const';
 
 import { RequestStatus } from '../../const';
+import { getRating } from '../../utils/utils';
 
 function OfferPage() {
   const {offerId} = useParams();
@@ -86,7 +87,7 @@ function OfferPage() {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: '80%' }} />
+                  <span style={{ width: getRating(offer.rating) }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{offer?.rating}</span>
@@ -144,7 +145,7 @@ function OfferPage() {
                   </p>
                 </div>
               </div>
-              <ReviewList />
+              {offerId && <ReviewList offerId={offerId} />}
             </div>
           </div>
           <section className="offer__map map" >

@@ -1,5 +1,5 @@
-import React, { useState, FormEvent } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useState, FormEvent, useMemo, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 import { Logo } from '../../components/logo/logo';
@@ -7,37 +7,73 @@ import { Logo } from '../../components/logo/logo';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { login } from '../../store/api-actions';
+import { dropSendingStatus, setActiveCity } from '../../store/action';
 
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { TLoginData } from '../../types/login-data';
+
+import { getRandomArrayElement } from '../../utils/utils';
+
+import { AppRoute, AuthorizationStatus, CityMap, RequestStatus } from '../../const';
+
+import styles from './login-page.module.css';
+
+const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.([0-9]{1,3}|[a-zA-Z]{2})\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const EMAIL_ERROR_TEXT = 'Please enter a correct email address.';
+const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
+const PASSWORD_ERROR_TEXT = 'Password must contain at least one letter and one digit. Please enter a correct password!';
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const sendingStatus = useAppSelector((state) => state.loginSendingStatus);
 
   const [email, setEmail] = useState<string>('');
+  const [isEmailFilled, setIsEmailFilled] = useState(false);
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [isPasswordFilled, setIsPasswordFilled] = useState(false);
 
-  const handleLogin = (e: FormEvent<HTMLFormElement>): void => {
+  const isEmailValid = EMAIL_PATTERN.test(email);
+  const isPasswordValid = PASSWORD_PATTERN.test(password);
+  const isValid = isEmailValid && isPasswordValid;
+
+
+  const randomCity = useMemo(
+    () => getRandomArrayElement(Object.values(CityMap)),
+    []
+  );
+
+  useEffect(
+    () => () => {
+      setIsEmailFilled(false);
+      setIsPasswordFilled(false);
+      dispatch(dropSendingStatus());
+    },
+    [dispatch]
+  );
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!email || !password) {
-      setError('Please enter both email and password.');
+    if(!isValid) {
       return;
     }
 
-    dispatch(login({ email, password }))
-      .then(() => {
-        dispatch(login({ email, password }));
-      })
-      .catch(() => {
-        setError('Invalid email or password. Please try again.');
-      });
+    const form = e.currentTarget;
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData) as TLoginData;
+
+    dispatch(login(data));
+
   };
-
-
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return <Navigate to={AppRoute.Root} />;
+  }
+
+  function handleAnchorClick (evt: React.MouseEvent<HTMLAnchorElement>) {
+    evt.preventDefault();
+    dispatch(setActiveCity(randomCity));
+    navigate(AppRoute.Root);
   }
 
   return (
@@ -58,8 +94,12 @@ const Login: React.FC = () => {
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
+            {sendingStatus === RequestStatus.Error && (
+              <p className={styles.message}>Failed to submit. Please try again!</p>
+            )}
             <h1 className="login__title">Sign in</h1>
-            <form className="login__form form" onSubmit={handleLogin}>
+
+            <form className="login__form form" onSubmit={handleFormSubmit}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
@@ -70,7 +110,11 @@ const Login: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => setIsEmailFilled(true)}
                 />
+                {isEmailFilled && !isEmailValid && (
+                  <div className={styles.message}>{EMAIL_ERROR_TEXT}</div>
+                )}
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
@@ -82,18 +126,30 @@ const Login: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onBlur={() => setIsPasswordFilled(true)}
                 />
               </div>
-              {error && <div style={{ color: 'red' }}>{error}</div>}
-              <button className="login__submit form__submit button" type="submit">
-                Sign in
+              {isPasswordFilled && !isPasswordValid && (
+                <div className={styles.message}>{PASSWORD_ERROR_TEXT}</div>
+              )}
+              <button
+                className="login__submit form__submit button"
+                type="submit"
+                disabled={!isValid || sendingStatus === RequestStatus.Loading}
+              >
+                {sendingStatus === RequestStatus.Loading ? (
+                  'sending...'
+                ) : (
+                  'Sign in'
+                )}
+
               </button>
             </form>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
+              <a className="locations__item-link" href="#" onClick={handleAnchorClick}>
+                <span>{randomCity.name}</span>
               </a>
             </div>
           </section>

@@ -24,23 +24,14 @@ const createApi = (): AxiosInstance => {
     },
   );
 
+
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<{ error: string }>) => {
-      if (error.response) {
-        const status = error.response.status;
-        switch (status) {
-          case HttpStatus.NOT_FOUND:
-            browserHistory.push(AppRoute.NotFound);
-            break;
-          case HttpStatus.UNAUTHORIZED:
-            browserHistory.push(AppRoute.Root);
-            break;
-          default:
-            break;
-        }
+      if(error.response?.status === HttpStatus.NOT_FOUND) {
+        browserHistory.push(AppRoute.NotFound);
       }
-      return Promise.reject(error);
+      throw error;
     }
   );
 
