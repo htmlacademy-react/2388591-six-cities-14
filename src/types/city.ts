@@ -1,7 +1,8 @@
+import { CityName } from '../const';
 import { TLocation } from './location';
 
 type TCity = {
-  name: string;
+  name: CityName;
   location: TLocation;
 };
 

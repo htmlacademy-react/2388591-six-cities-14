@@ -1,7 +1,8 @@
-import { Fragment } from 'react';
+import React, { ChangeEvent } from 'react';
 
 type RatingProps = {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: number;
+  onChange: (value: number) => void;
 };
 
 const RATING_MAP = {
@@ -12,18 +13,23 @@ const RATING_MAP = {
   5: 'perfect',
 };
 
-function Rating({ onChange }: RatingProps) {
+function Rating({ value, onChange }: RatingProps) {
+  const handleRatingChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(Number(e.target.value));
+  };
+
   return (
     <div className="reviews__rating-form form__rating">
       {Object.entries(RATING_MAP).reverse().map(([star, title]) => (
-        <Fragment key={star}>
+        <React.Fragment key={star}>
           <input
             className="form__rating-input visually-hidden"
             name="rating"
             value={star}
             id={`${star}-stars`}
             type="radio"
-            onChange={onChange}
+            onChange={handleRatingChange}
+            checked={value === Number(star)}
           />
           <label
             htmlFor={`${star}-stars`}
@@ -34,10 +40,10 @@ function Rating({ onChange }: RatingProps) {
               <use xlinkHref="#icon-star" />
             </svg>
           </label>
-        </Fragment>
+        </React.Fragment>
       ))}
     </div>
   );
 }
 
-export {Rating};
+export { Rating };

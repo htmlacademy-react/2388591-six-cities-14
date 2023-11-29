@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { dropOffer, setActiveCity } from './action';
-import { fetchOffer, fetchNearPlaces, fetchReviews, fetchOffers, fetchFavorites, checkAuth, login, logout } from './api-actions';
+import { dropOffer, dropReviewSendingStatus, setActiveCity } from './action';
+import { fetchOffer, fetchNearPlaces, fetchReviews, fetchOffers, fetchFavorites, checkAuth, login, logout, postReview } from './api-actions';
 
 import { TOffer } from '../types/offer';
 import { TCity } from '../types/city';
@@ -125,6 +125,16 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(logout.pending, (state) => {
       state.user = null;
       state.authorizationStatus = AuthorizationStatus.NoAuth;
+    })
+    .addCase(dropReviewSendingStatus, (state) => {
+      state.reviewFetchingStatus = RequestStatus.Idle;
+    })
+    .addCase(postReview.fulfilled, (state, action) => {
+      state.reviews.push(action.payload);
+      state.reviewFetchingStatus = RequestStatus.Success;
+    })
+    .addCase(postReview.pending, (state) => {
+      state.reviewFetchingStatus = RequestStatus.Loading;
     });
 
 });
