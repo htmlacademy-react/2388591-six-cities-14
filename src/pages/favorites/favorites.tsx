@@ -8,6 +8,7 @@ import {Header} from '../../components/header/header';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { fetchFavorites } from '../../store/api-actions';
+import { RequestStatus } from '../../const';
 
 function getFavoritesByCity(favoriteOffers: TPreviewOffer[]) {
   return favoriteOffers.reduce<{ [key: string]: TPreviewOffer[] }>((groupedFavorites, offer) => {
@@ -25,14 +26,15 @@ function getFavoritesByCity(favoriteOffers: TPreviewOffer[]) {
 
 function Favorites() {
   const favorites = useAppSelector((state) => state.favorites);
+  const status = useAppSelector((state) => state.favoritesFetchingStatus);
   const favoritesByCity = getFavoritesByCity(favorites);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (favorites.length === 0) {
+    if (status === RequestStatus.Idle) {
       dispatch(fetchFavorites());
     }
-  }, [dispatch, favorites]);
+  }, [dispatch, status]);
 
   return (
     <div className="page">

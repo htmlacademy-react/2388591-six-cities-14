@@ -6,6 +6,7 @@ import { useAppSelector } from '../../hooks';
 
 import { AppRoute } from '../../const';
 import classNames from 'classnames';
+import { getRating } from '../../utils/utils';
 
 type CardProps = {
   offer: TPreviewOffer;
@@ -14,7 +15,7 @@ type CardProps = {
 };
 
 function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
-  const { isPremium, previewImage, id, price, title, type } = offer;
+  const { isPremium, previewImage, id, price, title, type, rating } = offer;
   const favorities = useAppSelector((state) => state.favorites);
   const isFavorite = favorities.some((favorite) => favorite.id === id);
 
@@ -63,7 +64,7 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '100%' }}></span>
+            <span style={{ width: getRating(rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

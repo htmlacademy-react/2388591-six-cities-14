@@ -1,12 +1,14 @@
-import { CityName, CityMap } from '../../const';
+import { CityMap, CityName } from '../../const';
+import { TCity } from '../../types/city';
 
 type CityListProps = {
   activeCity: CityName;
-  onSelectCity: (city: CityName) => void;
+  onSelectCity: (city: TCity) => void;
 };
 
 function CityList({ activeCity, onSelectCity }: CityListProps): JSX.Element {
-  const handleCityClick = (city: CityName) => {
+
+  const handleCityClick = (city: TCity) => {
     onSelectCity(city);
   };
 
@@ -15,7 +17,7 @@ function CityList({ activeCity, onSelectCity }: CityListProps): JSX.Element {
       {Object.values(CityMap).map((city) => (
         <li key={city.name} className="locations__item">
           <a
-            onClick={() => handleCityClick(city.name)}
+            onClick={() => handleCityClick(city)}
             className={`locations__item-link tabs__item${city.name === activeCity ? ' tabs__item--active' : ''}`}
             href="#"
           >

@@ -5,21 +5,22 @@ import { Map } from '../map/map';
 import {SortingOptions} from '../sort-options/sort-options';
 
 import { TPreviewOffer } from '../../types/preview-offer';
-import { TCity } from '../../types/city';
 import { TSorting } from '../../types/sorting';
 
 import { sorting } from '../../utils/utils';
 import { SortingMap } from '../../const';
 
 import { useMemo } from 'react';
+import { useAppSelector } from '../../hooks';
 
 type CitiesProps = {
   offers: TPreviewOffer[];
-  activeCity: TCity;
 };
 
 
-function Cities({ offers, activeCity }: CitiesProps): JSX.Element {
+function Cities({ offers }: CitiesProps): JSX.Element {
+  const selectedCity = useAppSelector((state) => state.activeCity);
+
   const [hoveredOffer, setHoveredOffer] =
     useState<TPreviewOffer['id'] | null>(
       null
@@ -35,8 +36,8 @@ function Cities({ offers, activeCity }: CitiesProps): JSX.Element {
 
   const filteredOffers = useMemo(
     () => offers.filter((offer) =>
-      offer.city.name === activeCity.name),
-    [activeCity.name, offers]
+      offer.city.name === selectedCity.name),
+    [selectedCity, offers]
   );
   const sortedOffers = useMemo(
     () => sorting[activeSorting](filteredOffers),
@@ -49,7 +50,7 @@ function Cities({ offers, activeCity }: CitiesProps): JSX.Element {
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
-            {filteredOffers.length} places to stay in {activeCity.name}
+            {filteredOffers.length} places to stay in {selectedCity.name}
           </b>
           <SortingOptions activeOption={activeSorting} onSelectSortOption={handleSortOptionSelect} />
           <div className="cities__places-list places__list tabs__content">

@@ -10,7 +10,6 @@ import { Favorites } from '../../pages/favorites/favorites';
 import {OfferPage} from '../../pages/offer-page/offer';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
-import { fetchOffers } from '../../store/api-actions';
 import { AppRoute } from '../../const';
 import { checkAuth } from '../../store/api-actions';
 
@@ -19,7 +18,6 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(checkAuth());
-    dispatch(fetchOffers());
   }, [dispatch]);
 
   return (
@@ -31,7 +29,7 @@ const App = (): JSX.Element => {
             <Route path={AppRoute.Login} element={<Login />}/>
             <Route path={AppRoute.Favorites} element={
               <PrivateRoute>
-                {<Favorites />}
+                <Favorites />
               </PrivateRoute>
             }
             />

@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { TOffer } from '../types/offer';
-import { TReview } from '../types/review-type';
+import { TReview, TReviewData } from '../types/review-type';
 import { TPreviewOffer } from '../types/preview-offer';
 import { TAuthorizedUser } from '../types/authorized-user';
 import { TLoginData } from '../types/login-data';
@@ -36,14 +36,14 @@ export const fetchOffer = createAsyncThunk<TOffer, TOffer['id'], TExtra>(
   }
 );
 
-export const fetchReviews = createAsyncThunk<TReview[], undefined, TExtra>(
+export const fetchReviews = createAsyncThunk<TReview[], TOffer['id'], TExtra>(
   'reviews/fetch',
   async (offerId, { extra: api }) => {
-    const { data } = await api.get<TReview[]>(`${APIRoute.Offers}/${offerId}`);
-
+    const { data } = await api.get<TReview[]>(`${APIRoute.Reviews}/${offerId}`);
     return data;
   }
 );
+
 
 export const fetchNearPlaces = createAsyncThunk<TPreviewOffer[], TOffer['id'], TExtra>(
   'near-places/fetch',
@@ -101,3 +101,20 @@ export const logout = createAsyncThunk<void, undefined, TExtra> (
     dropToken();
   }
 );
+
+export const postReview = createAsyncThunk<
+  TReview,
+  { reviewData: TReviewData; offerId: TOffer['id'] },
+  TExtra
+>(
+  'comment/post',
+  async ({reviewData, offerId}, { extra: api }) => {
+    const { data } = await api.post<TReview>(
+      `${APIRoute.Reviews}/${offerId}`,
+      reviewData
+    );
+    return data;
+  }
+);
+
+

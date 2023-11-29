@@ -3,25 +3,27 @@ import { useEffect } from 'react';
 
 
 import { Header } from '../../components/header/header';
-import { useState } from 'react';
-import { TCity } from '../../types/offer';
 import {Cities} from '../../components/cities/cities';
 import { CityList } from '../../components/city-list/city-list';
-import { CityName, CityMap } from '../../const';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchOffers } from '../../store/api-actions';
 
 import { Spinner } from '../../components/spinner/spinner';
 import { RequestStatus } from '../../const';
+import { setActiveCity } from '../../store/action';
+import { TCity } from '../../types/city';
 
 function Main() {
   const dispatch = useAppDispatch();
   const fetchingStatus = useAppSelector((state) => state.offersFetchingStatus);
   const offers = useAppSelector((state) => state.offers);
+  const selectedCity = useAppSelector((state) => state.activeCity);
 
-  const [selectedCity, setSelectedCity] = useState<CityName>(CityName.Paris);
-  const selectedCityObject: TCity = CityMap[selectedCity];
+  const handleSelectCity = (city: TCity) => {
+    dispatch(setActiveCity(city));
+  };
+
 
   useEffect(() => {
     dispatch(fetchOffers());
@@ -35,12 +37,13 @@ function Main() {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CityList activeCity={selectedCity} onSelectCity={setSelectedCity} />
+            <CityList activeCity={selectedCity.name} onSelectCity={handleSelectCity} />
           </section>
         </div>
         {fetchingStatus === RequestStatus.Loading && <Spinner />}
         {fetchingStatus === RequestStatus.Success && (
-          <Cities offers={offers} activeCity={selectedCityObject}/>
+          <Cities offers={offers} />
+
         )}
       </main>
     </div>

@@ -6,8 +6,6 @@ import {Logo} from '../logo/logo';
 
 import { logout } from '../../store/api-actions';
 
-import { dropToken } from '../../services/token';
-
 import { TState } from '../../types/state';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -18,9 +16,9 @@ function Header(): JSX.Element {
   const user = useAppSelector((state: TState) => state.user);
   const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
+  const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
     dispatch(logout());
-    dropToken();
   };
 
   return (
