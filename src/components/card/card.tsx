@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { memo } from 'react';
 
 import { TPreviewOffer } from '../../types/preview-offer';
 
@@ -81,4 +82,5 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
   );
 }
 
-export { Card };
+const MemoizedCard = memo(Card);
+export default MemoizedCard;

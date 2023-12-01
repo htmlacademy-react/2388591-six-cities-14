@@ -5,7 +5,7 @@ import { useAppSelector } from '../../hooks';
 
 import { getFavorites } from '../../store/favorites-data/selectors';
 
-import { Card } from '../../components/card/card';
+import Card from '../../components/card/card';
 import {Footer} from '../../components/footer/footer';
 import {Header} from '../../components/header/header';
 

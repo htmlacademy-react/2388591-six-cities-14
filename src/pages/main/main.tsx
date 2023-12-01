@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
@@ -24,9 +24,9 @@ function Main() {
 
   const selectedCity = useAppSelector(getActiveCity);
 
-  const handleSelectCity = (city: TCity) => {
+  const handleSelectCity = useCallback((city: TCity) => {
     dispatch(setActiveCity(city));
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchOffers());
