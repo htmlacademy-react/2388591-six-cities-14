@@ -11,7 +11,7 @@ import { TLoginData } from '../types/login-data';
 
 import { dropToken, saveToken } from '../services/token';
 
-import { API_URL, APIRoute, AppRoute, HttpStatus, NameSpace } from '../const';
+import { API_URL, APIRoute, AppRoute, HttpStatus } from '../const';
 
 type TExtra = {
   extra: AxiosInstance;
@@ -56,7 +56,7 @@ export const fetchNearPlaces = createAsyncThunk<TPreviewOffer[], TOffer['id'], T
 );
 
 export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtra>(
-  `${NameSpace.Favorites}/fetch`,
+  'favorites/fetch',
   async (_arg, { extra: api }) => {
     const { data } = await api.get<TPreviewOffer[]>(APIRoute.Favorites);
 

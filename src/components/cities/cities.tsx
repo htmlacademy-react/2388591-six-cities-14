@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 
 import Card from '../card/card';
 import { Map } from '../map/map';
@@ -26,9 +26,9 @@ function Cities({ offers }: CitiesProps): JSX.Element {
   const [hoveredOffer, setHoveredOffer] = useState<TPreviewOffer['id'] | null>(null);
   const [activeSorting, setActiveSorting] = useState<TSorting>(SortingMap.Popular);
 
-  const handleSortOptionSelect = useCallback((selectedOption: TSorting) => {
+  const handleSortOptionSelect = (selectedOption: TSorting) => {
     setActiveSorting(selectedOption);
-  }, []);
+  };
 
   const filteredOffers = useMemo(
     () => offers.filter((offer) =>
