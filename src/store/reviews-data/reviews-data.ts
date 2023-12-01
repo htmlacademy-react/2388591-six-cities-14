@@ -13,7 +13,7 @@ const initialState: TReviewsData = {
 };
 
 export const reviewData = createSlice({
-  name: 'REVIEW',
+  name: 'Reviews',
   initialState,
   reducers: {
     dropReviewSendingStatus(state){

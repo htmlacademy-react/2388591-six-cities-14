@@ -15,7 +15,7 @@ const initialState: TOffersData = {
 };
 
 export const offersData = createSlice({
-  name: 'OFFERS',
+  name: 'Offers',
   initialState,
   reducers: {
     setActiveCity(state, action: PayloadAction<TCity>) {

@@ -2,10 +2,10 @@ import { TState } from '../../types/state';
 
 import { AuthorizationStatus } from '../../const';
 
-export const selectUser = (state: TState) => state.USER.user;
+export const selectUser = (state: TState) => state.User.user;
 
-export const selectAuthorizationStatus = (state: TState) => state.USER.authorizationStatus;
+export const selectAuthorizationStatus = (state: TState) => state.User.authorizationStatus;
 
-export const selectIsAuthorized = (state: TState) => state.USER.authorizationStatus === AuthorizationStatus.Auth;
+export const selectIsAuthorized = (state: TState) => state.User.authorizationStatus === AuthorizationStatus.Auth;
 
-export const selectSendingStatus = (state: TState) => state.USER.sendingStatus;
+export const selectSendingStatus = (state: TState) => state.User.sendingStatus;

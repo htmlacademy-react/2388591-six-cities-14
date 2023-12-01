@@ -1,7 +1,7 @@
 import { TState } from '../../types/state';
 
-export const selectOffers = (state: TState) => state.OFFERS.offers;
+export const selectOffers = (state: TState) => state.Offers.offers;
 
-export const selectFetchingStatus = (state: TState) => state.OFFERS.offersFetchingStatus;
+export const selectFetchingStatus = (state: TState) => state.Offers.offersFetchingStatus;
 
-export const selectActiveCity = (state: TState) => state.OFFERS.activeCity;
+export const selectActiveCity = (state: TState) => state.Offers.activeCity;

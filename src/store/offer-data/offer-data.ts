@@ -12,7 +12,7 @@ const initialState: TOfferData = {
 };
 
 export const offerData = createSlice({
-  name: 'OFFER',
+  name: 'Offer',
   initialState,
   reducers:{
     dropOffer(state) {

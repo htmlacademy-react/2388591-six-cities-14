@@ -10,7 +10,7 @@ const initialState: TNearPlacesData = {
 };
 
 export const nearPlacesData = createSlice({
-  name: 'NEAR-PLACES',
+  name: 'NearPlaces',
   initialState,
   reducers:{},
   extraReducers(builder) {

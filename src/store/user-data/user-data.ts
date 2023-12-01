@@ -14,7 +14,7 @@ const initialState: TUserData = {
 };
 
 export const userData = createSlice({
-  name: 'USER',
+  name: 'User',
   initialState,
   reducers: {
     dropSendingStatus(state) {

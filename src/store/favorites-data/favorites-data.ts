@@ -4,7 +4,7 @@ import { fetchFavorites } from '../api-actions';
 
 import { TFavoritesData } from '../../types/state';
 
-import { NameSpace, RequestStatus } from '../../const';
+import { RequestStatus } from '../../const';
 
 const initialState: TFavoritesData = {
   favorites: [],
@@ -12,7 +12,7 @@ const initialState: TFavoritesData = {
 };
 
 export const favoritesData = createSlice({
-  name: NameSpace.Favorites,
+  name: 'Favorites',
   initialState,
   reducers:{},
   extraReducers(builder) {
