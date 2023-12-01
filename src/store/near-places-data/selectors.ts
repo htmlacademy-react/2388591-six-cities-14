@@ -1,10 +1,3 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { TState } from '../../types/state';
 
-import { TNearPlacesData, TState } from '../../types/state';
-
-import { NameSpace } from '../../const';
-
-export const getNearPlaces = createSelector(
-  (state: TState) => state[NameSpace.NearPlaces],
-  (state: TNearPlacesData) => state.nearPlaces
-);
+export const selectNearPlaces = (state: TState) => state['NEAR-PLACES'].nearPlaces;
