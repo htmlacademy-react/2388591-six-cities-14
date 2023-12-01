@@ -4,8 +4,12 @@ import { TPreviewOffer } from '../../types/preview-offer';
 
 import { useAppSelector } from '../../hooks';
 
-import { AppRoute } from '../../const';
+import { getFavorites } from '../../store/favorites-data/selectors';
+
 import classNames from 'classnames';
+
+import { AppRoute } from '../../const';
+
 import { getRating } from '../../utils/utils';
 
 type CardProps = {
@@ -16,7 +20,7 @@ type CardProps = {
 
 function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
   const { isPremium, previewImage, id, price, title, type, rating } = offer;
-  const favorities = useAppSelector((state) => state.favorites);
+  const favorities = useAppSelector(getFavorites);
   const isFavorite = favorities.some((favorite) => favorite.id === id);
 
   const handleMouseEnter = () => {
@@ -77,4 +81,4 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
   );
 }
 
-export {Card};
+export { Card };

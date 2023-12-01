@@ -1,33 +1,36 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
 
+import { useAppDispatch, useAppSelector } from '../../hooks';
+
+import { getActiveCity, getOffers, getOffersFetchingStatus } from '../../store/offers-data/selectors';
+import { setActiveCity } from '../../store/offers-data/offers-data';
+import { fetchOffers } from '../../store/api-actions';
 
 import { Header } from '../../components/header/header';
 import {Cities} from '../../components/cities/cities';
 import { CityList } from '../../components/city-list/city-list';
-
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchOffers } from '../../store/api-actions';
-
 import { Spinner } from '../../components/spinner/spinner';
-import { RequestStatus } from '../../const';
-import { setActiveCity } from '../../store/action';
+
 import { TCity } from '../../types/city';
+
+import { RequestStatus } from '../../const';
 
 function Main() {
   const dispatch = useAppDispatch();
-  const fetchingStatus = useAppSelector((state) => state.offersFetchingStatus);
-  const offers = useAppSelector((state) => state.offers);
-  const selectedCity = useAppSelector((state) => state.activeCity);
+  const fetchingStatus = useAppSelector(getOffersFetchingStatus);
+
+  const offers = useAppSelector(getOffers);
+
+  const selectedCity = useAppSelector(getActiveCity);
 
   const handleSelectCity = (city: TCity) => {
     dispatch(setActiveCity(city));
   };
 
-
   useEffect(() => {
     dispatch(fetchOffers());
-  }, [dispatch]);
+  }, [dispatch, selectedCity]);
 
   return (
     <div className="page page--gray page--main">

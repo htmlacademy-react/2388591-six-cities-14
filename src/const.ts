@@ -73,6 +73,15 @@ const HttpStatus = {
   NOT_FOUND: 404,
 };
 
+export enum NameSpace {
+  Offers = 'OFFERS',
+  Offer = 'OFFER',
+  Reviews = 'REVIEWS',
+  NearPlaces = 'NEAR-PLACES',
+  Favorites = 'FAVORITES',
+  User = 'USER',
+}
+
 export {
   AppRoute,
   AuthorizationStatus,
@@ -87,3 +96,5 @@ export {
   RequestStatus,
   HttpStatus
 };
+
+

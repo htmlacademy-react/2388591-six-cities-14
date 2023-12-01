@@ -1,21 +1,29 @@
 /* eslint-disable camelcase */
 import React, { FormEvent, useEffect, useState } from 'react';
-import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const';
-import { TOffer } from '../../types/offer';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { postReview } from '../../store/api-actions';
-import { dropReviewSendingStatus } from '../../store/action';
+
 import { Rating } from '../rating/rating';
+
+import { getReviewsFetchingStatus } from '../../store/reviews-data/selectors';
+import { dropReviewSendingStatus } from '../../store/action';
+import { postReview } from '../../store/api-actions';
+
+import { TOffer } from '../../types/offer';
+
+import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const';
 
 type TReviewsProps = {
   offerId: TOffer['id'];
 };
 
 function ReviewForm({ offerId }: TReviewsProps) {
-  const dispatch = useAppDispatch();
-  const sendingStatus = useAppSelector((state) => state.reviewFetchingStatus);
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
+
+  const dispatch = useAppDispatch();
+  const sendingStatus = useAppSelector(getReviewsFetchingStatus);
+
   const isSending = sendingStatus === RequestStatus.Loading;
 
   const isSubmitDisabled =
@@ -72,7 +80,7 @@ function ReviewForm({ offerId }: TReviewsProps) {
         placeholder="Tell how was your stay, what you like and what can be improved"
       />
       <div className="reviews__button-wrapper">
-        {isSending && <p>Sending...</p>}
+        {isSending}
 
         <p className="reviews__help">
          To submit review please make sure to set{' '}
@@ -82,13 +90,10 @@ function ReviewForm({ offerId }: TReviewsProps) {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={isSubmitDisabled}
+          disabled={isSubmitDisabled || isSending}
         >
-          {isSending ? (
-            'Sending...'
-          ) : (
-            'Submit'
-          )}
+          {isSending ? 'Sending...' : 'Submit'}
+
         </button>
       </div>
     </form>

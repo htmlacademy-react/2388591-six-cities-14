@@ -2,18 +2,17 @@ import { Link } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
-import {Logo} from '../logo/logo';
+import { Logo } from '../logo/logo';
 
 import { logout } from '../../store/api-actions';
-
-import { TState } from '../../types/state';
+import { getAuthorizationStatus, getUser } from '../../store/user-data/selectors';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
 
 
 function Header(): JSX.Element {
-  const authorizationStatus = useAppSelector((state: TState) => state.authorizationStatus);
-  const user = useAppSelector((state: TState) => state.user);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {

@@ -1,6 +1,7 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { AxiosInstance } from 'axios';
 import { AxiosError } from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { TOffer } from '../types/offer';
 import { TReview, TReviewData } from '../types/review-type';
@@ -10,7 +11,7 @@ import { TLoginData } from '../types/login-data';
 
 import { dropToken, saveToken } from '../services/token';
 
-import { API_URL, APIRoute, AppRoute, HttpStatus } from '../const';
+import { API_URL, APIRoute, AppRoute, HttpStatus, NameSpace } from '../const';
 
 type TExtra = {
   extra: AxiosInstance;
@@ -55,7 +56,7 @@ export const fetchNearPlaces = createAsyncThunk<TPreviewOffer[], TOffer['id'], T
 );
 
 export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtra>(
-  'favorites/fetch',
+  `${NameSpace.Favorites}/fetch`,
   async (_arg, { extra: api }) => {
     const { data } = await api.get<TPreviewOffer[]>(APIRoute.Favorites);
 
