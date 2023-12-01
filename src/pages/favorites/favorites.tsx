@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { TPreviewOffer } from '../../types/preview-offer';
-import {Card} from '../../components/card/card';
+import { useAppSelector } from '../../hooks';
+
+import { getFavorites } from '../../store/favorites-data/selectors';
+
+import Card from '../../components/card/card';
 import {Footer} from '../../components/footer/footer';
 import {Header} from '../../components/header/header';
 
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { fetchFavorites } from '../../store/api-actions';
-import { RequestStatus } from '../../const';
+import { TPreviewOffer } from '../../types/preview-offer';
 
 function getFavoritesByCity(favoriteOffers: TPreviewOffer[]) {
   return favoriteOffers.reduce<{ [key: string]: TPreviewOffer[] }>((groupedFavorites, offer) => {
@@ -25,16 +26,8 @@ function getFavoritesByCity(favoriteOffers: TPreviewOffer[]) {
 }
 
 function Favorites() {
-  const favorites = useAppSelector((state) => state.favorites);
-  const status = useAppSelector((state) => state.favoritesFetchingStatus);
+  const favorites = useAppSelector(getFavorites);
   const favoritesByCity = getFavoritesByCity(favorites);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (status === RequestStatus.Idle) {
-      dispatch(fetchFavorites());
-    }
-  }, [dispatch, status]);
 
   return (
     <div className="page">

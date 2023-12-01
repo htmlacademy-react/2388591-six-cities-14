@@ -1,6 +1,7 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { AxiosInstance } from 'axios';
 import { AxiosError } from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { TOffer } from '../types/offer';
 import { TReview, TReviewData } from '../types/review-type';

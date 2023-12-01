@@ -6,6 +6,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Review } from '../review/review';
 import { ReviewForm } from '../review-form/review-form';
 
+import { getAuthorizationStatus } from '../../store/user-data/selectors';
+import { getReviews } from '../../store/reviews-data/selectors';
+
 import { TOffer } from '../../types/offer';
 
 import { AuthorizationStatus, MAX_SHOWN_REVIEWS } from '../../const';
@@ -16,10 +19,10 @@ type ReviewListProp = {
 
 function ReviewList({offerId}: ReviewListProp) {
   const dispatch = useAppDispatch();
-  const reviews = useAppSelector((state) => state.reviews);
+  const reviews = useAppSelector(getReviews);
   const sortedReviews = reviews.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const shownReviews = sortedReviews.slice(0, MAX_SHOWN_REVIEWS);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     dispatch(fetchReviews(offerId));

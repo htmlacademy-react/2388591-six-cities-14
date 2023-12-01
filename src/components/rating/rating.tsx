@@ -1,4 +1,7 @@
 import React, { ChangeEvent } from 'react';
+import { RequestStatus } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { getReviewsFetchingStatus } from '../../store/reviews-data/selectors';
 
 type RatingProps = {
   value: number;
@@ -14,9 +17,14 @@ const RATING_MAP = {
 };
 
 function Rating({ value, onChange }: RatingProps) {
+  const sendingStatus = useAppSelector(getReviewsFetchingStatus);
+
+  const isSending = sendingStatus === RequestStatus.Loading;
+
   const handleRatingChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(Number(e.target.value));
   };
+
 
   return (
     <div className="reviews__rating-form form__rating">
@@ -30,6 +38,8 @@ function Rating({ value, onChange }: RatingProps) {
             type="radio"
             onChange={handleRatingChange}
             checked={value === Number(star)}
+            disabled={isSending}
+
           />
           <label
             htmlFor={`${star}-stars`}

@@ -2,12 +2,16 @@ import React, { useState, FormEvent, useMemo, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import { Logo } from '../../components/logo/logo';
+import styles from './login-page.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
+import { getAuthorizationStatus, getSendingStatus } from '../../store/user-data/selectors';
+import { setActiveCity } from '../../store/offers-data/offers-data';
+import { dropSendingStatus } from '../../store/user-data/user-data';
 import { login } from '../../store/api-actions';
-import { dropSendingStatus, setActiveCity } from '../../store/action';
+
+import { Logo } from '../../components/logo/logo';
 
 import { TLoginData } from '../../types/login-data';
 
@@ -15,7 +19,6 @@ import { getRandomArrayElement } from '../../utils/utils';
 
 import { AppRoute, AuthorizationStatus, CityMap, RequestStatus } from '../../const';
 
-import styles from './login-page.module.css';
 
 const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.([0-9]{1,3}|[a-zA-Z]{2})\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const EMAIL_ERROR_TEXT = 'Please enter a correct email address.';
@@ -25,8 +28,8 @@ const PASSWORD_ERROR_TEXT = 'Password must contain at least one letter and one d
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const sendingStatus = useAppSelector((state) => state.loginSendingStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const sendingStatus = useAppSelector(getSendingStatus);
 
   const [email, setEmail] = useState<string>('');
   const [isEmailFilled, setIsEmailFilled] = useState(false);
@@ -38,10 +41,7 @@ const Login: React.FC = () => {
   const isValid = isEmailValid && isPasswordValid;
 
 
-  const randomCity = useMemo(
-    () => getRandomArrayElement(Object.values(CityMap)),
-    []
-  );
+  const randomCity = useMemo(() => getRandomArrayElement(Object.values(CityMap)),[]);
 
   useEffect(
     () => () => {
@@ -137,11 +137,7 @@ const Login: React.FC = () => {
                 type="submit"
                 disabled={!isValid || sendingStatus === RequestStatus.Loading}
               >
-                {sendingStatus === RequestStatus.Loading ? (
-                  'sending...'
-                ) : (
-                  'Sign in'
-                )}
+                {sendingStatus === RequestStatus.Loading ? 'sending...' : 'Sign in'}
 
               </button>
             </form>
