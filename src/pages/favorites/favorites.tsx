@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 import { useAppSelector } from '../../hooks';
 
-import { getFavorites } from '../../store/favorites-data/selectors';
+import { selectFavorites } from '../../store/favorites-data/selectors';
 
 import Card from '../../components/card/card';
 import {Footer} from '../../components/footer/footer';
@@ -26,7 +26,7 @@ function getFavoritesByCity(favoriteOffers: TPreviewOffer[]) {
 }
 
 function Favorites() {
-  const favorites = useAppSelector(getFavorites);
+  const favorites = useAppSelector(selectFavorites);
   const favoritesByCity = getFavoritesByCity(favorites);
 
   return (

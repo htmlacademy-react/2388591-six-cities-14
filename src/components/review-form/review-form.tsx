@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { Rating } from '../rating/rating';
 
-import { getReviewsFetchingStatus } from '../../store/reviews-data/selectors';
+import { selectFetchingStatus } from '../../store/reviews-data/selectors';
 import { dropReviewSendingStatus } from '../../store/action';
 import { postReview } from '../../store/api-actions';
 
@@ -22,7 +22,7 @@ function ReviewForm({ offerId }: TReviewsProps) {
   const [rating, setRating] = useState(0);
 
   const dispatch = useAppDispatch();
-  const sendingStatus = useAppSelector(getReviewsFetchingStatus);
+  const sendingStatus = useAppSelector(selectFetchingStatus);
 
   const isSending = sendingStatus === RequestStatus.Loading;
 

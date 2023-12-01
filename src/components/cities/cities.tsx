@@ -6,7 +6,7 @@ import {SortingOptions} from '../sort-options/sort-options';
 
 import { useAppSelector } from '../../hooks';
 
-import { getActiveCity } from '../../store/offers-data/selectors';
+import { selectActiveCity } from '../../store/offers-data/selectors';
 
 import { TPreviewOffer } from '../../types/preview-offer';
 import { TSorting } from '../../types/sorting';
@@ -21,7 +21,7 @@ type CitiesProps = {
 
 
 function Cities({ offers }: CitiesProps): JSX.Element {
-  const selectedCity = useAppSelector(getActiveCity);
+  const selectedCity = useAppSelector(selectActiveCity);
 
   const [hoveredOffer, setHoveredOffer] = useState<TPreviewOffer['id'] | null>(null);
   const [activeSorting, setActiveSorting] = useState<TSorting>(SortingMap.Popular);

@@ -17,15 +17,15 @@ import { MAX_NEAR_PLACES_COUNT } from '../../const';
 
 import { RequestStatus } from '../../const';
 import { getRating } from '../../utils/utils';
-import { getOffer, getOfferFetchingStatus } from '../../store/offer-data/selectors';
-import { getNearPlaces } from '../../store/near-places-data/selectors';
+import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
+import { selectNearPlaces } from '../../store/near-places-data/selectors';
 
 function OfferPage() {
   const {offerId} = useParams();
   const dispatch = useAppDispatch();
-  const offer = useAppSelector(getOffer);
-  const fetchingStatus = useAppSelector(getOfferFetchingStatus);
-  const nearPlaces = useAppSelector(getNearPlaces);
+  const offer = useAppSelector(selectOffer);
+  const fetchingStatus = useAppSelector(selectFetchingStatus);
+  const nearPlaces = useAppSelector(selectNearPlaces);
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
 
   useEffect(() => {
@@ -168,4 +168,4 @@ function OfferPage() {
   );
 }
 
-export {OfferPage};
+export { OfferPage };

@@ -6,7 +6,7 @@ import styles from './login-page.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { getAuthorizationStatus, getSendingStatus } from '../../store/user-data/selectors';
+import { selectAuthorizationStatus, selectSendingStatus } from '../../store/user-data/selectors';
 import { setActiveCity } from '../../store/offers-data/offers-data';
 import { dropSendingStatus } from '../../store/user-data/user-data';
 import { login } from '../../store/api-actions';
@@ -25,11 +25,11 @@ const EMAIL_ERROR_TEXT = 'Please enter a correct email address.';
 const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 const PASSWORD_ERROR_TEXT = 'Password must contain at least one letter and one digit. Please enter a correct password!';
 
-const Login: React.FC = () => {
+function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const sendingStatus = useAppSelector(getSendingStatus);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const sendingStatus = useAppSelector(selectSendingStatus);
 
   const [email, setEmail] = useState<string>('');
   const [isEmailFilled, setIsEmailFilled] = useState(false);
@@ -153,6 +153,6 @@ const Login: React.FC = () => {
       </main>
     </div>
   );
-};
+}
 
 export { Login };

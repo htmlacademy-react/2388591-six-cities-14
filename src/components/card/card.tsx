@@ -5,7 +5,7 @@ import { TPreviewOffer } from '../../types/preview-offer';
 
 import { useAppSelector } from '../../hooks';
 
-import { getFavorites } from '../../store/favorites-data/selectors';
+import { selectFavorites } from '../../store/favorites-data/selectors';
 
 import classNames from 'classnames';
 
@@ -21,7 +21,7 @@ type CardProps = {
 
 function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
   const { isPremium, previewImage, id, price, title, type, rating } = offer;
-  const favorities = useAppSelector(getFavorites);
+  const favorities = useAppSelector(selectFavorites);
   const isFavorite = favorities.some((favorite) => favorite.id === id);
 
   const handleMouseEnter = () => {

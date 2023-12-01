@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { getActiveCity, getOffers, getOffersFetchingStatus } from '../../store/offers-data/selectors';
+import { selectActiveCity, selectFetchingStatus, selectOffers } from '../../store/offers-data/selectors';
 import { setActiveCity } from '../../store/offers-data/offers-data';
 import { fetchOffers } from '../../store/api-actions';
 
@@ -18,11 +18,11 @@ import { RequestStatus } from '../../const';
 
 function Main() {
   const dispatch = useAppDispatch();
-  const fetchingStatus = useAppSelector(getOffersFetchingStatus);
+  const fetchingStatus = useAppSelector(selectFetchingStatus);
 
-  const offers = useAppSelector(getOffers);
+  const offers = useAppSelector(selectOffers);
 
-  const selectedCity = useAppSelector(getActiveCity);
+  const selectedCity = useAppSelector(selectActiveCity);
 
   const handleSelectCity = useCallback((city: TCity) => {
     dispatch(setActiveCity(city));
@@ -54,4 +54,4 @@ function Main() {
 }
 
 
-export {Main};
+export { Main };

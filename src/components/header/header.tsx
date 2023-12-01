@@ -5,14 +5,14 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { Logo } from '../logo/logo';
 
 import { logout } from '../../store/api-actions';
-import { getAuthorizationStatus, getUser } from '../../store/user-data/selectors';
+import { selectAuthorizationStatus, selectUser } from '../../store/user-data/selectors';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
 
 
 function Header(): JSX.Element {
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const user = useAppSelector(getUser);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
@@ -80,4 +80,4 @@ function Header(): JSX.Element {
   );
 }
 
-export {Header};
+export { Header };
