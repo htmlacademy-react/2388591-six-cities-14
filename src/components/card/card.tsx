@@ -7,11 +7,10 @@ import { useAppSelector } from '../../hooks';
 
 import { selectFavorites } from '../../store/favorites-data/selectors';
 
-import classNames from 'classnames';
-
 import { AppRoute } from '../../const';
 
 import { getRating } from '../../utils/utils';
+import { BookMark } from '../bookmark-button/bookmark';
 
 type CardProps = {
   offer: TPreviewOffer;
@@ -54,18 +53,7 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            className={classNames('place-card__bookmark-button', 'button', {
-              'place-card__bookmark-button--active' :
-              isFavorite
-            })}
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
-          </button>
+          <BookMark id={id} block="place-card" isActive={isFavorite} size={'small'}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

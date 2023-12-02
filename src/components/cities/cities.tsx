@@ -26,10 +26,6 @@ function Cities({ offers }: CitiesProps): JSX.Element {
   const [hoveredOffer, setHoveredOffer] = useState<TPreviewOffer['id'] | null>(null);
   const [activeSorting, setActiveSorting] = useState<TSorting>(SortingMap.Popular);
 
-  const handleSortOptionSelect = (selectedOption: TSorting) => {
-    setActiveSorting(selectedOption);
-  };
-
   const filteredOffers = useMemo(
     () => offers.filter((offer) =>
       offer.city.name === selectedCity.name),
@@ -50,7 +46,7 @@ function Cities({ offers }: CitiesProps): JSX.Element {
           </b>
           <SortingOptions
             activeOption={activeSorting}
-            onSelectSortOption={handleSortOptionSelect}
+            onSelectSortOption={setActiveSorting}
           />
           <div className="cities__places-list places__list tabs__content">
             {sortedOffers.map((offer) => (

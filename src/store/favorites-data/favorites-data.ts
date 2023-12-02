@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchFavorites } from '../api-actions';
-
+import { addFavorite, deleteFavorite, fetchFavorites } from '../api-actions';
 import { TFavoritesData } from '../../types/state';
 
 import { RequestStatus } from '../../const';
@@ -26,6 +25,15 @@ export const favoritesData = createSlice({
       })
       .addCase(fetchFavorites.rejected, (state) => {
         state.favoritesFetchingStatus = RequestStatus.Error;
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        state.favorites.push(action.payload);
+      })
+      .addCase(deleteFavorite.fulfilled, (state, action) => {
+        const deletedOffer = action.payload;
+        state.favorites = state.favorites.filter(
+          (offer) => offer.id !== deletedOffer.id
+        );
       });
   }
 });

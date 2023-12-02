@@ -65,6 +65,21 @@ export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtr
   }
 );
 
+export const addFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
+  'favorites/add',
+  async (offerId, { extra: api }) => {
+    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorites}/${offerId}/1`);
+    return data;
+  }
+);
+
+export const deleteFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
+  'favorites/delete',
+  async (offerId, { extra: api }) => {
+    const { data } = await api.delete<TPreviewOffer>(`${APIRoute.Favorites}/${offerId}/0`);
+    return data;
+  });
+
 export const checkAuth = createAsyncThunk<TAuthorizedUser, undefined, TExtra>(
   'user/checkAuth',
   async (_arg, {extra: api}) =>{

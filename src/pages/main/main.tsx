@@ -15,6 +15,7 @@ import { Spinner } from '../../components/spinner/spinner';
 import { TCity } from '../../types/city';
 
 import { RequestStatus } from '../../const';
+import { MainEmpty } from '../../components/main-empty/main-empty';
 
 function Main() {
   const dispatch = useAppDispatch();
@@ -23,6 +24,8 @@ function Main() {
   const offers = useAppSelector(selectOffers);
 
   const selectedCity = useAppSelector(selectActiveCity);
+
+  const hasOffers = Boolean(offers?.length);
 
   const handleSelectCity = useCallback((city: TCity) => {
     dispatch(setActiveCity(city));
@@ -33,7 +36,8 @@ function Main() {
   }, [dispatch, selectedCity]);
 
   return (
-    <div className="page page--gray page--main">
+    <div className={`page page--gray ${hasOffers ? 'page--main' : 'page__main--index page__main--index-empty'}`}>
+
       <Helmet><title>6 cities | Main</title></Helmet>
       <Header />
       <main className="page__main page__main--index">
@@ -44,10 +48,11 @@ function Main() {
           </section>
         </div>
         {fetchingStatus === RequestStatus.Loading && <Spinner />}
-        {fetchingStatus === RequestStatus.Success && (
-          <Cities offers={offers} />
 
-        )}
+        {fetchingStatus === RequestStatus.Success && (
+          hasOffers ? <Cities offers={offers} /> : <MainEmpty />
+        ) }
+
       </main>
     </div>
   );

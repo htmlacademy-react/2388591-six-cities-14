@@ -36,10 +36,6 @@ function ReviewForm({ offerId }: TReviewsProps) {
     setComment(evt.target.value);
   };
 
-  const handleRatingChange = (value: number) => {
-    setRating(value);
-  };
-
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(
@@ -69,7 +65,7 @@ function ReviewForm({ offerId }: TReviewsProps) {
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
-      <Rating value={rating} onChange={handleRatingChange} />
+      <Rating value={rating} onChange={setRating} />
 
       <textarea
         onChange={handleFieldChange}

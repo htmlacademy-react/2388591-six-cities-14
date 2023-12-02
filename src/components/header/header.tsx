@@ -8,18 +8,19 @@ import { logout } from '../../store/api-actions';
 import { selectAuthorizationStatus, selectUser } from '../../store/user-data/selectors';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
+import { selectFavorites } from '../../store/favorites-data/selectors';
 
 
 function Header(): JSX.Element {
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+  const favorites = useAppSelector(selectFavorites);
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     dispatch(logout());
   };
-
   return (
     <header className="header">
       <div className="container">
@@ -51,7 +52,7 @@ function Header(): JSX.Element {
                       {user && (
                         <>
                           <span className="header__user-name user__name">{user.name}</span>
-                          <span className="header__favorite-count">3</span>
+                          <span className="header__favorite-count">{favorites.length}</span>
                         </>
                       )}
                     </Link>
