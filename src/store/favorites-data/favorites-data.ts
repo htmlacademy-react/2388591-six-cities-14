@@ -30,9 +30,8 @@ export const favoritesData = createSlice({
         state.favorites.push(action.payload);
       })
       .addCase(deleteFavorite.fulfilled, (state, action) => {
-        const deletedOffer = action.payload;
         state.favorites = state.favorites.filter(
-          (offer) => offer.id !== deletedOffer.id
+          (offer) => offer.id !== action.payload.id
         );
       });
   }

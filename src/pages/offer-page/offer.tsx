@@ -19,6 +19,8 @@ import { RequestStatus } from '../../const';
 import { getRating } from '../../utils/utils';
 import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
 import { selectNearPlaces } from '../../store/near-places-data/selectors';
+import { BookMark } from '../../components/bookmark/bookmark';
+import { selectFavorites } from '../../store/favorites-data/selectors';
 
 function OfferPage() {
   const {offerId} = useParams();
@@ -27,6 +29,8 @@ function OfferPage() {
   const fetchingStatus = useAppSelector(selectFetchingStatus);
   const nearPlaces = useAppSelector(selectNearPlaces);
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
+  const favorites = useAppSelector(selectFavorites);
+  const isFavorite = favorites.some((favorite) => favorite.id === offer?.id);
 
   useEffect(() => {
     if (offerId) {
@@ -80,13 +84,10 @@ function OfferPage() {
                 <h1 className="offer__name">
                   {offer?.title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <BookMark id={offer.id} block="offer" isActive={isFavorite} size={'large'}/>
+
               </div>
+
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
                   <span style={{ width: getRating(offer.rating) }} />

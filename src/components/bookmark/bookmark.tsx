@@ -2,9 +2,10 @@ import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { addFavorite, deleteFavorite } from '../../store/api-actions';
 import { TOffer } from '../../types/offer';
+import { SizeMap } from '../../types/size';
 
 type BookMarkProps = {
   id: TOffer['id'];
@@ -12,10 +13,7 @@ type BookMarkProps = {
   block: string;
   size: keyof SizeMap;
 };
-type SizeMap = {
-  small: { width: string; height: string };
-  large: { width: string; height: string };
-};
+
 const sizeMap: SizeMap = {
   small: {width: '18', height: '19'},
   large: {width: '31', height: '33'}
@@ -26,8 +24,10 @@ function BookMark({ id, isActive, block, size = 'small' }: BookMarkProps): JSX.E
   const dispatch = useAppDispatch();
   const isAuthorized = useAppSelector(selectAuthorizationStatus);
 
+
   const handleButtonClick = () => {
-    if (!isAuthorized) {
+    if (isAuthorized === AuthorizationStatus.NoAuth) {
+
       navigate(AppRoute.Login);
       return;
 
@@ -44,7 +44,7 @@ function BookMark({ id, isActive, block, size = 'small' }: BookMarkProps): JSX.E
   return (
     <button
       className={classNames(`${block}__bookmark-button`, 'button', {
-        [`${block}__bookmark-button--active`]: isActive && isAuthorized,
+        [`${block}__bookmark-button--active`]: isActive,
       })}
       type="button"
       onClick={handleButtonClick}

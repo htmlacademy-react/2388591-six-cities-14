@@ -10,7 +10,7 @@ import { selectFavorites } from '../../store/favorites-data/selectors';
 import { AppRoute } from '../../const';
 
 import { getRating } from '../../utils/utils';
-import { BookMark } from '../bookmark-button/bookmark';
+import { BookMark } from '../bookmark/bookmark';
 
 type CardProps = {
   offer: TPreviewOffer;

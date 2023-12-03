@@ -58,7 +58,7 @@ export const fetchNearPlaces = createAsyncThunk<TPreviewOffer[], TOffer['id'], T
 export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtra>(
   'favorites/fetch',
   async (_arg, { extra: api }) => {
-    const { data } = await api.get<TPreviewOffer[]>(APIRoute.Favorites);
+    const { data } = await api.get<TPreviewOffer[]>(APIRoute.Favorite);
 
     return data;
 
@@ -68,7 +68,7 @@ export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtr
 export const addFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
   'favorites/add',
   async (offerId, { extra: api }) => {
-    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorites}/${offerId}/1`);
+    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/1`);
     return data;
   }
 );
@@ -76,7 +76,7 @@ export const addFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>
 export const deleteFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
   'favorites/delete',
   async (offerId, { extra: api }) => {
-    const { data } = await api.delete<TPreviewOffer>(`${APIRoute.Favorites}/${offerId}/0`);
+    const { data } = await api.delete<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/0`);
     return data;
   });
 
