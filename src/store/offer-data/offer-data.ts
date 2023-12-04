@@ -15,9 +15,24 @@ export const offerData = createSlice({
   name: 'Offer',
   initialState,
   reducers:{
+    addOfferToBookmark: (state, action) => {
+      const offer = state.offer;
+      if (offer && offer.id === action.payload) {
+        offer.isFavorite = true;
+      }
+
+    },
+    deleteOfferToBookmark: (state, action) => {
+      const offer = state.offer;
+      if (offer && offer.id === action.payload) {
+        offer.isFavorite = false;
+      }
+
+    },
     dropOffer(state) {
       state.offer = null;
-    }
+    },
+
   },
   extraReducers(builder) {
     builder
@@ -37,3 +52,4 @@ export const offerData = createSlice({
 
 });
 
+export const { addOfferToBookmark, deleteOfferToBookmark } = offerData.actions;

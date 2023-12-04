@@ -1,4 +1,6 @@
 /* eslint-disable camelcase */
+const API_URL = 'https://14.design.pages.academy/six-cities';
+
 enum AppRoute {
   Root = '/',
   Login = '/login',
@@ -31,7 +33,7 @@ enum RequestStatus {
   Success = 'Success'
 
 }
-export enum CityName {
+enum CityName {
   Paris = 'Paris',
   Cologne = 'Cologne',
   Brussels = 'Brussels',
@@ -56,14 +58,6 @@ const SortingMap = {
   TopRated:'Top rated first'
 } as const;
 
-const MAX_REVIEW_lENGTH = 300;
-const MIN_REVIEW_lENGTH = 50;
-const MAX_SHOWN_REVIEWS = 10;
-
-const MAX_NEAR_PLACES_COUNT = 3;
-
-const API_URL = 'https://14.design.pages.academy/six-cities';
-
 const HttpStatus = {
   OK: 200,
   CREATED: 201,
@@ -72,6 +66,16 @@ const HttpStatus = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
 };
+const enum FavoriteStatus {
+  Added = 1,
+  Deleted = 0
+}
+
+const MAX_REVIEW_lENGTH = 300;
+const MIN_REVIEW_lENGTH = 50;
+const MAX_SHOWN_REVIEWS = 10;
+
+const MAX_NEAR_PLACES_COUNT = 3;
 
 export {
   AppRoute,
@@ -85,7 +89,9 @@ export {
   API_URL,
   APIRoute,
   RequestStatus,
-  HttpStatus
+  HttpStatus,
+  FavoriteStatus,
+  CityName
 };
 
 

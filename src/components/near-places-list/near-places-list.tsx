@@ -15,6 +15,7 @@ function NearbyOffersList ({ nearbyOffers }:NearbyOffersListProps) {
             key={nearbyOffer.id}
             offer={nearbyOffer}
             block='near-places'
+            size='large'
           />
         ))}
       </div>

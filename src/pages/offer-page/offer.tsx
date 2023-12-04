@@ -20,7 +20,6 @@ import { getRating } from '../../utils/utils';
 import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
 import { selectNearPlaces } from '../../store/near-places-data/selectors';
 import { BookMark } from '../../components/bookmark/bookmark';
-import { selectFavorites } from '../../store/favorites-data/selectors';
 
 function OfferPage() {
   const {offerId} = useParams();
@@ -29,8 +28,6 @@ function OfferPage() {
   const fetchingStatus = useAppSelector(selectFetchingStatus);
   const nearPlaces = useAppSelector(selectNearPlaces);
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
-  const favorites = useAppSelector(selectFavorites);
-  const isFavorite = favorites.some((favorite) => favorite.id === offer?.id);
 
   useEffect(() => {
     if (offerId) {
@@ -84,7 +81,7 @@ function OfferPage() {
                 <h1 className="offer__name">
                   {offer?.title}
                 </h1>
-                <BookMark id={offer.id} block="offer" isActive={isFavorite} size={'large'}/>
+                <BookMark id={offer.id} block="offer" isActive={offer.isFavorite} size={'large'}/>
 
               </div>
 
@@ -126,14 +123,16 @@ function OfferPage() {
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src="img/avatar-angelina.jpg"
+                      src={offer.host.avatarUrl}
                       width={74}
                       height={74}
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">Angelina</span>
-                  <span className="offer__user-status">Pro</span>
+                  <span className="offer__user-name">{offer.host.name}</span>
+                  <span className="offer__user-status">
+                    {offer.host.isPro ? 'Pro' : 'Regular'}
+                  </span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">

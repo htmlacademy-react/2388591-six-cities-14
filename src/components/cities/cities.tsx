@@ -52,6 +52,7 @@ function Cities({ offers }: CitiesProps): JSX.Element {
             {sortedOffers.map((offer) => (
               <Card
                 block="cities"
+                size='large'
                 key={offer.id}
                 offer={offer}
                 onCardHover={setHoveredOffer}

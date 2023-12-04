@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
 
+import { SizeMap } from '../../types/size';
 import { TPreviewOffer } from '../../types/preview-offer';
-
-import { useAppSelector } from '../../hooks';
-
-import { selectFavorites } from '../../store/favorites-data/selectors';
 
 import { AppRoute } from '../../const';
 
@@ -15,13 +12,17 @@ import { BookMark } from '../bookmark/bookmark';
 type CardProps = {
   offer: TPreviewOffer;
   block: string;
+  size: keyof SizeMap;
   onCardHover?: (offerId: TPreviewOffer['id'] | null) => void;
 };
 
-function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
-  const { isPremium, previewImage, id, price, title, type, rating } = offer;
-  const favorities = useAppSelector(selectFavorites);
-  const isFavorite = favorities.some((favorite) => favorite.id === id);
+const sizeMap: SizeMap = {
+  small: {width: '150', height: '110'},
+  large: {width: '260', height: '200'}
+};
+
+function Card({ offer, block, onCardHover, size = 'large' }: CardProps): JSX.Element {
+  const { isPremium, previewImage, id, price, title, type, rating, isFavorite } = offer;
 
   const handleMouseEnter = () => {
     onCardHover?.(id);
@@ -33,7 +34,7 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
 
   return (
     <article
-      className="near-places__card place-card"
+      className={`${block}__card place-card`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -44,7 +45,7 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
       )}
       <div className={`${block}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Offer}/${id}`}>
-          <img className="place-card__image" src={previewImage} alt={title} />
+          <img className="place-card__image" src={previewImage} alt={title} {...sizeMap[size]}/>
         </Link>
       </div>
       <div className="place-card__info">

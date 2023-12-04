@@ -11,7 +11,10 @@ import { TLoginData } from '../types/login-data';
 
 import { dropToken, saveToken } from '../services/token';
 
-import { API_URL, APIRoute, AppRoute, HttpStatus } from '../const';
+import { API_URL, APIRoute, AppRoute, FavoriteStatus, HttpStatus } from '../const';
+import { addNearbyOffersToBookmark, deleteNearbyOffersFromBookmark } from './near-places-data/near-places-data';
+import { addOffersToBookmark,deleteOffersFromBookmark } from './offers-data/offers-data';
+import { addOfferToBookmark, deleteOfferToBookmark } from './offer-data/offer-data';
 
 type TExtra = {
   extra: AxiosInstance;
@@ -67,16 +70,23 @@ export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtr
 
 export const addFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
   'favorites/add',
-  async (offerId, { extra: api }) => {
-    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/1`);
+  async (offerId, { extra: api, dispatch }) => {
+    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/${FavoriteStatus.Added}`);
+    dispatch(addOffersToBookmark(offerId));
+    dispatch(addNearbyOffersToBookmark(offerId));
+    dispatch(addOfferToBookmark(offerId));
     return data;
   }
 );
 
 export const deleteFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
   'favorites/delete',
-  async (offerId, { extra: api }) => {
-    const { data } = await api.delete<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/0`);
+  async (offerId, { extra: api, dispatch}) => {
+    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/${FavoriteStatus.Deleted}`);
+    dispatch(deleteOffersFromBookmark(offerId));
+    dispatch(deleteNearbyOffersFromBookmark(offerId));
+    dispatch(deleteOfferToBookmark(offerId));
+
     return data;
   });
 
