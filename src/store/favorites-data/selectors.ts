@@ -1,15 +1,5 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { TState } from '../../types/state';
 
-import { TState, TFavoritesData } from '../../types/state';
+export const selectFavorites = (state: TState) => state.Favorites.favorites;
 
-import { NameSpace } from '../../const';
-
-export const getFavorites = createSelector(
-  (state: TState) => state[NameSpace.Favorites],
-  (state: TFavoritesData) => state.favorites
-);
-
-export const getFetchingStatus = createSelector(
-  (state: TState) => state[NameSpace.Favorites],
-  (state: TFavoritesData) => state.favoritesFetchingStatus
-);
+export const selectFetchingStatus = (state: TState) => state.Favorites.favoritesFetchingStatus;

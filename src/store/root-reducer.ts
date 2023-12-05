@@ -7,13 +7,11 @@ import { favoritesData } from './favorites-data/favorites-data';
 import { reviewData } from './reviews-data/reviews-data';
 import { userData } from './user-data/user-data';
 
-import { NameSpace } from '../const';
-
 export const rootReducer = combineReducers({
-  [NameSpace.Offer]: offerData.reducer,
-  [NameSpace.Offers]: offersData.reducer,
-  [NameSpace.NearPlaces]: nearPlacesData.reducer,
-  [NameSpace.Favorites]: favoritesData.reducer,
-  [NameSpace.Reviews]: reviewData.reducer,
-  [NameSpace.User]: userData.reducer
+  [offerData.name]: offerData.reducer,
+  [offersData.name]: offersData.reducer,
+  [nearPlacesData.name]: nearPlacesData.reducer,
+  [favoritesData.name]: favoritesData.reducer,
+  [reviewData.name]: reviewData.reducer,
+  [userData.name]: userData.reducer
 });

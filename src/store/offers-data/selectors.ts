@@ -1,9 +1,7 @@
 import { TState } from '../../types/state';
 
-import { NameSpace } from '../../const';
+export const selectOffers = (state: TState) => state.Offers.offers;
 
-export const getOffers = (state: TState) => state[NameSpace.Offers]?.offers;
+export const selectFetchingStatus = (state: TState) => state.Offers.offersFetchingStatus;
 
-export const getOffersFetchingStatus = (state: TState) => state[NameSpace.Offers]?.offersFetchingStatus;
-
-export const getActiveCity = (state: TState) => state[NameSpace.Offers]?.activeCity;
+export const selectActiveCity = (state: TState) => state.Offers.activeCity;

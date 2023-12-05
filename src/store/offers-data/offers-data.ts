@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { fetchOffers } from '../api-actions';
+import { fetchOffers } from '../actions/api-actions';
 
 import { TOffersData } from '../../types/state';
 import { TCity } from '../../types/city';
 
-import { CityMap, RequestStatus } from '../../const';
+import { CityMap, RequestStatus } from '../../const/const';
 
 const initialState: TOffersData = {
   offers:[],
@@ -15,9 +15,21 @@ const initialState: TOffersData = {
 };
 
 export const offersData = createSlice({
-  name: 'OFFERS',
+  name: 'Offers',
   initialState,
   reducers: {
+    addOffersToBookmark: (state, action: PayloadAction<string>) => {
+      const offer = state.offers.find(({ id }) => id === action.payload);
+      if (offer) {
+        offer.isFavorite = true;
+      }
+    },
+    deleteOffersFromBookmark: (state, action: PayloadAction<string>) => {
+      const offer = state.offers.find(({ id }) => id === action.payload);
+      if (offer) {
+        offer.isFavorite = false;
+      }
+    },
     setActiveCity(state, action: PayloadAction<TCity>) {
       state.activeCity = action.payload;
     }
@@ -38,4 +50,4 @@ export const offersData = createSlice({
   }
 });
 
-export const {setActiveCity} = offersData.actions;
+export const {setActiveCity, addOffersToBookmark, deleteOffersFromBookmark} = offersData.actions;

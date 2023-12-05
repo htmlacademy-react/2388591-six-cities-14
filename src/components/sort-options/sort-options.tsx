@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 import { TSorting } from '../../types/sorting';
-import { SortingMap } from '../../const';
+
+import { SortingMap } from '../../const/const';
 
 type SortingProps = {
   activeOption: TSorting;

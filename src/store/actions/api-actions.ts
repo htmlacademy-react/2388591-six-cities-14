@@ -3,15 +3,19 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AxiosError } from 'axios';
 
-import { TOffer } from '../types/offer';
-import { TReview, TReviewData } from '../types/review-type';
-import { TPreviewOffer } from '../types/preview-offer';
-import { TAuthorizedUser } from '../types/authorized-user';
-import { TLoginData } from '../types/login-data';
+import { addNearbyOfferToBookmark, deleteNearbyOfferFromBookmark } from '../near-places-data/near-places-data';
+import { addOffersToBookmark,deleteOffersFromBookmark } from '../offers-data/offers-data';
+import { addOfferToBookmark, deleteOfferToBookmark } from '../offer-data/offer-data';
 
-import { dropToken, saveToken } from '../services/token';
+import { TOffer } from '../../types/offer';
+import { TPreviewOffer } from '../../types/preview-offer';
+import { TReview, TReviewData } from '../../types/review';
+import { TLoginData } from '../../types/login-data';
+import { TAuthorizedUser } from '../../types/authorized-user';
 
-import { API_URL, APIRoute, AppRoute, HttpStatus } from '../const';
+import { dropToken, saveToken } from '../../services/token';
+
+import { API_URL, APIRoute, AppRoute, FavoriteStatus, HttpStatus } from '../../const/const';
 
 type TExtra = {
   extra: AxiosInstance;
@@ -40,7 +44,7 @@ export const fetchOffer = createAsyncThunk<TOffer, TOffer['id'], TExtra>(
 export const fetchReviews = createAsyncThunk<TReview[], TOffer['id'], TExtra>(
   'reviews/fetch',
   async (offerId, { extra: api }) => {
-    const { data } = await api.get<TReview[]>(`${APIRoute.Reviews}/${offerId}`);
+    const { data } = await api.get<TReview[]>(`${APIRoute.Comments}/${offerId}`);
     return data;
   }
 );
@@ -58,12 +62,34 @@ export const fetchNearPlaces = createAsyncThunk<TPreviewOffer[], TOffer['id'], T
 export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtra>(
   'favorites/fetch',
   async (_arg, { extra: api }) => {
-    const { data } = await api.get<TPreviewOffer[]>(APIRoute.Favorites);
+    const { data } = await api.get<TPreviewOffer[]>(APIRoute.Favorite);
 
     return data;
 
   }
 );
+
+export const addFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
+  'favorites/add',
+  async (offerId, { extra: api, dispatch }) => {
+    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/${FavoriteStatus.Added}`);
+    dispatch(addOffersToBookmark(offerId));
+    dispatch(addNearbyOfferToBookmark(offerId));
+    dispatch(addOfferToBookmark(offerId));
+    return data;
+  }
+);
+
+export const deleteFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
+  'favorites/delete',
+  async (offerId, { extra: api, dispatch}) => {
+    const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/${FavoriteStatus.Deleted}`);
+    dispatch(deleteOffersFromBookmark(offerId));
+    dispatch(deleteNearbyOfferFromBookmark(offerId));
+    dispatch(deleteOfferToBookmark(offerId));
+
+    return data;
+  });
 
 export const checkAuth = createAsyncThunk<TAuthorizedUser, undefined, TExtra>(
   'user/checkAuth',
@@ -111,7 +137,7 @@ export const postReview = createAsyncThunk<
   'comment/post',
   async ({reviewData, offerId}, { extra: api }) => {
     const { data } = await api.post<TReview>(
-      `${APIRoute.Reviews}/${offerId}`,
+      `${APIRoute.Comments}/${offerId}`,
       reviewData
     );
     return data;

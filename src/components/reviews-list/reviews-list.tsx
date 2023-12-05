@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 
-import { fetchReviews } from '../../store/api-actions';
+import { fetchReviews } from '../../store/actions/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { Review } from '../review/review';
 import { ReviewForm } from '../review-form/review-form';
 
-import { getAuthorizationStatus } from '../../store/user-data/selectors';
-import { getReviews } from '../../store/reviews-data/selectors';
+import { selectAuthorizationStatus } from '../../store/user-data/selectors';
+import { selectReviews } from '../../store/reviews-data/selectors';
 
 import { TOffer } from '../../types/offer';
 
-import { AuthorizationStatus, MAX_SHOWN_REVIEWS } from '../../const';
+import { AuthorizationStatus, MAX_SHOWN_REVIEWS } from '../../const/const';
 
 type ReviewListProp = {
   offerId: TOffer['id'];
@@ -19,10 +19,10 @@ type ReviewListProp = {
 
 function ReviewList({offerId}: ReviewListProp) {
   const dispatch = useAppDispatch();
-  const reviews = useAppSelector(getReviews);
+  const reviews = useAppSelector(selectReviews);
   const sortedReviews = reviews.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const shownReviews = sortedReviews.slice(0, MAX_SHOWN_REVIEWS);
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
 
   useEffect(() => {
     dispatch(fetchReviews(offerId));

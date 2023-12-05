@@ -6,14 +6,15 @@ import {SortingOptions} from '../sort-options/sort-options';
 
 import { useAppSelector } from '../../hooks';
 
-import { getActiveCity } from '../../store/offers-data/selectors';
+import { selectActiveCity } from '../../store/offers-data/selectors';
 
 import { TPreviewOffer } from '../../types/preview-offer';
 import { TSorting } from '../../types/sorting';
 
-import { sorting } from '../../utils/utils';
+import { isPlural } from '../../utils/common';
+import { sorting } from '../../utils/sorting';
 
-import { SortingMap } from '../../const';
+import { SortingMap } from '../../const/const';
 
 type CitiesProps = {
   offers: TPreviewOffer[];
@@ -21,14 +22,10 @@ type CitiesProps = {
 
 
 function Cities({ offers }: CitiesProps): JSX.Element {
-  const selectedCity = useAppSelector(getActiveCity);
+  const selectedCity = useAppSelector(selectActiveCity);
 
   const [hoveredOffer, setHoveredOffer] = useState<TPreviewOffer['id'] | null>(null);
   const [activeSorting, setActiveSorting] = useState<TSorting>(SortingMap.Popular);
-
-  const handleSortOptionSelect = (selectedOption: TSorting) => {
-    setActiveSorting(selectedOption);
-  };
 
   const filteredOffers = useMemo(
     () => offers.filter((offer) =>
@@ -40,22 +37,25 @@ function Cities({ offers }: CitiesProps): JSX.Element {
     [filteredOffers, activeSorting]
   );
 
+  const placesCount = filteredOffers.length;
+
   return (
     <div className="cities">
       <div className="cities__places-container container">
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
-            {filteredOffers.length} places to stay in {selectedCity.name}
+            {placesCount} {isPlural(placesCount, 'place')} to stay in {selectedCity.name}
           </b>
           <SortingOptions
             activeOption={activeSorting}
-            onSelectSortOption={handleSortOptionSelect}
+            onSelectSortOption={setActiveSorting}
           />
           <div className="cities__places-list places__list tabs__content">
             {sortedOffers.map((offer) => (
               <Card
                 block="cities"
+                size='large'
                 key={offer.id}
                 offer={offer}
                 onCardHover={setHoveredOffer}

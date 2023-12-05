@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchReviews, postReview } from '../api-actions';
+import { fetchReviews, postReview } from '../actions/api-actions';
 
 import { TReviewsData } from '../../types/state';
 
-import { RequestStatus } from '../../const';
+import { RequestStatus } from '../../const/const';
 
 const initialState: TReviewsData = {
   reviews: [],
@@ -13,7 +13,7 @@ const initialState: TReviewsData = {
 };
 
 export const reviewData = createSlice({
-  name: 'REVIEW',
+  name: 'Reviews',
   initialState,
   reducers: {
     dropReviewSendingStatus(state){

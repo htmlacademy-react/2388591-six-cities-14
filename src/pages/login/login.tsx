@@ -2,34 +2,33 @@ import React, { useState, FormEvent, useMemo, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import styles from './login-page.module.css';
-
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { getAuthorizationStatus, getSendingStatus } from '../../store/user-data/selectors';
+import { selectAuthorizationStatus, selectSendingStatus } from '../../store/user-data/selectors';
 import { setActiveCity } from '../../store/offers-data/offers-data';
 import { dropSendingStatus } from '../../store/user-data/user-data';
-import { login } from '../../store/api-actions';
+import { fetchFavorites, login } from '../../store/actions/api-actions';
 
 import { Logo } from '../../components/logo/logo';
 
 import { TLoginData } from '../../types/login-data';
 
-import { getRandomArrayElement } from '../../utils/utils';
+import { getRandomArrayElement } from '../../utils/common';
 
-import { AppRoute, AuthorizationStatus, CityMap, RequestStatus } from '../../const';
 
+import styles from './login.module.css';
+import { CityMap, AuthorizationStatus, AppRoute, RequestStatus } from '../../const/const';
 
 const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.([0-9]{1,3}|[a-zA-Z]{2})\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const EMAIL_ERROR_TEXT = 'Please enter a correct email address.';
 const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 const PASSWORD_ERROR_TEXT = 'Password must contain at least one letter and one digit. Please enter a correct password!';
 
-const Login: React.FC = () => {
+function LoginPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const sendingStatus = useAppSelector(getSendingStatus);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const sendingStatus = useAppSelector(selectSendingStatus);
 
   const [email, setEmail] = useState<string>('');
   const [isEmailFilled, setIsEmailFilled] = useState(false);
@@ -63,7 +62,7 @@ const Login: React.FC = () => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData) as TLoginData;
 
-    dispatch(login(data));
+    dispatch(login(data)).then(() => dispatch(fetchFavorites()));
 
   };
   if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -153,6 +152,6 @@ const Login: React.FC = () => {
       </main>
     </div>
   );
-};
+}
 
-export { Login };
+export { LoginPage };

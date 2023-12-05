@@ -1,25 +1,11 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { TState } from '../../types/state';
 
-import { TState, TUserData } from '../../types/state';
+import { AuthorizationStatus } from '../../const/const';
 
-import { AuthorizationStatus, NameSpace } from '../../const';
+export const selectUser = (state: TState) => state.User.user;
 
-export const getUser = createSelector(
-  (state: TState) => state[NameSpace.User],
-  (state: TUserData) => state.user
-);
+export const selectAuthorizationStatus = (state: TState) => state.User.authorizationStatus;
 
-export const getAuthorizationStatus = createSelector(
-  (state: TState) => state[NameSpace.User],
-  (state: TUserData) => state.authorizationStatus
-);
+export const selectIsAuthorized = (state: TState) => state.User.authorizationStatus === AuthorizationStatus.Auth;
 
-export const getIsAuthorized = createSelector(
-  (state: TState) => state[NameSpace.User],
-  (state: TUserData) => state.authorizationStatus === AuthorizationStatus.Auth
-);
-
-export const getSendingStatus = createSelector(
-  (state: TState) => state[NameSpace.User],
-  (state: TUserData) => state.sendingStatus
-);
+export const selectSendingStatus = (state: TState) => state.User.sendingStatus;

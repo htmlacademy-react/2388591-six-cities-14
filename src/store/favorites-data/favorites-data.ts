@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchFavorites } from '../api-actions';
+// import { addFavorite, deleteFavorite, fetchFavorites } from '../actions/api-actions';
+
+import { addFavorite, deleteFavorite, fetchFavorites } from '../actions/api-actions';
 
 import { TFavoritesData } from '../../types/state';
 
-import { NameSpace, RequestStatus } from '../../const';
+import { RequestStatus } from '../../const/const';
 
 const initialState: TFavoritesData = {
   favorites: [],
@@ -12,7 +14,7 @@ const initialState: TFavoritesData = {
 };
 
 export const favoritesData = createSlice({
-  name: NameSpace.Favorites,
+  name: 'Favorites',
   initialState,
   reducers:{},
   extraReducers(builder) {
@@ -26,6 +28,14 @@ export const favoritesData = createSlice({
       })
       .addCase(fetchFavorites.rejected, (state) => {
         state.favoritesFetchingStatus = RequestStatus.Error;
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        state.favorites.push(action.payload);
+      })
+      .addCase(deleteFavorite.fulfilled, (state, action) => {
+        state.favorites = state.favorites.filter(
+          (offer) => offer.id !== action.payload.id
+        );
       });
   }
 });

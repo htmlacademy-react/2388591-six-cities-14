@@ -1,4 +1,4 @@
-import { CityName } from '../const';
+import { CityName } from '../const/const';
 import { TLocation } from './location';
 
 type TCity = {

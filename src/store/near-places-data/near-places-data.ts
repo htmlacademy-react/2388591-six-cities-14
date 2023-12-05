@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { fetchNearPlaces } from '../api-actions';
-
+import { fetchNearPlaces } from '../actions/api-actions';
 import { TNearPlacesData } from '../../types/state';
 
 const initialState: TNearPlacesData = {
@@ -10,9 +9,22 @@ const initialState: TNearPlacesData = {
 };
 
 export const nearPlacesData = createSlice({
-  name: 'NEAR-PLACES',
+  name: 'NearPlaces',
   initialState,
-  reducers:{},
+  reducers:{
+    addNearbyOfferToBookmark: (state, action: PayloadAction<string>) => {
+      const offer = state.nearPlaces.find(({ id }) => id === action.payload);
+      if (offer) {
+        offer.isFavorite = true;
+      }
+    },
+    deleteNearbyOfferFromBookmark: (state, action: PayloadAction<string>) => {
+      const offer = state.nearPlaces.find(({ id }) => id === action.payload);
+      if (offer) {
+        offer.isFavorite = false;
+      }
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchNearPlaces.fulfilled, (state, action) => {
@@ -20,3 +32,5 @@ export const nearPlacesData = createSlice({
       });
   }
 });
+
+export const {addNearbyOfferToBookmark, deleteNearbyOfferFromBookmark} = nearPlacesData.actions;

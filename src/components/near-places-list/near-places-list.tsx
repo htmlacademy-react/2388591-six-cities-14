@@ -1,4 +1,5 @@
 import Card from '../card/card';
+
 import { TPreviewOffer } from '../../types/preview-offer';
 
 type NearbyOffersListProps = {
@@ -15,6 +16,7 @@ function NearbyOffersList ({ nearbyOffers }:NearbyOffersListProps) {
             key={nearbyOffer.id}
             offer={nearbyOffer}
             block='near-places'
+            size='large'
           />
         ))}
       </div>

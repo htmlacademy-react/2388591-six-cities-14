@@ -5,13 +5,13 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { Rating } from '../rating/rating';
 
-import { getReviewsFetchingStatus } from '../../store/reviews-data/selectors';
-import { dropReviewSendingStatus } from '../../store/action';
-import { postReview } from '../../store/api-actions';
+import { selectFetchingStatus } from '../../store/reviews-data/selectors';
+import { dropReviewSendingStatus } from '../../store/actions/action';
+import { postReview } from '../../store/actions/api-actions';
 
 import { TOffer } from '../../types/offer';
 
-import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const';
+import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const/const';
 
 type TReviewsProps = {
   offerId: TOffer['id'];
@@ -22,7 +22,7 @@ function ReviewForm({ offerId }: TReviewsProps) {
   const [rating, setRating] = useState(0);
 
   const dispatch = useAppDispatch();
-  const sendingStatus = useAppSelector(getReviewsFetchingStatus);
+  const sendingStatus = useAppSelector(selectFetchingStatus);
 
   const isSending = sendingStatus === RequestStatus.Loading;
 
@@ -34,10 +34,6 @@ function ReviewForm({ offerId }: TReviewsProps) {
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(evt.target.value);
-  };
-
-  const handleRatingChange = (value: number) => {
-    setRating(value);
   };
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -69,7 +65,7 @@ function ReviewForm({ offerId }: TReviewsProps) {
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
-      <Rating value={rating} onChange={handleRatingChange} />
+      <Rating value={rating} onChange={setRating} />
 
       <textarea
         onChange={handleFieldChange}

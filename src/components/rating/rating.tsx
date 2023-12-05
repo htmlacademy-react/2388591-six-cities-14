@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { RequestStatus } from '../../const';
+import { RequestStatus } from '../../const/const';
 import { useAppSelector } from '../../hooks';
-import { getReviewsFetchingStatus } from '../../store/reviews-data/selectors';
+import { selectFetchingStatus } from '../../store/reviews-data/selectors';
 
 type RatingProps = {
   value: number;
@@ -17,7 +17,7 @@ const RATING_MAP = {
 };
 
 function Rating({ value, onChange }: RatingProps) {
-  const sendingStatus = useAppSelector(getReviewsFetchingStatus);
+  const sendingStatus = useAppSelector(selectFetchingStatus);
 
   const isSending = sendingStatus === RequestStatus.Loading;
 

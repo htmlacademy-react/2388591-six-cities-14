@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { checkAuth, login, logout } from '../api-actions';
+import { checkAuth, login, logout } from '../actions/api-actions';
 
 import { TUserData } from '../../types/state';
 
-import { AuthorizationStatus, RequestStatus } from '../../const';
+import { AuthorizationStatus, RequestStatus } from '../../const/const';
 
 const initialState: TUserData = {
   user: null,
@@ -14,7 +14,7 @@ const initialState: TUserData = {
 };
 
 export const userData = createSlice({
-  name: 'USER',
+  name: 'User',
   initialState,
   reducers: {
     dropSendingStatus(state) {

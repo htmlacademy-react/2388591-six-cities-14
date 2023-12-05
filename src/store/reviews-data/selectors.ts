@@ -1,20 +1,7 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { TState } from '../../types/state';
 
-import { TReviewsData, TState } from '../../types/state';
+export const selectReviews = (state: TState) => state.Reviews.reviews;
 
-import { NameSpace } from '../../const';
+export const selectFetchingStatus = (state: TState) => state.Reviews.reviewFetchingStatus;
 
-export const getReviews = createSelector(
-  (state: TState) => state[NameSpace.Reviews],
-  (state: TReviewsData) => state.reviews
-);
-
-export const getReviewsFetchingStatus = createSelector(
-  (state: TState) => state[NameSpace.Reviews],
-  (state: TReviewsData) => state.reviewFetchingStatus
-);
-
-export const getReviewSendingStatus = createSelector(
-  (state: TState) => state[NameSpace.Reviews],
-  (state: TReviewsData) => state.reviewSendingStatus
-);
+export const selectSendingStatus = (state: TState) => state.Reviews.reviewSendingStatus;

@@ -1,28 +1,27 @@
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
-
+import { TSizeMap } from '../../types/size';
 import { TPreviewOffer } from '../../types/preview-offer';
 
-import { useAppSelector } from '../../hooks';
+import { AppRoute } from '../../const/const';
 
-import { getFavorites } from '../../store/favorites-data/selectors';
-
-import classNames from 'classnames';
-
-import { AppRoute } from '../../const';
-
-import { getRating } from '../../utils/utils';
+import { getRating } from '../../utils/common';
+import { BookMark } from '../bookmark/bookmark';
 
 type CardProps = {
   offer: TPreviewOffer;
   block: string;
+  size: keyof TSizeMap;
   onCardHover?: (offerId: TPreviewOffer['id'] | null) => void;
 };
 
-function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
-  const { isPremium, previewImage, id, price, title, type, rating } = offer;
-  const favorities = useAppSelector(getFavorites);
-  const isFavorite = favorities.some((favorite) => favorite.id === id);
+const sizeMap: TSizeMap = {
+  small: {width: '150', height: '110'},
+  large: {width: '260', height: '200'}
+};
+
+function Card({ offer, block, onCardHover, size = 'large' }: CardProps): JSX.Element {
+  const { isPremium, previewImage, id, price, title, type, rating, isFavorite } = offer;
 
   const handleMouseEnter = () => {
     onCardHover?.(id);
@@ -34,7 +33,7 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
 
   return (
     <article
-      className="near-places__card place-card"
+      className={`${block}__card place-card`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -45,7 +44,7 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
       )}
       <div className={`${block}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Offer}/${id}`}>
-          <img className="place-card__image" src={previewImage} alt={title} />
+          <img className="place-card__image" src={previewImage} alt={title} {...sizeMap[size]}/>
         </Link>
       </div>
       <div className="place-card__info">
@@ -54,18 +53,7 @@ function Card({ offer, block, onCardHover }: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            className={classNames('place-card__bookmark-button', 'button', {
-              'place-card__bookmark-button--active' :
-              isFavorite
-            })}
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
-          </button>
+          <BookMark id={id} block="place-card" isActive={isFavorite} size={'small'}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

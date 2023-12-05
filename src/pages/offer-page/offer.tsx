@@ -8,24 +8,26 @@ import {Header} from '../../components/header/header';
 import {ReviewList} from '../../components/reviews-list/reviews-list';
 import { Map } from '../../components/map/map';
 import { Spinner } from '../../components/spinner/spinner';
+import { BookMark } from '../../components/bookmark/bookmark';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { dropOffer } from '../../store/action';
-import { fetchOffer, fetchNearPlaces } from '../../store/api-actions';
 
-import { MAX_NEAR_PLACES_COUNT } from '../../const';
+import { dropOffer } from '../../store/actions/action';
+import { fetchOffer, fetchNearPlaces } from '../../store/actions/api-actions';
+import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
+import { selectNearPlaces } from '../../store/near-places-data/selectors';
 
-import { RequestStatus } from '../../const';
-import { getRating } from '../../utils/utils';
-import { getOffer, getOfferFetchingStatus } from '../../store/offer-data/selectors';
-import { getNearPlaces } from '../../store/near-places-data/selectors';
+import { MAX_NEAR_PLACES_COUNT, RequestStatus } from '../../const/const';
+
+import { getRating, isPlural } from '../../utils/common';
+
 
 function OfferPage() {
   const {offerId} = useParams();
   const dispatch = useAppDispatch();
-  const offer = useAppSelector(getOffer);
-  const fetchingStatus = useAppSelector(getOfferFetchingStatus);
-  const nearPlaces = useAppSelector(getNearPlaces);
+  const offer = useAppSelector(selectOffer);
+  const fetchingStatus = useAppSelector(selectFetchingStatus);
+  const nearPlaces = useAppSelector(selectNearPlaces);
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
 
   useEffect(() => {
@@ -80,13 +82,10 @@ function OfferPage() {
                 <h1 className="offer__name">
                   {offer?.title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <BookMark id={offer.id} block="offer" isActive={offer.isFavorite} size={'large'}/>
+
               </div>
+
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
                   <span style={{ width: getRating(offer.rating) }} />
@@ -99,10 +98,10 @@ function OfferPage() {
                   {offer.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {offer.bedrooms} Bedrooms
+                  {offer.bedrooms} {isPlural(offer.bedrooms, 'Bedroom')}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                Max {offer?.maxAdults} adults
+                Max {offer?.maxAdults} {isPlural(offer.maxAdults, 'adult')}
                 </li>
               </ul>
               <div className="offer__price">
@@ -125,14 +124,16 @@ function OfferPage() {
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src="img/avatar-angelina.jpg"
+                      src={offer.host.avatarUrl}
                       width={74}
                       height={74}
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">Angelina</span>
-                  <span className="offer__user-status">Pro</span>
+                  <span className="offer__user-name">{offer.host.name}</span>
+                  <span className="offer__user-status">
+                    {offer.host.isPro ? 'Pro' : 'Regular'}
+                  </span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
@@ -168,4 +169,4 @@ function OfferPage() {
   );
 }
 
-export {OfferPage};
+export { OfferPage };

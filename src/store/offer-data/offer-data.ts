@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchOffer } from '../api-actions';
+import { fetchOffer } from '../actions/api-actions';
 
 import { TOfferData } from '../../types/state';
 
-import { RequestStatus } from '../../const';
+import { RequestStatus } from '../../const/const';
 
 const initialState: TOfferData = {
   offer: null,
@@ -12,12 +12,27 @@ const initialState: TOfferData = {
 };
 
 export const offerData = createSlice({
-  name: 'OFFER',
+  name: 'Offer',
   initialState,
   reducers:{
+    addOfferToBookmark: (state, action) => {
+      const offer = state.offer;
+      if (offer && offer.id === action.payload) {
+        offer.isFavorite = true;
+      }
+
+    },
+    deleteOfferToBookmark: (state, action) => {
+      const offer = state.offer;
+      if (offer && offer.id === action.payload) {
+        offer.isFavorite = false;
+      }
+
+    },
     dropOffer(state) {
       state.offer = null;
-    }
+    },
+
   },
   extraReducers(builder) {
     builder
@@ -37,3 +52,4 @@ export const offerData = createSlice({
 
 });
 
+export const { addOfferToBookmark, deleteOfferToBookmark } = offerData.actions;

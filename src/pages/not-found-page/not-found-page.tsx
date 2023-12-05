@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './not-found-page.module.css';
 
-export default function NotFoundPage(): JSX.Element {
+export function NotFoundPage(): JSX.Element {
   return(
     <section className={styles.notFoundPage}>
       <h1 className={styles.title}>
@@ -13,3 +13,4 @@ export default function NotFoundPage(): JSX.Element {
     </section>
   );
 }
+

@@ -3,27 +3,30 @@ import { useCallback, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { getActiveCity, getOffers, getOffersFetchingStatus } from '../../store/offers-data/selectors';
+import { selectActiveCity, selectFetchingStatus, selectOffers } from '../../store/offers-data/selectors';
 import { setActiveCity } from '../../store/offers-data/offers-data';
-import { fetchOffers } from '../../store/api-actions';
+import { fetchOffers } from '../../store/actions/api-actions';
 
 import { Header } from '../../components/header/header';
 import {Cities} from '../../components/cities/cities';
 import { CityList } from '../../components/city-list/city-list';
 import { Spinner } from '../../components/spinner/spinner';
 
+import { MainEmptyPage } from '../main-empty/main-empty';
+
 import { TCity } from '../../types/city';
+import { RequestStatus } from '../../const/const';
 
-import { RequestStatus } from '../../const';
 
-function Main() {
+function MainPage() {
   const dispatch = useAppDispatch();
-  const fetchingStatus = useAppSelector(getOffersFetchingStatus);
+  const fetchingStatus = useAppSelector(selectFetchingStatus);
 
-  const offers = useAppSelector(getOffers);
+  const offers = useAppSelector(selectOffers);
 
-  const selectedCity = useAppSelector(getActiveCity);
+  const selectedCity = useAppSelector(selectActiveCity);
 
+  const hasOffers = Boolean(offers?.length);
   const handleSelectCity = useCallback((city: TCity) => {
     dispatch(setActiveCity(city));
   }, [dispatch]);
@@ -33,10 +36,11 @@ function Main() {
   }, [dispatch, selectedCity]);
 
   return (
-    <div className="page page--gray page--main">
+    <div className='page page--gray page--main'>
+
       <Helmet><title>6 cities | Main</title></Helmet>
       <Header />
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index${!hasOffers ? '' : ' page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -44,14 +48,15 @@ function Main() {
           </section>
         </div>
         {fetchingStatus === RequestStatus.Loading && <Spinner />}
-        {fetchingStatus === RequestStatus.Success && (
-          <Cities offers={offers} />
 
-        )}
+        {fetchingStatus === RequestStatus.Success && (
+          hasOffers ? <Cities offers={offers} /> : <MainEmptyPage city={selectedCity.name}/>
+        ) }
+
       </main>
     </div>
   );
 }
 
 
-export {Main};
+export { MainPage };
