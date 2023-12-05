@@ -11,9 +11,10 @@ import { selectActiveCity } from '../../store/offers-data/selectors';
 import { TPreviewOffer } from '../../types/preview-offer';
 import { TSorting } from '../../types/sorting';
 
-import { isPlural, sorting } from '../../utils/utils';
+import { isPlural } from '../../utils/common';
+import { sorting } from '../../utils/sorting';
 
-import { SortingMap } from '../../const';
+import { SortingMap } from '../../const/const';
 
 type CitiesProps = {
   offers: TPreviewOffer[];

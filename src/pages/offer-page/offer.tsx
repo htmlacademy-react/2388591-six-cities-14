@@ -8,18 +8,18 @@ import {Header} from '../../components/header/header';
 import {ReviewList} from '../../components/reviews-list/reviews-list';
 import { Map } from '../../components/map/map';
 import { Spinner } from '../../components/spinner/spinner';
-
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { dropOffer } from '../../store/action';
-import { fetchOffer, fetchNearPlaces } from '../../store/api-actions';
-import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
-import { selectNearPlaces } from '../../store/near-places-data/selectors';
 import { BookMark } from '../../components/bookmark/bookmark';
 
-import { MAX_NEAR_PLACES_COUNT } from '../../const';
-import { RequestStatus } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { getRating, isPlural } from '../../utils/utils';
+import { dropOffer } from '../../store/actions/action';
+import { fetchOffer, fetchNearPlaces } from '../../store/actions/api-actions';
+import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
+import { selectNearPlaces } from '../../store/near-places-data/selectors';
+
+import { MAX_NEAR_PLACES_COUNT, RequestStatus } from '../../const/const';
+
+import { getRating, isPlural } from '../../utils/common';
 
 
 function OfferPage() {

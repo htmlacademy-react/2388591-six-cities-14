@@ -3,7 +3,7 @@ import { TCity } from '../../types/city';
 type MainEmptyprops = {
   city: TCity['name'];
 }
-function MainEmpty({city}: MainEmptyprops) {
+function MainEmptyPage({city}: MainEmptyprops) {
   return (
     <div className="cities">
       <div className="cities__places-container cities__places-container--empty container">
@@ -22,4 +22,4 @@ function MainEmpty({city}: MainEmptyprops) {
   );
 }
 
-export { MainEmpty };
+export { MainEmptyPage };

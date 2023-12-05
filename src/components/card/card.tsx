@@ -3,9 +3,9 @@ import { memo } from 'react';
 import { TSizeMap } from '../../types/size';
 import { TPreviewOffer } from '../../types/preview-offer';
 
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../const/const';
 
-import { getRating } from '../../utils/utils';
+import { getRating } from '../../utils/common';
 import { BookMark } from '../bookmark/bookmark';
 
 type CardProps = {

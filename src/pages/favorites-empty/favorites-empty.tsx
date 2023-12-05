@@ -1,4 +1,4 @@
-export function FavoritesEmpty() {
+function FavoritesEmptyPage() {
   return (
     <div className="page page--favorites-empty">
       <main className="page__main page__main--favorites page__main--favorites-empty">
@@ -18,3 +18,5 @@ export function FavoritesEmpty() {
 
   );
 }
+
+export { FavoritesEmptyPage };

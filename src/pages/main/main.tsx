@@ -5,19 +5,20 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { selectActiveCity, selectFetchingStatus, selectOffers } from '../../store/offers-data/selectors';
 import { setActiveCity } from '../../store/offers-data/offers-data';
-import { fetchOffers } from '../../store/api-actions';
+import { fetchOffers } from '../../store/actions/api-actions';
 
 import { Header } from '../../components/header/header';
 import {Cities} from '../../components/cities/cities';
 import { CityList } from '../../components/city-list/city-list';
 import { Spinner } from '../../components/spinner/spinner';
 
+import { MainEmptyPage } from '../main-empty/main-empty';
+
 import { TCity } from '../../types/city';
+import { RequestStatus } from '../../const/const';
 
-import { RequestStatus } from '../../const';
-import { MainEmpty } from '../main-empty/main-empty';
 
-function Main() {
+function MainPage() {
   const dispatch = useAppDispatch();
   const fetchingStatus = useAppSelector(selectFetchingStatus);
 
@@ -49,7 +50,7 @@ function Main() {
         {fetchingStatus === RequestStatus.Loading && <Spinner />}
 
         {fetchingStatus === RequestStatus.Success && (
-          hasOffers ? <Cities offers={offers} /> : <MainEmpty city={selectedCity.name}/>
+          hasOffers ? <Cities offers={offers} /> : <MainEmptyPage city={selectedCity.name}/>
         ) }
 
       </main>
@@ -58,4 +59,4 @@ function Main() {
 }
 
 
-export { Main };
+export { MainPage };

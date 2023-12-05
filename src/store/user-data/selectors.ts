@@ -1,6 +1,6 @@
 import { TState } from '../../types/state';
 
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus } from '../../const/const';
 
 export const selectUser = (state: TState) => state.User.user;
 

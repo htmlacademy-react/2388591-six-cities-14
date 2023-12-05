@@ -5,7 +5,7 @@ import { TPreviewOffer } from './preview-offer';
 import { TCity, TOffer } from './offer';
 import { TReview } from './review';
 
-import { AuthorizationStatus, RequestStatus } from '../const';
+import { AuthorizationStatus, RequestStatus } from '../const/const';
 
 export type TState = ReturnType<typeof store.getState>;
 

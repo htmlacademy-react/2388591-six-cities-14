@@ -2,19 +2,19 @@ import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
-import { AppRoute, AuthorizationStatus } from '../../const';
-import { addFavorite, deleteFavorite } from '../../store/api-actions';
+import { AppRoute, AuthorizationStatus } from '../../const/const';
+import { addFavorite, deleteFavorite } from '../../store/actions/api-actions';
 import { TOffer } from '../../types/offer';
-import { SizeMap } from '../../types/size';
+import { TSizeMap } from '../../types/size';
 
 type BookMarkProps = {
   id: TOffer['id'];
   isActive: boolean;
   block: string;
-  size: keyof SizeMap;
+  size: keyof TSizeMap;
 };
 
-const sizeMap: SizeMap = {
+const sizeMap: TSizeMap = {
   small: {width: '18', height: '19'},
   large: {width: '31', height: '33'}
 };

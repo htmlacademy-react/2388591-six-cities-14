@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchOffer } from '../api-actions';
+import { fetchOffer } from '../actions/api-actions';
 
 import { TOfferData } from '../../types/state';
 
-import { RequestStatus } from '../../const';
+import { RequestStatus } from '../../const/const';
 
 const initialState: TOfferData = {
   offer: null,

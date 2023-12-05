@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { RequestStatus } from '../../const';
+import { RequestStatus } from '../../const/const';
 import { useAppSelector } from '../../hooks';
 import { selectFetchingStatus } from '../../store/reviews-data/selectors';
 

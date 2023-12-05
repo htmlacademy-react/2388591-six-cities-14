@@ -1,6 +1,6 @@
 import { TCity } from '../../types/city';
 
-import { CityMap, CityName } from '../../const';
+import { CityMap, CityName } from '../../const/const';
 
 type CityListProps = {
   activeCity: CityName;

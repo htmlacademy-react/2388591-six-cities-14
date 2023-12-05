@@ -1,4 +1,5 @@
 import Card from '../card/card';
+
 import { TPreviewOffer } from '../../types/preview-offer';
 
 type NearbyOffersListProps = {

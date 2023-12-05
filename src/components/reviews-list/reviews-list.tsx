@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { fetchReviews } from '../../store/api-actions';
+import { fetchReviews } from '../../store/actions/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { Review } from '../review/review';
@@ -11,7 +11,7 @@ import { selectReviews } from '../../store/reviews-data/selectors';
 
 import { TOffer } from '../../types/offer';
 
-import { AuthorizationStatus, MAX_SHOWN_REVIEWS } from '../../const';
+import { AuthorizationStatus, MAX_SHOWN_REVIEWS } from '../../const/const';
 
 type ReviewListProp = {
   offerId: TOffer['id'];

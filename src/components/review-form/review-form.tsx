@@ -6,12 +6,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Rating } from '../rating/rating';
 
 import { selectFetchingStatus } from '../../store/reviews-data/selectors';
-import { dropReviewSendingStatus } from '../../store/action';
-import { postReview } from '../../store/api-actions';
+import { dropReviewSendingStatus } from '../../store/actions/action';
+import { postReview } from '../../store/actions/api-actions';
 
 import { TOffer } from '../../types/offer';
 
-import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const';
+import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const/const';
 
 type TReviewsProps = {
   offerId: TOffer['id'];

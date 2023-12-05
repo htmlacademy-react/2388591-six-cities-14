@@ -6,13 +6,13 @@ import { selectAuthorizationStatus } from '../../store/user-data/selectors';
 
 import { Spinner } from '../spinner/spinner';
 
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const/const';
 
 type PrivateRouteProps = {
   children: JSX.Element;
 }
 
-export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
+export function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const { children } = props;
 
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);

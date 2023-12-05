@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
+
 import { selectUser } from '../../store/user-data/selectors';
-import { logout } from '../../store/api-actions';
+import { logout } from '../../store/actions/api-actions';
+
 import { FavoriteCount } from '../favorite-count/favorite-count';
 
+import { AppRoute } from '../../const/const';
 
 function LoggedNavigation() {
   const user = useAppSelector(selectUser);

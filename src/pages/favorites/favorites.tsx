@@ -4,15 +4,15 @@ import { useAppSelector } from '../../hooks';
 
 import { selectFavorites, selectFetchingStatus } from '../../store/favorites-data/selectors';
 
-import {Footer} from '../../components/footer/footer';
-import {Header} from '../../components/header/header';
-
 import { FavoritesList } from '../../components/favorites-list/favorites-list';
-import { RequestStatus } from '../../const';
-import { FavoritesEmpty } from '../favorites-empty/favorites-empty';
+import { Footer } from '../../components/footer/footer';
+import { Header } from '../../components/header/header';
+
+import { FavoritesEmptyPage } from '../favorites-empty/favorites-empty';
+import { RequestStatus } from '../../const/const';
 
 
-function Favorites() {
+function FavoritesPage() {
   const favorites = useAppSelector(selectFavorites);
   const fetchingStatus = useAppSelector(selectFetchingStatus);
   const hasFavorites = Boolean(favorites?.length);
@@ -23,12 +23,19 @@ function Favorites() {
         <title>6 cities | Favorites</title>
       </Helmet>
       <Header />
+
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
-          {fetchingStatus === RequestStatus.Success && (
-            hasFavorites ? <FavoritesList /> : null
-          )}
-          {!hasFavorites && fetchingStatus === RequestStatus.Success && <FavoritesEmpty />}
+          <section className="favorites">
+            <h1 className="favorites__title">Saved listing</h1>
+            {hasFavorites && fetchingStatus === RequestStatus.Success && (
+              <FavoritesList />
+            )}
+
+            {!hasFavorites && fetchingStatus === RequestStatus.Success && (
+              <FavoritesEmptyPage />
+            )}
+          </section>
         </div>
       </main>
       <Footer />
@@ -36,6 +43,4 @@ function Favorites() {
   );
 }
 
-export { Favorites };
-
-
+export { FavoritesPage };

@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { fetchOffers } from '../api-actions';
+import { fetchOffers } from '../actions/api-actions';
 
 import { TOffersData } from '../../types/state';
 import { TCity } from '../../types/city';
 
-import { CityMap, RequestStatus } from '../../const';
+import { CityMap, RequestStatus } from '../../const/const';
 
 const initialState: TOffersData = {
   offers:[],

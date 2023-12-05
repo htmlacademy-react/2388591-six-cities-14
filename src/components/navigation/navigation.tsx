@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
-import { AuthorizationStatus, AppRoute } from '../../const';
+
 import { useAppSelector } from '../../hooks';
+
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
+
 import { LoggedNavigation } from '../logged-nav.tsx/logged-nav';
+
+import { AuthorizationStatus, AppRoute } from '../../const/const';
 
 
 function Navigation() {
