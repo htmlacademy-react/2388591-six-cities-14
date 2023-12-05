@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
-
-import { SizeMap } from '../../types/size';
+import { TSizeMap } from '../../types/size';
 import { TPreviewOffer } from '../../types/preview-offer';
 
 import { AppRoute } from '../../const';
@@ -12,11 +11,11 @@ import { BookMark } from '../bookmark/bookmark';
 type CardProps = {
   offer: TPreviewOffer;
   block: string;
-  size: keyof SizeMap;
+  size: keyof TSizeMap;
   onCardHover?: (offerId: TPreviewOffer['id'] | null) => void;
 };
 
-const sizeMap: SizeMap = {
+const sizeMap: TSizeMap = {
   small: {width: '150', height: '110'},
   large: {width: '260', height: '200'}
 };

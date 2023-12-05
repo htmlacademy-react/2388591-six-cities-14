@@ -4,7 +4,7 @@ import { AxiosInstance } from 'axios';
 import { AxiosError } from 'axios';
 
 import { TOffer } from '../types/offer';
-import { TReview, TReviewData } from '../types/review-type';
+import { TReview, TReviewData } from '../types/review';
 import { TPreviewOffer } from '../types/preview-offer';
 import { TAuthorizedUser } from '../types/authorized-user';
 import { TLoginData } from '../types/login-data';

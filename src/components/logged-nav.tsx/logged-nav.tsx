@@ -41,7 +41,7 @@ function LoggedNavigation() {
       </li>
       <li className="header__nav-item">
         <a className="header__nav-link" href="#" onClick={handleLogout}>
-          <span className="header__signout">Sign out</span>
+          <span className="header__signout">Log Out</span>
         </a>
       </li>
     </ul>

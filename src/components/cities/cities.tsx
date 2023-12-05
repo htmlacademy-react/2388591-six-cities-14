@@ -11,7 +11,7 @@ import { selectActiveCity } from '../../store/offers-data/selectors';
 import { TPreviewOffer } from '../../types/preview-offer';
 import { TSorting } from '../../types/sorting';
 
-import { sorting } from '../../utils/utils';
+import { isPlural, sorting } from '../../utils/utils';
 
 import { SortingMap } from '../../const';
 
@@ -36,13 +36,15 @@ function Cities({ offers }: CitiesProps): JSX.Element {
     [filteredOffers, activeSorting]
   );
 
+  const placesCount = filteredOffers.length;
+
   return (
     <div className="cities">
       <div className="cities__places-container container">
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
-            {filteredOffers.length} places to stay in {selectedCity.name}
+            {placesCount} {isPlural(placesCount, 'place')} to stay in {selectedCity.name}
           </b>
           <SortingOptions
             activeOption={activeSorting}

@@ -2,7 +2,7 @@ import React, { useState, FormEvent, useMemo, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import styles from './login-page.module.css';
+import styles from './login.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 

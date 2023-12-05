@@ -25,9 +25,15 @@ const sorting: Record<TSorting, (offers: TPreviewOffer[]) => TPreviewOffer[]> = 
   TopRated: (offers) => offers.toSorted(sortByRating),
 };
 
+
 function getRating(rating: number): string {
-  return `${Math.round(rating * 20)}%`;
+  const roundedRating = Math.round(rating);
+  return `${roundedRating * 20}%`;
 }
 
-export {formatDate, sorting, getRating, getRandomArrayElement};
+function isPlural(count: number, word: string) {
+  return count > 1 ? `${word}s` : word;
+}
+
+export {formatDate, sorting, getRating, getRandomArrayElement, isPlural};
 

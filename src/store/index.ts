@@ -17,4 +17,4 @@ const store = configureStore({
 
 });
 
-export {store, api};
+export { store, api };

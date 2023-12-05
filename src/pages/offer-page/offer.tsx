@@ -12,14 +12,15 @@ import { Spinner } from '../../components/spinner/spinner';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { dropOffer } from '../../store/action';
 import { fetchOffer, fetchNearPlaces } from '../../store/api-actions';
-
-import { MAX_NEAR_PLACES_COUNT } from '../../const';
-
-import { RequestStatus } from '../../const';
-import { getRating } from '../../utils/utils';
 import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
 import { selectNearPlaces } from '../../store/near-places-data/selectors';
 import { BookMark } from '../../components/bookmark/bookmark';
+
+import { MAX_NEAR_PLACES_COUNT } from '../../const';
+import { RequestStatus } from '../../const';
+
+import { getRating, isPlural } from '../../utils/utils';
+
 
 function OfferPage() {
   const {offerId} = useParams();
@@ -97,10 +98,10 @@ function OfferPage() {
                   {offer.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {offer.bedrooms} Bedrooms
+                  {offer.bedrooms} {isPlural(offer.bedrooms, 'Bedroom')}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                Max {offer?.maxAdults} adults
+                Max {offer?.maxAdults} {isPlural(offer.maxAdults, 'adult')}
                 </li>
               </ul>
               <div className="offer__price">
