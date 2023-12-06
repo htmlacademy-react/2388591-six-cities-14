@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { Provider } from 'react-redux';
 
-import { store } from '../../store';
-import { checkAuth, fetchFavorites } from '../../store/actions/api-actions';
+import { checkAuth } from '../../store/actions/api-actions';
 
 import { useAppDispatch } from '../../hooks';
 
@@ -25,30 +23,24 @@ const App = (): JSX.Element => {
     dispatch(checkAuth());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchFavorites());
-  }, [dispatch]
-  );
 
   return (
-    <Provider store={store}>
-      <HelmetProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path={AppRoute.Root} element={<MainPage />} />
-            <Route path={AppRoute.Login} element={<LoginPage />}/>
-            <Route path={AppRoute.Favorites} element={
-              <PrivateRoute>
-                <FavoritesPage />
-              </PrivateRoute>
-            }
-            />
-            <Route path={`${AppRoute.Offer}/:offerId`} element={<OfferPage/>} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </BrowserRouter>
-      </HelmetProvider>
-    </Provider>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path={AppRoute.Root} element={<MainPage />} />
+          <Route path={AppRoute.Login} element={<LoginPage />}/>
+          <Route path={AppRoute.Favorites} element={
+            <PrivateRoute>
+              <FavoritesPage />
+            </PrivateRoute>
+          }
+          />
+          <Route path={`${AppRoute.Offer}/:offerId`} element={<OfferPage/>} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 };
 

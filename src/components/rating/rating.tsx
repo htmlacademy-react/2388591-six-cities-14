@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { RequestStatus } from '../../const/const';
 import { useAppSelector } from '../../hooks';
 import { selectFetchingStatus } from '../../store/reviews-data/selectors';
@@ -6,6 +6,7 @@ import { selectFetchingStatus } from '../../store/reviews-data/selectors';
 type RatingProps = {
   value: number;
   onChange: (value: number) => void;
+  disabled?: boolean;
 };
 
 const RATING_MAP = {
@@ -16,15 +17,34 @@ const RATING_MAP = {
   5: 'perfect',
 };
 
-function Rating({ value, onChange }: RatingProps) {
+function Rating({ value, onChange, disabled }: RatingProps) {
   const sendingStatus = useAppSelector(selectFetchingStatus);
 
   const isSending = sendingStatus === RequestStatus.Loading;
+  const [lastValidRating, setLastValidRating] = useState(value);
 
   const handleRatingChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setLastValidRating(Number(e.target.value));
     onChange(Number(e.target.value));
   };
 
+  useEffect(() => {
+    if (isSending) {
+      setLastValidRating(value);
+    }
+  }, [isSending, value]);
+
+  useEffect(() => {
+    if (!isSending && sendingStatus === RequestStatus.Error) {
+      onChange(lastValidRating);
+    }
+  }, [isSending, sendingStatus, lastValidRating, onChange]);
+
+  useEffect(() => {
+    if (sendingStatus === RequestStatus.Error) {
+      onChange(lastValidRating); // Restore last valid rating
+    }
+  }, [sendingStatus, onChange, lastValidRating]);
 
   return (
     <div className="reviews__rating-form form__rating">
@@ -38,8 +58,7 @@ function Rating({ value, onChange }: RatingProps) {
             type="radio"
             onChange={handleRatingChange}
             checked={value === Number(star)}
-            disabled={isSending}
-
+            disabled={disabled || isSending}
           />
           <label
             htmlFor={`${star}-stars`}

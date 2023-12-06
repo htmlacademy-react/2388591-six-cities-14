@@ -77,6 +77,7 @@ const MAX_SHOWN_REVIEWS = 10;
 
 const MAX_NEAR_PLACES_COUNT = 3;
 
+const MAX_IMAGES_TO_DISPLAY = 6;
 export {
   AppRoute,
   AuthorizationStatus,
@@ -91,7 +92,8 @@ export {
   RequestStatus,
   HttpStatus,
   FavoriteStatus,
-  CityName
+  CityName,
+  MAX_IMAGES_TO_DISPLAY
 };
 
 

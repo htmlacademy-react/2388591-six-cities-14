@@ -1,10 +1,13 @@
 import React, { useState, FormEvent, useMemo, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { selectAuthorizationStatus, selectSendingStatus } from '../../store/user-data/selectors';
+import {
+  selectAuthorizationStatus,
+  selectSendingStatus,
+} from '../../store/user-data/selectors';
 import { setActiveCity } from '../../store/offers-data/offers-data';
 import { dropSendingStatus } from '../../store/user-data/user-data';
 import { fetchFavorites, login } from '../../store/actions/api-actions';
@@ -15,14 +18,20 @@ import { TLoginData } from '../../types/login-data';
 
 import { getRandomArrayElement } from '../../utils/common';
 
-
 import styles from './login.module.css';
-import { CityMap, AuthorizationStatus, AppRoute, RequestStatus } from '../../const/const';
+import {
+  CityMap,
+  AuthorizationStatus,
+  AppRoute,
+  RequestStatus,
+} from '../../const/const';
 
-const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.([0-9]{1,3}|[a-zA-Z]{2})\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const EMAIL_PATTERN =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.([0-9]{1,3}|[a-zA-Z]{2})\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const EMAIL_ERROR_TEXT = 'Please enter a correct email address.';
 const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
-const PASSWORD_ERROR_TEXT = 'Password must contain at least one letter and one digit. Please enter a correct password!';
+const PASSWORD_ERROR_TEXT =
+  'Password must contain at least one letter and one digit. Please enter a correct password!';
 
 function LoginPage() {
   const dispatch = useAppDispatch();
@@ -39,8 +48,10 @@ function LoginPage() {
   const isPasswordValid = PASSWORD_PATTERN.test(password);
   const isValid = isEmailValid && isPasswordValid;
 
-
-  const randomCity = useMemo(() => getRandomArrayElement(Object.values(CityMap)),[]);
+  const randomCity = useMemo(
+    () => getRandomArrayElement(Object.values(CityMap)),
+    []
+  );
 
   useEffect(
     () => () => {
@@ -53,7 +64,7 @@ function LoginPage() {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(!isValid) {
+    if (!isValid) {
       return;
     }
 
@@ -63,13 +74,15 @@ function LoginPage() {
     const data = Object.fromEntries(formData) as TLoginData;
 
     dispatch(login(data)).then(() => dispatch(fetchFavorites()));
-
   };
-  if (authorizationStatus === AuthorizationStatus.Auth) {
-    return <Navigate to={AppRoute.Root} />;
-  }
 
-  function handleAnchorClick (evt: React.MouseEvent<HTMLAnchorElement>) {
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Root);
+    }
+  }, [authorizationStatus, navigate]);
+
+  function handleAnchorClick(evt: React.MouseEvent<HTMLAnchorElement>) {
     evt.preventDefault();
     dispatch(setActiveCity(randomCity));
     navigate(AppRoute.Root);
@@ -94,7 +107,9 @@ function LoginPage() {
         <div className="page__login-container container">
           <section className="login">
             {sendingStatus === RequestStatus.Error && (
-              <p className={styles.message}>Failed to submit. Please try again!</p>
+              <p className={styles.message}>
+                Failed to submit. Please try again!
+              </p>
             )}
             <h1 className="login__title">Sign in</h1>
 
@@ -136,14 +151,19 @@ function LoginPage() {
                 type="submit"
                 disabled={!isValid || sendingStatus === RequestStatus.Loading}
               >
-                {sendingStatus === RequestStatus.Loading ? 'sending...' : 'Sign in'}
-
+                {sendingStatus === RequestStatus.Loading
+                  ? 'sending...'
+                  : 'Sign in'}
               </button>
             </form>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#" onClick={handleAnchorClick}>
+              <a
+                className="locations__item-link"
+                href="#"
+                onClick={handleAnchorClick}
+              >
                 <span>{randomCity.name}</span>
               </a>
             </div>

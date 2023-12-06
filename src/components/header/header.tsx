@@ -1,13 +1,21 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Logo } from '../logo/logo';
 
 import { Navigation } from '../navigation/navigation';
+import { fetchFavorites } from '../../store/actions/api-actions';
+import { useAppDispatch } from '../../hooks';
 
 interface HeaderProps {
   hideNavigation?: boolean;
 }
 
+
 function Header_({hideNavigation = false}: HeaderProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchFavorites());
+  }, [dispatch]
+  );
   return (
     <header className="header">
       <div className="container">

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
 
@@ -17,10 +17,11 @@ import { fetchOffer, fetchNearPlaces } from '../../store/actions/api-actions';
 import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
 import { selectNearPlaces } from '../../store/near-places-data/selectors';
 
-import { MAX_NEAR_PLACES_COUNT, RequestStatus } from '../../const/const';
+import { AppRoute, MAX_IMAGES_TO_DISPLAY, MAX_NEAR_PLACES_COUNT, RequestStatus } from '../../const/const';
 
 import { getRating, isPlural } from '../../utils/common';
 
+import cn from 'classnames';
 
 function OfferPage() {
   const {offerId} = useParams();
@@ -46,7 +47,7 @@ function OfferPage() {
   }
 
   if (fetchingStatus === RequestStatus.Error) {
-    return <div>Error loading data</div>;
+    <Navigate to={AppRoute.NotFound} />;
   }
 
   if(fetchingStatus !== RequestStatus.Success || !offer) {
@@ -61,7 +62,7 @@ function OfferPage() {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offer.images.map((image) => (
+              {offer.images.slice(0, MAX_IMAGES_TO_DISPLAY).map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img
                     className="offer__image"
@@ -121,7 +122,7 @@ function OfferPage() {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={cn('offer__avatar-wrapper', {'offer__avatar-wrapper--pro': offer.host.isPro}, 'user__avatar-wrapper')}>
                     <img
                       className="offer__avatar user__avatar"
                       src={offer.host.avatarUrl}
@@ -131,20 +132,16 @@ function OfferPage() {
                     />
                   </div>
                   <span className="offer__user-name">{offer.host.name}</span>
-                  <span className="offer__user-status">
-                    {offer.host.isPro ? 'Pro' : 'Regular'}
-                  </span>
+                  {offer.host.isPro && (
+                    <span className="offer__user-status">Pro</span>
+                  )}
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                  A quiet cozy and picturesque that hides behind a a river by
-                  the unique lightness of Amsterdam. The building is green and
-                  from 18th century.
+                    {offer.description}
                   </p>
                   <p className="offer__text">
-                  An independent House, strategically located between Rembrand
-                  Square and National Opera, but where the bustle of the city
-                  comes to rest in this alley flowery and colorful.
+                    {offer.description}
                   </p>
                 </div>
               </div>
