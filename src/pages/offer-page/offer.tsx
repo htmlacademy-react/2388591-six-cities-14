@@ -19,7 +19,7 @@ import { selectNearPlaces } from '../../store/near-places-data/selectors';
 
 import { AppRoute, MAX_IMAGES_TO_DISPLAY, MAX_NEAR_PLACES_COUNT, RequestStatus } from '../../const/const';
 
-import { getRating, isPlural } from '../../utils/common';
+import { getRating, isPlural, capitalizeFirstLetter } from '../../utils/common';
 
 import cn from 'classnames';
 
@@ -47,7 +47,7 @@ function OfferPage() {
   }
 
   if (fetchingStatus === RequestStatus.Error) {
-    <Navigate to={AppRoute.NotFound} />;
+    return <Navigate to={AppRoute.NotFound} />;
   }
 
   if(fetchingStatus !== RequestStatus.Success || !offer) {
@@ -96,7 +96,7 @@ function OfferPage() {
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {offer.type}
+                  {capitalizeFirstLetter(offer.type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
                   {offer.bedrooms} {isPlural(offer.bedrooms, 'Bedroom')}

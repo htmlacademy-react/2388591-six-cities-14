@@ -64,8 +64,6 @@ function MainPage() {
         {fetchingStatus === RequestStatus.Success &&
           (hasOffers ? (
             <Cities offers={offers} />
-
-
           ) : (
             <MainEmptyPage city={selectedCity.name} />
 

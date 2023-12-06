@@ -5,8 +5,9 @@ import { TPreviewOffer } from '../../types/preview-offer';
 
 import { AppRoute } from '../../const/const';
 
-import { getRating } from '../../utils/common';
+import { getRating, capitalizeFirstLetter } from '../../utils/common';
 import { BookMark } from '../bookmark/bookmark';
+
 
 type CardProps = {
   offer: TPreviewOffer;
@@ -64,7 +65,7 @@ function Card({ offer, block, onCardHover, size = 'large' }: CardProps): JSX.Ele
         <h2 className="place-card__name">
           <Link to={`${AppRoute.Offer}/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{capitalizeFirstLetter(type)}</p>
       </div>
     </article>
   );

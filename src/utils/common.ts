@@ -18,5 +18,9 @@ function isPlural(count: number, word: string) {
   return count > 1 ? `${word}s` : word;
 }
 
-export {formatDate, getRating, getRandomArrayElement, isPlural};
+function capitalizeFirstLetter(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+export {formatDate, getRating, getRandomArrayElement, isPlural, capitalizeFirstLetter};
 

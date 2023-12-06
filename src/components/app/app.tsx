@@ -37,7 +37,9 @@ const App = (): JSX.Element => {
           }
           />
           <Route path={`${AppRoute.Offer}/:offerId`} element={<OfferPage/>} />
+          <Route path={AppRoute.NotFound} element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundPage />} />
+
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

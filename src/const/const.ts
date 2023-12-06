@@ -4,9 +4,9 @@ const API_URL = 'https://14.design.pages.academy/six-cities';
 enum AppRoute {
   Root = '/',
   Login = '/login',
-  Favorites = '/favorite',
+  Favorites = '/favorites',
   Offer = '/offer',
-  NotFound = './pages/not-found-page'
+  NotFound = '/404'
 }
 
 enum APIRoute {
