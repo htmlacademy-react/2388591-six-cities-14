@@ -1,7 +1,5 @@
 import { useState } from 'react';
-
 import { TSorting } from '../../types/sorting';
-
 import { SortingMap } from '../../const/const';
 
 type SortingProps = {
@@ -11,6 +9,7 @@ type SortingProps = {
 
 function SortingOptions({ activeOption, onSelectSortOption }: SortingProps) {
   const [isOptionsOpened, setIsOptionsOpened] = useState(false);
+  const [selectedSortOption, setSelectedSortOption] = useState(activeOption);
 
   const toggleOptions = () => {
     setIsOptionsOpened((prev) => !prev);
@@ -18,13 +17,13 @@ function SortingOptions({ activeOption, onSelectSortOption }: SortingProps) {
 
   return (
     <form className="places__sorting" action="#" method="get">
-      <span className="places__sorting-caption">Sort by</span>
+      <span className="places__sorting-caption">Sort by </span>
       <span
         className="places__sorting-type"
         tabIndex={0}
         onClick={toggleOptions}
       >
-        {activeOption}
+        {SortingMap[selectedSortOption]}
         <svg
           className={`places__sorting-arrow ${isOptionsOpened ? 'places__sorting-arrow--up' : ''}`}
           width="7"
@@ -33,14 +32,16 @@ function SortingOptions({ activeOption, onSelectSortOption }: SortingProps) {
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
+
       <ul className={`places__options places__options--custom ${isOptionsOpened ? 'places__options--opened' : ''}`}>
         {Object.entries(SortingMap).map(([type, label]) => (
           <li
             key={type}
-            className={`places__option ${activeOption === type ? 'places__option--active' : ''}`}
+            className={`places__option ${selectedSortOption === type ? 'places__option--active' : ''}`}
             tabIndex={0}
             onClick={() => {
               onSelectSortOption(type as TSorting);
+              setSelectedSortOption(type as TSorting);
               toggleOptions();
             }}
           >

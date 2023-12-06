@@ -4,9 +4,9 @@ const API_URL = 'https://14.design.pages.academy/six-cities';
 enum AppRoute {
   Root = '/',
   Login = '/login',
-  Favorites = '/favorite',
+  Favorites = '/favorites',
   Offer = '/offer',
-  NotFound = './pages/not-found-page'
+  NotFound = '/404'
 }
 
 enum APIRoute {
@@ -77,6 +77,7 @@ const MAX_SHOWN_REVIEWS = 10;
 
 const MAX_NEAR_PLACES_COUNT = 3;
 
+const MAX_IMAGES_TO_DISPLAY = 6;
 export {
   AppRoute,
   AuthorizationStatus,
@@ -91,7 +92,8 @@ export {
   RequestStatus,
   HttpStatus,
   FavoriteStatus,
-  CityName
+  CityName,
+  MAX_IMAGES_TO_DISPLAY
 };
 
 

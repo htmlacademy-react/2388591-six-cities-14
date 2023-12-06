@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cn from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
@@ -43,7 +43,7 @@ function BookMark({ id, isActive, block, size = 'small' }: BookMarkProps): JSX.E
 
   return (
     <button
-      className={classNames(`${block}__bookmark-button`, 'button', {
+      className={cn(`${block}__bookmark-button`, 'button', {
         [`${block}__bookmark-button--active`]: isActive,
       })}
       type="button"

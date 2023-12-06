@@ -1,17 +1,12 @@
 /* eslint-disable camelcase */
-import React, { FormEvent, useEffect, useState } from 'react';
-
+import React, { FormEvent, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-
 import { Rating } from '../rating/rating';
-
 import { selectFetchingStatus } from '../../store/reviews-data/selectors';
-import { dropReviewSendingStatus } from '../../store/actions/action';
 import { postReview } from '../../store/actions/api-actions';
-
 import { TOffer } from '../../types/offer';
-
 import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const/const';
+import { dropReviewSendingStatus } from '../../store/actions/action';
 
 type TReviewsProps = {
   offerId: TOffer['id'];
@@ -28,9 +23,8 @@ function ReviewForm({ offerId }: TReviewsProps) {
 
   const isSubmitDisabled =
     comment.length < MIN_REVIEW_lENGTH ||
-    comment.length > MAX_REVIEW_lENGTH ||
+    comment.length >= MAX_REVIEW_lENGTH ||
     rating === 0;
-
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(evt.target.value);
@@ -50,23 +44,22 @@ function ReviewForm({ offerId }: TReviewsProps) {
   };
 
   useEffect(() => {
-    if (sendingStatus === RequestStatus.Success) {
-      dispatch(dropReviewSendingStatus());
+    if (sendingStatus === RequestStatus.Success || sendingStatus === RequestStatus.Error) {
       setComment('');
       setRating(0);
+      dispatch(dropReviewSendingStatus());
     }
   }, [sendingStatus, dispatch]);
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
+    <form className={`reviews__form form ${isSending ? 'form--disabled' : ''}`} onSubmit={handleFormSubmit}>
       {sendingStatus === RequestStatus.Error && (
         <p>Failed to post review. Please try again! </p>
       )}
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
-      <Rating value={rating} onChange={setRating} />
-
+      <Rating value={rating} onChange={setRating} disabled={isSending}/>
       <textarea
         onChange={handleFieldChange}
         value={comment}
@@ -74,14 +67,13 @@ function ReviewForm({ offerId }: TReviewsProps) {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
+        disabled={isSending}
       />
       <div className="reviews__button-wrapper">
-        {isSending}
-
         <p className="reviews__help">
-         To submit review please make sure to set{' '}
+          To submit a review, please make sure to set{' '}
           <span className="reviews__star">rating</span> and describe your stay
-       with at least <b className="reviews__text-amount">50 characters</b>.
+          with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
         <button
           className="reviews__submit form__submit button"
@@ -89,7 +81,6 @@ function ReviewForm({ offerId }: TReviewsProps) {
           disabled={isSubmitDisabled || isSending}
         >
           {isSending ? 'Sending...' : 'Submit'}
-
         </button>
       </div>
     </form>
@@ -97,3 +88,4 @@ function ReviewForm({ offerId }: TReviewsProps) {
 }
 
 export { ReviewForm };
+
