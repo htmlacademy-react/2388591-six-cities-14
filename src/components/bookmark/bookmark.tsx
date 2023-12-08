@@ -1,15 +1,21 @@
-import cn from 'classnames';
 import { useNavigate } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
+
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
-import { AppRoute, AuthorizationStatus } from '../../const/const';
 import { addFavorite, deleteFavorite } from '../../store/actions/api-actions';
+
 import { TOffer } from '../../types/offer';
 import { TSizeMap } from '../../types/size';
 
+import { AppRoute, AuthorizationStatus } from '../../const/const';
+
+import cn from 'classnames';
+
+
 type BookMarkProps = {
   id: TOffer['id'];
-  isActive: boolean;
+  isActive: boolean | undefined;
   block: string;
   size: keyof TSizeMap;
 };

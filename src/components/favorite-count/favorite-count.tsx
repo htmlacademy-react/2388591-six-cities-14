@@ -1,9 +1,10 @@
-import { useFavoriteCount } from './hook';
+import { useAppSelector } from '../../hooks';
+import { selectFavorites } from '../../store/favorites-data/selectors';
 
 function FavoriteCount() {
-  const favoriteCount = useFavoriteCount();
+  const favorites = useAppSelector(selectFavorites);
   return (
-    <span className="header__favorite-count">{favoriteCount}</span>
+    <span className="header__favorite-count">{favorites.length}</span>
 
   );
 }

@@ -11,6 +11,7 @@ import { Header } from '../../components/header/header';
 import { FavoritesEmptyPage } from '../favorites-empty/favorites-empty';
 import { RequestStatus } from '../../const/const';
 
+import cn from 'classnames';
 
 function FavoritesPage() {
   const favorites = useAppSelector(selectFavorites);
@@ -18,24 +19,28 @@ function FavoritesPage() {
   const hasFavorites = Boolean(favorites?.length);
 
   return (
-    <div className="page">
+    <div className={cn('page', {
+      'page--favorites-empty': !hasFavorites,
+    })}
+    >
       <Helmet>
         <title>6 cities | Favorites</title>
       </Helmet>
       <Header />
 
-      <main className="page__main page__main--favorites">
+      <main className={cn('page__main page__main--favorites', {
+        'page__main--favorites-empty': !hasFavorites,
+      })}
+      >
         <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            {hasFavorites && fetchingStatus === RequestStatus.Success && (
-              <FavoritesList />
-            )}
-
-            {!hasFavorites && fetchingStatus === RequestStatus.Success && (
-              <FavoritesEmptyPage />
-            )}
-          </section>
+          {hasFavorites ? (
+            <section className="favorites">
+              <h1 className="favorites__title">Saved listing</h1>
+              {fetchingStatus === RequestStatus.Success && <FavoritesList />}
+            </section>
+          ) : (
+            <FavoritesEmptyPage />
+          )}
         </div>
       </main>
       <Footer />

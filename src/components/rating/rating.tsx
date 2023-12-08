@@ -1,7 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { RequestStatus } from '../../const/const';
+
 import { useAppSelector } from '../../hooks';
+
 import { selectFetchingStatus } from '../../store/reviews-data/selectors';
+
+import { RequestStatus } from '../../const/const';
 
 type RatingProps = {
   value: number;
@@ -9,13 +12,13 @@ type RatingProps = {
   disabled?: boolean;
 };
 
-const RATING_MAP = {
+const RatingMap = {
   1: 'terribly',
   2: 'badly',
   3: 'not bad',
   4: 'good',
   5: 'perfect',
-};
+} as const;
 
 function Rating({ value, onChange, disabled }: RatingProps) {
   const sendingStatus = useAppSelector(selectFetchingStatus);
@@ -42,13 +45,13 @@ function Rating({ value, onChange, disabled }: RatingProps) {
 
   useEffect(() => {
     if (sendingStatus === RequestStatus.Error) {
-      onChange(lastValidRating); // Restore last valid rating
+      onChange(lastValidRating);
     }
   }, [sendingStatus, onChange, lastValidRating]);
 
   return (
     <div className="reviews__rating-form form__rating">
-      {Object.entries(RATING_MAP).reverse().map(([star, title]) => (
+      {Object.entries(RatingMap).reverse().map(([star, title]) => (
         <React.Fragment key={star}>
           <input
             className="form__rating-input visually-hidden"
