@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { addNearbyOfferToBookmark, deleteNearbyOfferFromBookmark } from '../near-places-data/near-places-data';
 import { addOffersToBookmark,deleteOffersFromBookmark } from '../offers-data/offers-data';
 import { addOfferToBookmark, deleteOfferToBookmark } from '../offer-data/offer-data';
+import { resetFavorites } from '../favorites-data/favorites-data';
 
 import { TOffer } from '../../types/offer';
 import { TPreviewOffer } from '../../types/preview-offer';
@@ -123,9 +124,10 @@ export const login = createAsyncThunk<TAuthorizedUser, TLoginData, TExtra>(
 
 export const logout = createAsyncThunk<void, undefined, TExtra> (
   'user/logout',
-  (_arg, {extra: api}) => {
-    api.delete(APIRoute.Logout);
+  async (_arg, { extra: api, dispatch }) => {
+    await api.delete(APIRoute.Logout);
     dropToken();
+    dispatch(resetFavorites());
   }
 );
 

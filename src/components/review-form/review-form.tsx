@@ -1,12 +1,16 @@
-/* eslint-disable camelcase */
 import React, { FormEvent, useState, useEffect } from 'react';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
+
 import { Rating } from '../rating/rating';
-import { selectFetchingStatus } from '../../store/reviews-data/selectors';
+
 import { postReview } from '../../store/actions/api-actions';
-import { TOffer } from '../../types/offer';
-import { MAX_REVIEW_lENGTH, MIN_REVIEW_lENGTH, RequestStatus } from '../../const/const';
 import { dropReviewSendingStatus } from '../../store/actions/action';
+import { selectFetchingStatus } from '../../store/reviews-data/selectors';
+
+import { TOffer } from '../../types/offer';
+
+import { ReviewLength, RequestStatus } from '../../const/const';
 
 type TReviewsProps = {
   offerId: TOffer['id'];
@@ -22,8 +26,8 @@ function ReviewForm({ offerId }: TReviewsProps) {
   const isSending = sendingStatus === RequestStatus.Loading;
 
   const isSubmitDisabled =
-    comment.length < MIN_REVIEW_lENGTH ||
-    comment.length >= MAX_REVIEW_lENGTH ||
+    comment.length < ReviewLength.MIN ||
+    comment.length >= ReviewLength.MAX ||
     rating === 0;
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {

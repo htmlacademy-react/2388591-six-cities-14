@@ -16,14 +16,12 @@ enum APIRoute {
   NearPlaces = '/nearby',
   Login = '/login',
   Logout = '/logout',
-
 }
 
 enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UKNOWN',
-
 }
 
 enum RequestStatus {
@@ -31,8 +29,8 @@ enum RequestStatus {
   Idle = 'Idle',
   Error = 'Error',
   Success = 'Success'
-
 }
+
 enum CityName {
   Paris = 'Paris',
   Cologne = 'Cologne',
@@ -65,34 +63,38 @@ const HttpStatus = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
-};
+} as const;
+
 const enum FavoriteStatus {
   Added = 1,
   Deleted = 0
 }
 
-const MAX_REVIEW_lENGTH = 300;
-const MIN_REVIEW_lENGTH = 50;
+const ReviewLength = {
+  MAX: 300,
+  MIN: 50
+} as const;
+
 const MAX_SHOWN_REVIEWS = 10;
 
 const MAX_NEAR_PLACES_COUNT = 3;
 
 const MAX_IMAGES_TO_DISPLAY = 6;
+
 export {
   AppRoute,
+  APIRoute,
+  CityName,
+  RequestStatus,
+  FavoriteStatus,
   AuthorizationStatus,
-  MAX_REVIEW_lENGTH,
-  MIN_REVIEW_lENGTH,
+  HttpStatus,
+  ReviewLength,
+  SortingMap,
+  CityMap,
+  API_URL,
   MAX_SHOWN_REVIEWS,
   MAX_NEAR_PLACES_COUNT,
-  CityMap,
-  SortingMap,
-  API_URL,
-  APIRoute,
-  RequestStatus,
-  HttpStatus,
-  FavoriteStatus,
-  CityName,
   MAX_IMAGES_TO_DISPLAY
 };
 
