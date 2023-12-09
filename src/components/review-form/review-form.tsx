@@ -1,20 +1,25 @@
-import React, { FormEvent, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useFormSubmission } from './hook';
 
 import { Rating } from '../rating/rating';
 
-import { postReview } from '../../store/actions/api-actions';
 import { dropReviewSendingStatus } from '../../store/actions/action';
 import { selectFetchingStatus } from '../../store/reviews-data/selectors';
 
 import { TOffer } from '../../types/offer';
 
-import { ReviewLength, RequestStatus } from '../../const/const';
+import { RequestStatus } from '../../const/const';
 
 type TReviewsProps = {
   offerId: TOffer['id'];
 };
+
+const ReviewLength = {
+  Max: 300,
+  Min: 50,
+} as const;
 
 function ReviewForm({ offerId }: TReviewsProps) {
   const [comment, setComment] = useState('');
@@ -25,30 +30,19 @@ function ReviewForm({ offerId }: TReviewsProps) {
 
   const isSending = sendingStatus === RequestStatus.Loading;
 
+  const { handleFormSubmit } = useFormSubmission();
+
   const isSubmitDisabled =
-    comment.length < ReviewLength.MIN ||
-    comment.length >= ReviewLength.MAX ||
+    comment.length < ReviewLength.Min ||
+    comment.length >= ReviewLength.Max ||
     rating === 0;
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(evt.target.value);
   };
 
-  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    dispatch(
-      postReview({
-        reviewData: {
-          comment,
-          rating,
-        },
-        offerId,
-      })
-    );
-  };
-
   useEffect(() => {
-    if (sendingStatus === RequestStatus.Success || sendingStatus === RequestStatus.Error) {
+    if (sendingStatus === RequestStatus.Success) {
       setComment('');
       setRating(0);
       dispatch(dropReviewSendingStatus());
@@ -56,14 +50,14 @@ function ReviewForm({ offerId }: TReviewsProps) {
   }, [sendingStatus, dispatch]);
 
   return (
-    <form className={`reviews__form form ${isSending ? 'form--disabled' : ''}`} onSubmit={handleFormSubmit}>
+    <form className={`reviews__form form ${isSending ? 'form--disabled' : ''}`} onSubmit={handleFormSubmit({ comment, rating }, offerId)}>
       {sendingStatus === RequestStatus.Error && (
-        <p>Failed to post review. Please try again! </p>
+        <p style={{ color: 'red' }}>Failed to post a review. Please try again! </p>
       )}
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
-      <Rating value={rating} onChange={setRating} disabled={isSending}/>
+      <Rating value={rating} onChange={setRating} disabled={isSending} />
       <textarea
         onChange={handleFieldChange}
         value={comment}

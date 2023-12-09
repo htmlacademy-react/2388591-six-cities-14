@@ -57,23 +57,18 @@ const SortingMap = {
 } as const;
 
 const HttpStatus = {
-  OK: 200,
-  CREATED: 201,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
+  Ok: 200,
+  Created: 201,
+  BadRequest: 400,
+  Unauthorized: 401,
+  Forbidden: 403,
+  NotFound: 404,
 } as const;
 
 const enum FavoriteStatus {
   Added = 1,
   Deleted = 0
 }
-
-const ReviewLength = {
-  MAX: 300,
-  MIN: 50
-} as const;
 
 const MAX_SHOWN_REVIEWS = 10;
 
@@ -89,7 +84,6 @@ export {
   FavoriteStatus,
   AuthorizationStatus,
   HttpStatus,
-  ReviewLength,
   SortingMap,
   CityMap,
   API_URL,

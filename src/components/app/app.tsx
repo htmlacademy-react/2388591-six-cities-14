@@ -23,7 +23,6 @@ const App = (): JSX.Element => {
     dispatch(checkAuth());
   }, [dispatch]);
 
-
   return (
     <HelmetProvider>
       <BrowserRouter>

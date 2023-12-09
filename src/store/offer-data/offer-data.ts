@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchOffer } from '../actions/api-actions';
+import { addFavorite, deleteFavorite, fetchOffer } from '../actions/api-actions';
 
 import { TOfferData } from '../../types/state';
 
@@ -15,20 +15,6 @@ export const offerData = createSlice({
   name: 'Offer',
   initialState,
   reducers:{
-    addOfferToBookmark: (state, action) => {
-      const offer = state.offer;
-      if (offer && offer.id === action.payload) {
-        offer.isFavorite = true;
-      }
-
-    },
-    deleteOfferToBookmark: (state, action) => {
-      const offer = state.offer;
-      if (offer && offer.id === action.payload) {
-        offer.isFavorite = false;
-      }
-
-    },
     dropOffer(state) {
       state.offer = null;
     },
@@ -47,9 +33,21 @@ export const offerData = createSlice({
       })
       .addCase(fetchOffer.rejected, (state) => {
         state.offerFetchingStatus = RequestStatus.Error;
+      })
+      .addCase(deleteFavorite.fulfilled, (state, action) => {
+        const foundOffer = state.offer;
+        if(foundOffer) {
+          foundOffer.isFavorite = action.payload.isFavorite;
+        }
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        const foundOffer = state.offer;
+        if(foundOffer) {
+          foundOffer.isFavorite = action.payload.isFavorite;
+        }
+
       });
+
   }
 
 });
-
-export const { addOfferToBookmark, deleteOfferToBookmark } = offerData.actions;

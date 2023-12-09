@@ -1,6 +1,6 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchNearPlaces } from '../actions/api-actions';
+import { addFavorite, deleteFavorite, fetchNearPlaces } from '../actions/api-actions';
 import { TNearPlacesData } from '../../types/state';
 
 const initialState: TNearPlacesData = {
@@ -11,26 +11,23 @@ const initialState: TNearPlacesData = {
 export const nearPlacesData = createSlice({
   name: 'NearPlaces',
   initialState,
-  reducers:{
-    addNearbyOfferToBookmark: (state, action: PayloadAction<string>) => {
-      const offer = state.nearPlaces.find(({ id }) => id === action.payload);
-      if (offer) {
-        offer.isFavorite = true;
-      }
-    },
-    deleteNearbyOfferFromBookmark: (state, action: PayloadAction<string>) => {
-      const offer = state.nearPlaces.find(({ id }) => id === action.payload);
-      if (offer) {
-        offer.isFavorite = false;
-      }
-    },
-  },
+  reducers:{},
   extraReducers(builder) {
     builder
       .addCase(fetchNearPlaces.fulfilled, (state, action) => {
         state.nearPlaces = action.payload;
+      })
+      .addCase(deleteFavorite.fulfilled, (state, action) => {
+        const foundOffer = state.nearPlaces.find(({ id }) => id === action.payload.id);
+        if (foundOffer) {
+          foundOffer.isFavorite = action.payload.isFavorite;
+        }
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        const foundOffer = state.nearPlaces.find(({ id }) => id === action.payload.id);
+        if (foundOffer) {
+          foundOffer.isFavorite = action.payload.isFavorite;
+        }
       });
   }
 });
-
-export const {addNearbyOfferToBookmark, deleteNearbyOfferFromBookmark} = nearPlacesData.actions;
