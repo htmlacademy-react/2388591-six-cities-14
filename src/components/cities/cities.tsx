@@ -63,9 +63,11 @@ function Cities({ offers }: CitiesProps): JSX.Element {
             ))}
           </div>
         </section>
-        <div className="cities__right-section">
-          <Map block="cities" offers={sortedOffers} specialOfferId={hoveredOffer} />
-        </div>
+        {placesCount && (
+          <div className="cities__right-section">
+            <Map block="cities" offers={sortedOffers} specialOfferId={hoveredOffer} />
+          </div>
+        )}
       </div>
     </div>
   );

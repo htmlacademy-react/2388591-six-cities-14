@@ -16,7 +16,6 @@ import { dropOffer } from '../../store/actions/action';
 import { fetchOffer, fetchNearPlaces } from '../../store/actions/api-actions';
 import { selectFetchingStatus, selectOffer } from '../../store/offer-data/selectors';
 import { selectNearPlaces } from '../../store/near-places-data/selectors';
-import { selectFavorites } from '../../store/favorites-data/selectors';
 
 import { AppRoute, MAX_IMAGES_TO_DISPLAY, MAX_NEAR_PLACES_COUNT, RequestStatus } from '../../const/const';
 
@@ -31,7 +30,6 @@ function OfferPage() {
   const fetchingStatus = useAppSelector(selectFetchingStatus);
   const nearPlaces = useAppSelector(selectNearPlaces);
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
-  const favorites = useAppSelector(selectFavorites);
 
   useEffect(() => {
     if (offerId) {
@@ -56,7 +54,6 @@ function OfferPage() {
     return null;
   }
 
-  const isOfferInFavorites = favorites.some((favoriteOffer) => favoriteOffer.id === offer?.id);
 
   return(
     <div className="page">
@@ -87,7 +84,7 @@ function OfferPage() {
                 <h1 className="offer__name">
                   {offer?.title}
                 </h1>
-                <BookMark id={offer.id} block="offer" isActive={isOfferInFavorites} size={'large'}/>
+                <BookMark id={offer.id} block="offer" isActive={offer.isFavorite} size={'large'}/>
 
               </div>
 

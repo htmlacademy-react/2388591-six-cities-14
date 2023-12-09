@@ -1,6 +1,10 @@
 import { useState } from 'react';
+
 import { TSorting } from '../../types/sorting';
+
 import { SortingMap } from '../../const/const';
+
+import cn from 'classnames';
 
 type SortingProps = {
   activeOption: TSorting;
@@ -11,7 +15,7 @@ function SortingOptions({ activeOption, onSelectSortOption }: SortingProps) {
   const [isOptionsOpened, setIsOptionsOpened] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState(activeOption);
 
-  const toggleOptions = () => {
+  const handleToggleClick = () => {
     setIsOptionsOpened((prev) => !prev);
   };
 
@@ -21,11 +25,13 @@ function SortingOptions({ activeOption, onSelectSortOption }: SortingProps) {
       <span
         className="places__sorting-type"
         tabIndex={0}
-        onClick={toggleOptions}
+        onClick={handleToggleClick}
       >
         {SortingMap[selectedSortOption]}
         <svg
-          className={`places__sorting-arrow ${isOptionsOpened ? 'places__sorting-arrow--up' : ''}`}
+          className={cn ('places__sorting-arrow', {
+            'places__sorting-arrow--up' : isOptionsOpened
+          })}
           width="7"
           height="4"
         >
@@ -33,16 +39,21 @@ function SortingOptions({ activeOption, onSelectSortOption }: SortingProps) {
         </svg>
       </span>
 
-      <ul className={`places__options places__options--custom ${isOptionsOpened ? 'places__options--opened' : ''}`}>
+      <ul className={cn('places__options', 'places__options--custom',
+        {'places__options--opened': isOptionsOpened
+        })}
+      >
         {Object.entries(SortingMap).map(([type, label]) => (
           <li
             key={type}
-            className={`places__option ${selectedSortOption === type ? 'places__option--active' : ''}`}
+            className={cn('places__option',
+              {'places__option--active': selectedSortOption === type
+              })}
             tabIndex={0}
             onClick={() => {
               onSelectSortOption(type as TSorting);
               setSelectedSortOption(type as TSorting);
-              toggleOptions();
+              handleToggleClick();
             }}
           >
             {label}

@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
 
-import { useAppSelector } from '../../hooks';
-
 import { BookMark } from '../bookmark/bookmark';
-
-import { selectFavorites } from '../../store/favorites-data/selectors';
 
 import { TSizeMap } from '../../types/size';
 import { TPreviewOffer } from '../../types/preview-offer';
@@ -21,15 +17,13 @@ type CardProps = {
   onCardHover?: (offerId: TPreviewOffer['id'] | null) => void;
 };
 
-const sizeMap: TSizeMap = {
+const SizeMap: TSizeMap = {
   small: { width: '150', height: '110'},
   large: { width: '260', height: '200'},
-};
+} as const;
 
 function Card({ offer, block, onCardHover, size = 'large' }: CardProps): JSX.Element {
   const { isPremium, previewImage, id, price, title, type, rating, isFavorite } = offer;
-
-  const favorites = useAppSelector(selectFavorites);
 
   const handleMouseEnter = () => {
     onCardHover?.(id);
@@ -38,10 +32,6 @@ function Card({ offer, block, onCardHover, size = 'large' }: CardProps): JSX.Ele
   const handleMouseLeave = () => {
     onCardHover?.(null);
   };
-
-  const isOfferInFavorites = favorites.some((favoriteOffer) => favoriteOffer.id === id);
-
-  const shouldDisplayFavoriteMarker = isFavorite && isOfferInFavorites;
 
   return (
     <article
@@ -56,7 +46,7 @@ function Card({ offer, block, onCardHover, size = 'large' }: CardProps): JSX.Ele
       )}
       <div className={`${block}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Offer}/${id}`}>
-          <img className="place-card__image" src={previewImage} alt={title} {...sizeMap[size]} />
+          <img className="place-card__image" src={previewImage} alt={title} {...SizeMap[size]} />
         </Link>
       </div>
       <div className="place-card__info">
@@ -65,7 +55,7 @@ function Card({ offer, block, onCardHover, size = 'large' }: CardProps): JSX.Ele
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <BookMark id={id} block="place-card" isActive={shouldDisplayFavoriteMarker} size={'small'} />
+          <BookMark id={id} block="place-card" isActive={isFavorite} size={'small'} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

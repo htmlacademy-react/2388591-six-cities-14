@@ -3,11 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AxiosError } from 'axios';
 
-import { addNearbyOfferToBookmark, deleteNearbyOfferFromBookmark } from '../near-places-data/near-places-data';
-import { addOffersToBookmark,deleteOffersFromBookmark } from '../offers-data/offers-data';
-import { addOfferToBookmark, deleteOfferToBookmark } from '../offer-data/offer-data';
-import { resetFavorites } from '../favorites-data/favorites-data';
-
 import { TOffer } from '../../types/offer';
 import { TPreviewOffer } from '../../types/preview-offer';
 import { TReview, TReviewData } from '../../types/review';
@@ -72,23 +67,16 @@ export const fetchFavorites = createAsyncThunk<TPreviewOffer[], undefined, TExtr
 
 export const addFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
   'favorites/add',
-  async (offerId, { extra: api, dispatch }) => {
+  async (offerId, { extra: api }) => {
     const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/${FavoriteStatus.Added}`);
-    dispatch(addOffersToBookmark(offerId));
-    dispatch(addNearbyOfferToBookmark(offerId));
-    dispatch(addOfferToBookmark(offerId));
     return data;
   }
 );
 
 export const deleteFavorite = createAsyncThunk<TPreviewOffer, TOffer['id'], TExtra>(
   'favorites/delete',
-  async (offerId, { extra: api, dispatch}) => {
+  async (offerId, { extra: api}) => {
     const { data } = await api.post<TPreviewOffer>(`${APIRoute.Favorite}/${offerId}/${FavoriteStatus.Deleted}`);
-    dispatch(deleteOffersFromBookmark(offerId));
-    dispatch(deleteNearbyOfferFromBookmark(offerId));
-    dispatch(deleteOfferToBookmark(offerId));
-
     return data;
   });
 
@@ -110,7 +98,7 @@ export const login = createAsyncThunk<TAuthorizedUser, TLoginData, TExtra>(
       return data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.response && error.response.status === HttpStatus.BAD_REQUEST) {
+        if (error.response && error.response.status === HttpStatus.BadRequest) {
           return rejectWithValue('Bad Request: Some data is missing or invalid.');
         } else {
           return rejectWithValue('Error during login.');
@@ -124,10 +112,9 @@ export const login = createAsyncThunk<TAuthorizedUser, TLoginData, TExtra>(
 
 export const logout = createAsyncThunk<void, undefined, TExtra> (
   'user/logout',
-  async (_arg, { extra: api, dispatch }) => {
+  async (_arg, { extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-    dispatch(resetFavorites());
   }
 );
 

@@ -14,12 +14,7 @@ const initialState: TFavoritesData = {
 export const favoritesData = createSlice({
   name: 'Favorites',
   initialState,
-  reducers:{
-    resetFavorites: (state) => {
-      state.favorites = [];
-      state.favoritesFetchingStatus = RequestStatus.Idle;
-    },
-  },
+  reducers:{},
   extraReducers(builder) {
     builder
       .addCase(fetchFavorites.pending, (state) => {
@@ -46,5 +41,3 @@ export const favoritesData = createSlice({
       });
   }
 });
-
-export const { resetFavorites } = favoritesData.actions;

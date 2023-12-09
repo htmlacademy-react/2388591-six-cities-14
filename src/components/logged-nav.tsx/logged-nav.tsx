@@ -13,7 +13,7 @@ function LoggedNavigation() {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
-  const handleLogoutAnchorClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleLogoutClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     dispatch(logout());
   };
@@ -43,7 +43,7 @@ function LoggedNavigation() {
         </Link>
       </li>
       <li className="header__nav-item">
-        <a className="header__nav-link" href="#" onClick={handleLogoutAnchorClick}>
+        <a className="header__nav-link" href="#" onClick={handleLogoutClick}>
           <span className="header__signout">Sign Out</span>
         </a>
       </li>

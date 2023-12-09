@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { fetchOffers } from '../actions/api-actions';
+import { addFavorite, deleteFavorite, fetchOffers } from '../actions/api-actions';
 
 import { TOffersData } from '../../types/state';
 import { TCity } from '../../types/city';
@@ -18,18 +18,6 @@ export const offersData = createSlice({
   name: 'Offers',
   initialState,
   reducers: {
-    addOffersToBookmark: (state, action: PayloadAction<string>) => {
-      const offer = state.offers.find(({ id }) => id === action.payload);
-      if (offer) {
-        offer.isFavorite = true;
-      }
-    },
-    deleteOffersFromBookmark: (state, action: PayloadAction<string>) => {
-      const offer = state.offers.find(({ id }) => id === action.payload);
-      if (offer) {
-        offer.isFavorite = false;
-      }
-    },
     setActiveCity(state, action: PayloadAction<TCity>) {
       state.activeCity = action.payload;
     }
@@ -46,8 +34,21 @@ export const offersData = createSlice({
       })
       .addCase(fetchOffers.rejected, (state) => {
         state.offersFetchingStatus = RequestStatus.Error;
+      })
+      .addCase(deleteFavorite.fulfilled, (state, action) => {
+        const foundOffer = state.offers.find(({ id }) => id === action.payload.id);
+        if(foundOffer) {
+          foundOffer.isFavorite = action.payload.isFavorite;
+        }
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        const foundOffer = state.offers.find(({ id }) => id === action.payload.id);
+        if(foundOffer) {
+          foundOffer.isFavorite = action.payload.isFavorite;
+        }
+
       });
   }
 });
 
-export const {setActiveCity, addOffersToBookmark, deleteOffersFromBookmark} = offersData.actions;
+export const {setActiveCity} = offersData.actions;

@@ -3,11 +3,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import {
-  selectActiveCity,
-  selectFetchingStatus,
-  selectOffers,
-} from '../../store/offers-data/selectors';
+import { selectActiveCity, selectFetchingStatus, selectOffers } from '../../store/offers-data/selectors';
 import { setActiveCity } from '../../store/offers-data/offers-data';
 import { fetchOffers } from '../../store/actions/api-actions';
 
@@ -32,7 +28,8 @@ function MainPage() {
   const selectedCity = useAppSelector(selectActiveCity);
 
   const hasOffers = Boolean(offers?.length);
-  const handleSelectCity = useCallback(
+
+  const handleSelectedCity = useCallback(
     (city: TCity) => {
       dispatch(setActiveCity(city));
     },
@@ -49,13 +46,12 @@ function MainPage() {
       </Helmet>
       <Header />
       <main className={cn('page__main page__main--index', !hasOffers && 'page__main--index-empty')}>
-
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
             <CityList
               activeCity={selectedCity.name}
-              onSelectCity={handleSelectCity}
+              onSelectedCity={handleSelectedCity}
             />
           </section>
         </div>

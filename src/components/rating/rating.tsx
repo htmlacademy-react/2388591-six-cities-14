@@ -25,6 +25,7 @@ function Rating({ value, onChange, disabled }: RatingProps) {
 
   const isSending = sendingStatus === RequestStatus.Loading;
   const [lastValidRating, setLastValidRating] = useState(value);
+  const [submissionError, setSubmissionError] = useState(false);
 
   const handleRatingChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLastValidRating(Number(e.target.value));
@@ -34,20 +35,15 @@ function Rating({ value, onChange, disabled }: RatingProps) {
   useEffect(() => {
     if (isSending) {
       setLastValidRating(value);
+      setSubmissionError(false);
     }
   }, [isSending, value]);
 
   useEffect(() => {
     if (!isSending && sendingStatus === RequestStatus.Error) {
-      onChange(lastValidRating);
+      setSubmissionError(true);
     }
-  }, [isSending, sendingStatus, lastValidRating, onChange]);
-
-  useEffect(() => {
-    if (sendingStatus === RequestStatus.Error) {
-      onChange(lastValidRating);
-    }
-  }, [sendingStatus, onChange, lastValidRating]);
+  }, [isSending, sendingStatus]);
 
   return (
     <div className="reviews__rating-form form__rating">
@@ -60,7 +56,7 @@ function Rating({ value, onChange, disabled }: RatingProps) {
             id={`${star}-stars`}
             type="radio"
             onChange={handleRatingChange}
-            checked={value === Number(star)}
+            checked={submissionError ? lastValidRating === Number(star) : value === Number(star)}
             disabled={disabled || isSending}
           />
           <label
